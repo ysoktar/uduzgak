@@ -299,6 +299,11 @@ export function App({
   useEffect(() => {
     function handleTaskSearchShortcut(event: KeyboardEvent) {
       const target = event.target
+      const appMain = document.getElementById('workspace-content')
+      const appHeader = document.querySelector('.workspace-app-header')
+      if (target instanceof Node && target !== document.body &&
+        target !== document.documentElement &&
+        !appMain?.contains(target) && !appHeader?.contains(target)) return
       const slash = event.key === '/' && !event.ctrlKey && !event.metaKey
       const controlSearch = event.key.toLowerCase() === 'k' && (event.ctrlKey !== event.metaKey)
       const editable = target instanceof HTMLInputElement ||
