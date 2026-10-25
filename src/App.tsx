@@ -298,7 +298,7 @@ export function App({
     function handleTaskSearchShortcut(event: KeyboardEvent) {
       const target = event.target
       const slash = event.key === '/' && !event.ctrlKey && !event.metaKey
-      const controlSearch = event.key.toLowerCase() === 'k' && event.ctrlKey && !event.metaKey
+      const controlSearch = event.key.toLowerCase() === 'k' && (event.ctrlKey !== event.metaKey)
       if ((!slash && !controlSearch) || event.altKey ||
         target instanceof HTMLInputElement ||
         target instanceof HTMLTextAreaElement ||
