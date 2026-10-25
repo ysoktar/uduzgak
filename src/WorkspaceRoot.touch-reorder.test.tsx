@@ -53,7 +53,7 @@ it('supports native drag-and-drop after a sibling',async()=>{
 })
 
 it('uses responsive reorder controls with accessible tap target styling',()=>{
-  const css = readFileSync(new URL('./styles.css',import.meta.url),'utf8')
+  const css = readFileSync('src/styles.css','utf8')
   expect(css).toContain('.task-touch-reorder')
   expect(css).toContain('flex-wrap: wrap')
   expect(css).toContain('min-height: 44px')
