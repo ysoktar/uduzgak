@@ -446,8 +446,9 @@ export function createTaskGanttWorkingDateProjection(
   workingWeekdays: readonly number[] = [1, 2, 3, 4, 5],
 ): { rows: TaskGanttWorkingDateRow[] } {
   const path = createTaskGanttWorkingCriticalPath(tasks, relationships, nonWorkingDates, workingWeekdays)
+  const firstWorkingDate = shiftTaskGanttWorkingDate(anchor, 0, nonWorkingDates, workingWeekdays)
   const projectDate = (offset: number) =>
-    shiftTaskGanttWorkingDate(anchor, offset, nonWorkingDates, workingWeekdays)
+    shiftTaskGanttWorkingDate(firstWorkingDate, offset, nonWorkingDates, workingWeekdays)
   return {
     rows: path.rows.map((row) => ({
       taskId: row.taskId,
