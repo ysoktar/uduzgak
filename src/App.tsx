@@ -297,7 +297,9 @@ export function App({
   useEffect(() => {
     function handleTaskSearchShortcut(event: KeyboardEvent) {
       const target = event.target
-      if (event.key !== '/' || event.altKey || event.ctrlKey || event.metaKey ||
+      const slash = event.key === '/' && !event.ctrlKey && !event.metaKey
+      const controlSearch = event.key.toLowerCase() === 'k' && event.ctrlKey && !event.metaKey
+      if ((!slash && !controlSearch) || event.altKey ||
         target instanceof HTMLInputElement ||
         target instanceof HTMLTextAreaElement ||
         target instanceof HTMLSelectElement ||
