@@ -801,9 +801,12 @@ export function App({
   }
 
   return (
-    <main id="workspace-content">
+    <>
       <a className="skip-link" href="#workspace-content">Skip to workspace content</a>
-      <h1>uduzgak</h1>
+      <header className="workspace-app-header">
+        <h1>uduzgak</h1>
+      </header>
+      <main id="workspace-content">
       <nav aria-label="Workspace navigation" className="workspace-navigation">
         <a href="#workspace-filters">Task filters</a>
         <a href="#workspace-projects">Projects</a>
@@ -5017,5 +5020,6 @@ export function App({
       ) : null}
       </div>
     </main>
+    </>
   )
 }
