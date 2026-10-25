@@ -33,3 +33,9 @@ it('TDD 510: Task search exposes its input search semantics', () => {
   const search = screen.getByLabelText('Search tasks') as HTMLInputElement
   expect(search.type).toBe('search')
 })
+
+it('TDD 511: mobile keyboard advertises a search submit action', () => {
+  render(<App />)
+  const search = screen.getByLabelText('Search tasks')
+  expect(search.getAttribute('enterkeyhint')).toBe('search')
+})
