@@ -940,7 +940,7 @@ export function App({
         }
       />
 
-      <button type="button" onClick={() => updateFilterSortPreferences({ query: '' })}>
+      <button type="button" disabled={searchQuery === ''} onClick={() => updateFilterSortPreferences({ query: '' })}>
         Clear task search
       </button>
 
