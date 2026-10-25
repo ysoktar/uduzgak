@@ -1,4 +1,5 @@
 /** @vitest-environment jsdom */
+import { readFileSync } from 'node:fs'
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { expect, it } from 'vitest'
@@ -49,4 +50,11 @@ it('supports native drag-and-drop after a sibling',async()=>{
   fireEvent.dragOver(screen.getByLabelText('Drop after task Gamma'),{dataTransfer})
   fireEvent.drop(screen.getByLabelText('Drop after task Gamma'),{dataTransfer})
   expect(store.getState().tasks.map(t=>t.id)).toEqual([beta.id,gamma.id,alpha.id])
+})
+
+it('uses responsive reorder controls with accessible tap target styling',()=>{
+  const css = readFileSync(new URL('./styles.css',import.meta.url),'utf8')
+  expect(css).toContain('.task-touch-reorder')
+  expect(css).toContain('flex-wrap: wrap')
+  expect(css).toContain('min-height: 44px')
 })
