@@ -2795,6 +2795,22 @@ export function App({
             <section key={project.id}>
               <h2>{project.name}</h2>
               {onMoveProjectBefore ? (
+                <div className="workspace-native-drag">
+                  <button type="button" draggable aria-label={`Drag project ${project.name}`}
+                    onDragStart={event => {
+                      event.dataTransfer.setData('application/x-uduzgak-project',project.id)
+                      event.dataTransfer.effectAllowed='move'
+                    }}>Drag project {project.name}</button>
+                  <button type="button" aria-label={`Drop before project ${project.name}`}
+                    onDragOver={event=>event.preventDefault()}
+                    onDrop={event=>{
+                      event.preventDefault()
+                      const source=event.dataTransfer.getData('application/x-uduzgak-project')
+                      if(source && source!==project.id)onMoveProjectBefore(source,project.id)
+                    }}>Drop before project {project.name}</button>
+                </div>
+              ) : null}
+              {onMoveProjectBefore ? (
                 <div className="workspace-reorder-controls" aria-label={`Reorder project ${project.name}`}>
                   {activeProjects.filter(p=>p.id!==project.id && p.areaId===project.areaId).map(candidate=>(
                     <button key={candidate.id} type="button" onClick={()=>onMoveProjectBefore(project.id,candidate.id)}>
