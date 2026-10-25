@@ -37,3 +37,12 @@ it('reopens hidden Task filters when navigating to Task filters',async()=>{
  await user.click(screen.getByRole('link',{name:'Task filters'}))
  expect(document.getElementById('workspace-filters')?.hidden).toBe(false)
 })
+
+it('reopens hidden Projects when navigating from the Workspace header',async()=>{
+ const user=userEvent.setup()
+ render(<App/>)
+ await user.click(screen.getByRole('button',{name:'Hide projects and tasks'}))
+ expect(document.getElementById('workspace-projects')?.hidden).toBe(true)
+ await user.click(screen.getByRole('link',{name:'Projects'}))
+ expect(document.getElementById('workspace-projects')?.hidden).toBe(false)
+})
