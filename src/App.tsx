@@ -1,4 +1,4 @@
-import { useRef, useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 
 import { createTaskBoardColumns } from './domain/task-board'
 import { createTaskCalendarSections } from './domain/task-calendar'
@@ -278,6 +278,22 @@ export function App({
   const [activityHistoryOpen, setActivityHistoryOpen] = useState(false)
   const [showTaskFilters, setShowTaskFilters] = useState(true)
   const taskSearchRef = useRef<HTMLInputElement>(null)
+  const focusSearchOnOpen = useRef(false)
+  useEffect(() => {
+    if (showTaskFilters && focusSearchOnOpen.current) {
+      focusSearchOnOpen.current = false
+      taskSearchRef.current?.focus()
+    }
+  }, [showTaskFilters])
+
+  function focusTaskSearch() {
+    if (!showTaskFilters) {
+      focusSearchOnOpen.current = true
+      setShowTaskFilters(true)
+    } else {
+      taskSearchRef.current?.focus()
+    }
+  }
   const [showProjects, setShowProjects] = useState(true)
   const [relationshipTypes, setRelationshipTypes] = useState<
     Record<string, TaskRelationshipType>
@@ -810,7 +826,7 @@ export function App({
       <header className="workspace-app-header" onKeyDown={(event) => {
         if (event.key === '/' && !event.altKey && !event.ctrlKey && !event.metaKey) {
           event.preventDefault()
-          taskSearchRef.current?.focus()
+          focusTaskSearch()
         }
       }}>
         <h1>uduzgak</h1>
@@ -822,7 +838,7 @@ export function App({
           !(event.target instanceof HTMLSelectElement) &&
           !(event.target instanceof HTMLElement && event.target.isContentEditable)) {
           event.preventDefault()
-          taskSearchRef.current?.focus()
+          focusTaskSearch()
         }
       }}>
       <nav aria-label="Workspace navigation" className="workspace-navigation">
