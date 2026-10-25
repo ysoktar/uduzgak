@@ -1139,6 +1139,9 @@ export function App({
         />
         Select all visible tasks
       </label>
+      <span role="status" aria-label="Visible task count">
+        {visibleTaskIds.length} visible {visibleTaskIds.length === 1 ? 'task' : 'tasks'}
+      </span>
       <span>
         {selectedVisibleTaskIds.length}{' '}
         {selectedVisibleTaskIds.length === 1 ? 'task' : 'tasks'} selected
