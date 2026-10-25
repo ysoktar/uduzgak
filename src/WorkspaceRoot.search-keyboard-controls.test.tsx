@@ -27,3 +27,13 @@ it('TDD 499: Control+K works when a project selector has focus', async () => {
   await user.keyboard('{Control>}k{/Control}')
   expect(document.activeElement).toBe(screen.getByLabelText('Search tasks'))
 })
+
+it('TDD 500: Escape blurs an already-empty Task search', async () => {
+  const user = userEvent.setup()
+  render(<App />)
+  const search = screen.getByLabelText('Search tasks')
+  await user.click(search)
+  expect(document.activeElement).toBe(search)
+  await user.keyboard('{Escape}')
+  expect(document.activeElement).not.toBe(search)
+})
