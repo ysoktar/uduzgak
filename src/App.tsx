@@ -810,7 +810,7 @@ export function App({
       </header>
       <main id="workspace-content">
       <nav aria-label="Workspace navigation" className="workspace-navigation">
-        <a href="#workspace-filters">Task filters</a>
+        <a href="#workspace-filters" onClick={() => setShowTaskFilters(true)}>Task filters</a>
         <a href="#workspace-projects">Projects</a>
       </nav>
       <p className="workspace-summary">
