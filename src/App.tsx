@@ -1140,7 +1140,16 @@ export function App({
         Select all visible tasks
       </label>
       {visibleTaskIds.length === 0 && activeTasks.length > 0 ? (
-        <p role="status" aria-label="No matching tasks">No tasks match the current filters.</p>
+        <div role="status" aria-label="No matching tasks">
+          <p>No tasks match the current filters.</p>
+          <button type="button" onClick={() => {
+            setCustomFieldFilterFieldId('')
+            updateFilterSortPreferences({
+              query: '', status: 'all', priority: 'all', dueDate: 'all',
+              customFieldFilter: undefined,
+            })
+          }}>Clear filters and show tasks</button>
+        </div>
       ) : null}
       <span role="status" aria-label="Visible task count">
         {visibleTaskIds.length} visible {visibleTaskIds.length === 1 ? 'task' : 'tasks'}
