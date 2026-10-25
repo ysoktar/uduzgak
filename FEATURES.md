@@ -638,3 +638,11 @@ Workweek selection is session-only and global to the visible Gantt analysis. Nei
 - [x] Save added/removed Gantt non-working dates and restore them after reload (436).
 
 These settings live in view preferences, not Workspace Task data. Legacy view-preference documents without Gantt fields keep Monday–Friday and no exclusions. The logical critical-path implementation remains unchanged.
+
+## Derived Gantt working-date projection — TDD 437–441 (branch verification pending)
+
+- Map nonnegative logical working-day offsets onto UTC calendar dates, skipping configured non-working days and non-working weekdays.
+- Project earliest and latest working-date ranges from the existing dependency/slack analysis using a visible-schedule start anchor.
+- Mark zero-duration milestone events distinctly; omit unscheduled Tasks and avoid changing stored Task schedule dates.
+- Expose the projected ranges only when the Gantt working-day analysis and optional date-display control are enabled.
+- The projection is an explanatory logical schedule, not resource leveling, automatic rescheduling, or a commitment to actual start/finish dates.
