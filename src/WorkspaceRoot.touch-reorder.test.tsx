@@ -29,3 +29,9 @@ it('moves a Task after a sibling through a touch-friendly button',async()=>{
   await user.click(screen.getByRole('button',{name:'Move task Alpha after Gamma'}))
   expect(store.getState().tasks.map(t=>t.id)).toEqual([beta.id,gamma.id,alpha.id])
 })
+
+it('moves a Task before a sibling through a touch-friendly button',async()=>{
+  const {user,store,alpha,beta,gamma}=await fixture()
+  await user.click(screen.getByRole('button',{name:'Move task Gamma before Alpha'}))
+  expect(store.getState().tasks.map(t=>t.id)).toEqual([gamma.id,alpha.id,beta.id])
+})
