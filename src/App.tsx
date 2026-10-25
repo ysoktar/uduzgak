@@ -925,6 +925,7 @@ export function App({
         aria-keyshortcuts="/ Control+K Meta+K"
         id="task-search"
         type="search"
+        enterKeyHint="search"
         ref={taskSearchRef}
         value={searchQuery}
         onKeyDown={(event) => {
