@@ -1,20 +1,36 @@
 # uduzgak
 
 uduzgak is a local-first project and task manager built with React, TypeScript,
-Vite, and browser `localStorage`.
+Vite, and browser `localStorage`. It is a **ROGOYATO** project. The original
+organizational repository is [ROGOYATO/uduzgak](https://github.com/ROGOYATO/uduzgak);
+active development in this workflow uses the [ysoktar/uduzgak](https://github.com/ysoktar/uduzgak)
+working clone. Development changes and pull requests target `ysoktar/uduzgak`
+only, not the ROGOYATO organizational repository.
 
 The project is still in its feature-first phase. Core data rules and workflows
 are being added before a final visual design system or backend is introduced.
 
 ## Current local-first status (October 2026)
 
-Repository: `https://github.com/ysoktar/uduzgak`. Local-first Workspace data and view preferences remain in browser storage. The user-facing frontend has a tested semantic-navigation foundation, including a main-content skip link, filter/project landmarks, new-workspace guidance, keyboard focus outlines and narrow-screen CSS. TDD 442–446 checks: 64 targeted tests across three files, zero-warning lint and production build on GitHub Actions [run 40234617984](https://github.com/ysoktar/uduzgak/actions/runs/40234617984). Final visual composition, responsive QA, drag interactions and an end-to-end accessibility audit remain open; backend identity, sync and collaboration remain separate.
+Local-first Workspace records and view preferences remain in browser storage.
+The working clone's `main` includes verified test-first accessibility,
+navigation, Task discovery, scoped manual reordering, native Project/List drag
+controls, and Workspace panel disclosures through TDD 486. TDD 487–491 adds
+native Board Task status drops (To do, Doing, Done), rejects cross-Project
+Board drops, and provides visible drop targets. On the feature branch,
+[GitHub Actions run 40243584572](https://github.com/ysoktar/uduzgak/actions/runs/40243584572)
+passed 64 focused/regression tests across three files, zero-warning lint,
+and the production build. These are focused checks, not a full-suite,
+real-device, or accessibility sign-off. Backend identity, synchronization,
+and collaboration remain separate future phases.
 
 The older verification checkpoints below are historical milestones rather than the latest repository commit.
 
-## Verified behavior checkpoint
+## Historical verified behavior checkpoint (legacy Yönlek checkout)
 
-The confirmed starting checkpoint for TDD 261-265 is TDD 260.
+The confirmed starting checkpoint for TDD 261–265 was TDD 260. The old
+`yonlek` working path and remote recorded below are historical; they are not
+the current development target.
 
 - branch: `main`
 - behavior commit: `f24f767` (`TDD 256-260: add Task time tracking`)
@@ -608,8 +624,10 @@ composition.
 
 ## Naming status
 
-`uduzgak` is the active working product name and npm package slug. The GitHub
-repository and local working folder retain their existing `yonlek` names.
+`uduzgak` is the active product name, npm package slug, and repository name.
+**ROGOYATO** remains the project organization and original repository owner.
+The working development clone is `ysoktar/uduzgak`. Earlier `yonlek` paths
+in historical checkpoints do not designate the current development target.
 
 That implementation decision is not trademark clearance.
 
@@ -762,3 +780,13 @@ Gantt work calendars (TDD 427–431): Working-day critical-path analysis support
 
 
 Gantt work-calendar preferences (TDD 432–436): The Monday–Friday / Sunday–Thursday selection and excluded-date list persist in the existing local view-preference document. Reloading restores both without modifying Task schedules, Workspace data, or calendar-day critical-path calculations. Invalid or noncanonical saved Gantt calendar values fall back to default view preferences.
+
+### TDD 487–491 — native Board status drag targets
+
+Board Tasks can be dragged into the `To do`, `Doing`, and `Done` column
+headings to update status without duplicating the Task. Cross-Project Board
+drops are rejected with an accessible status message. Responsive Board drop
+targets are highlighted; status dropdowns remain available without drag.
+The feature-branch GitHub Actions check passed 64 focused/regression tests,
+zero-warning lint, and production build (run 40243584572). Full-suite and
+real-device interaction audits have not been established by this run.

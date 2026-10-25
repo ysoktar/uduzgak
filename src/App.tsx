@@ -421,6 +421,7 @@ export function App({
   }
   const [error, setError] = useState<string | null>(null)
   const [taskReorderResult, setTaskReorderResult] = useState('')
+  const [boardDragResult, setBoardDragResult] = useState('')
 
   function submitCustomField(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -876,6 +877,7 @@ export function App({
 
       {error ? <p role="alert">{error}</p> : null}
       <p role="status" aria-label="Task reorder result" aria-live="polite">{taskReorderResult}</p>
+      <p role="status" aria-label="Board drag result" aria-live="polite">{boardDragResult}</p>
 
       <label htmlFor="task-search">Search tasks</label>
       <input
@@ -3506,6 +3508,21 @@ export function App({
                         <li
                           key={`board-column-${entry.key}`}
                           className={`task-board-heading task-board-heading-${entry.key}`}
+                          aria-label={entry.key === 'todo' ? 'Drop task into To do' : entry.key === 'doing' ? 'Drop task into Doing' : 'Drop task into Done'}
+                          onDragOver={event => event.preventDefault()}
+                          onDrop={event => {
+                            event.preventDefault()
+                            const id=event.dataTransfer.getData('application/x-uduzgak-board-task')
+                            const dragged=activeTasks.find(t=>t.id===id && t.projectId===project.id)
+                            if (id && !dragged && activeTasks.some(t=>t.id===id)) {
+                              setBoardDragResult('Cannot move tasks between project boards')
+                              return
+                            }
+                            if (dragged && dragged.status !== entry.key) {
+                              onChangeTaskStatus?.(dragged.id,entry.key)
+                              setBoardDragResult(`Moved ${dragged.title} into ${entry.key}`)
+                            }
+                          }}
                         >
                           <h3>{entry.label}</h3>
                         </li>
@@ -3591,6 +3608,13 @@ export function App({
                     return (
                       <li
                         key={task.id}
+                        draggable={taskViewMode === 'board'}
+                        onDragStart={event => {
+                          if(taskViewMode === 'board') {
+                            event.dataTransfer.setData('application/x-uduzgak-board-task',task.id)
+                            event.dataTransfer.effectAllowed='move'
+                          }
+                        }}
                         className={
                           taskViewMode === 'board'
                             ? `task-board-card task-board-card-${task.status}`

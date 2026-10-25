@@ -16,8 +16,8 @@ Confirmed starting checkpoint for TDD 261-265:
 
 - [x] Product-facing uduzgak name
 - [x] npm package name `uduzgak`
-- [ ] GitHub repository rename from `yonlek` to `uduzgak` (separate migration)
-- [ ] Local folder rename from `yonlek` to `uduzgak` (separate migration)
+- [x] Active working repository `ysoktar/uduzgak` and original organization repository `ROGOYATO/uduzgak`
+- [x] Development checkout uses the `uduzgak` project name; older Yönlek paths are historical
 - [x] Existing `workspace-app.*` storage keys preserved for data compatibility
 - [ ] Formal uduzgak trademark clearance
 
@@ -419,7 +419,8 @@ These are foundations, not sign-off for the final application shell, cross-devic
 - [ ] Typography and spacing system
 - [ ] Original icon system or properly licensed icon library
 - [ ] Empty-state design
-- [ ] Drag-and-drop over the existing manual-order commands
+- [x] Scoped native Task, Project, and List drag controls over existing manual-order commands
+- [ ] Touch-gesture drag interactions on real mobile devices (button alternatives exist)
 - [ ] Motion and transitions
 - [ ] Final keyboard-navigation pass
 - [ ] Final accessibility review
@@ -444,8 +445,9 @@ Implemented naming state:
 
 - product UI: uduzgak
 - npm package: `uduzgak`
-- GitHub repository: `yonlek` (existing URL; rename pending)
-- local repository folder: `yonlek` (existing checkout; rename pending)
+- original organization repository: `https://github.com/ROGOYATO/uduzgak`
+- development working clone: `https://github.com/ysoktar/uduzgak`
+- earlier `yonlek` paths are historical; the active development target is `ysoktar/uduzgak`
 - browser storage keys: intentionally still `workspace-app.*`
 
 Formal clearance remains open:
@@ -735,3 +737,15 @@ Navigation is anchor-based and local-first; existing panel creation/editing and 
 - [x] Responsive, touch-sized disclosure controls (486).
 
 Disclosure state is session-only; Workspace and view-preference documents are not modified. Regions are open by default to preserve established workflows and keyboard navigation.
+
+## Board status drag — TDD 487–491
+
+- [x] Drag an in-Project Board Task into Doing (487).
+- [x] Drag an in-Project Board Task into Done (488).
+- [x] Drag a Board Task back to To do (489).
+- [x] Reject and announce cross-Project Board drops (490).
+- [x] Responsive Board heading drop-target styling (491).
+
+The status dropdown remains the non-drag alternative. Focused GitHub Actions
+run 40243584572 passed 64 tests, zero-warning lint and build. This does not
+establish full-suite, real-device drag, or complete accessibility coverage.
