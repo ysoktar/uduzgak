@@ -911,7 +911,9 @@ export function App({
       <p role="status" aria-label="Board drag result" aria-live="polite">{boardDragResult}</p>
 
       <label htmlFor="task-search">Search tasks</label>
+      <small className="task-search-shortcut-hint">Press / to search tasks</small>
       <input
+        aria-keyshortcuts="/"
         id="task-search"
         ref={taskSearchRef}
         value={searchQuery}
