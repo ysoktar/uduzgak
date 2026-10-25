@@ -3419,3 +3419,7 @@ Fork: `ysoktar/uduzgak`. Branch: `tdd/442-446-local-ui-accessibility`. Parent: `
 - 446 — narrow-screen overflow and reduced-motion CSS
 
 Test-first changes were committed separately on the branch. One newly added CSS contract test had adjacent `})  it(` syntax; the user explicitly approved inserting only the missing line break, without changing either assertion. Final branch implementation CI for commit `81990bcbb009be39a6f27f2b4c6aa7ed2ce616a7`: [GitHub Actions run 40234617984](https://github.com/ysoktar/uduzgak/actions/runs/40234617984), 64/64 targeted Vitest tests in three files, lint 0 warnings/0 errors, TypeScript/Vite build passed. This is not a full-suite or end-to-end accessibility sign-off.
+
+## TDD 447–451 — local task discovery
+
+Fork branch `tdd/447-451-local-task-discovery` based on `2740313423c9153d3b84bce0ff6100f7c3f1914e`. Five test-first behaviors: visible count; no-match status; clear filters; distinguish empty Workspace; Escape search recovery. A syntax-only newline separator in the newly added test was approved explicitly by the user and changed no assertions. The final focused CI for commit `493181fb5fdafa96c876d99a78c9cfca222d45ec` passed 8/8 tests across 2 files, zero-warning lint and TypeScript/Vite build. GitHub Actions: https://github.com/ysoktar/uduzgak/actions/runs/40237637414. No full Vitest or visual browser QA was conducted.

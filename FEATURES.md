@@ -656,3 +656,12 @@ These settings live in view preferences, not Workspace Task data. Legacy view-pr
 - Mark zero-duration milestone events distinctly; omit unscheduled Tasks and avoid changing stored Task schedule dates.
 - Expose the projected ranges only when the Gantt working-day analysis and optional date-display control are enabled.
 - The projection is an explanatory logical schedule, not resource leveling, automatic rescheduling, or a commitment to actual start/finish dates.
+
+## Local task discovery — TDD 447–451
+
+- [x] Announce the count of currently visible Tasks (447).
+- [x] Distinguish empty filtered results from an empty Workspace (448, 450).
+- [x] Recover from an empty filtered list by clearing Task filters (449).
+- [x] Clear focused Task search with Escape without mutating Workspace Task data (451).
+
+Verified on fork branch using GitHub Actions run 40237637414: 8 focused tests, zero-warning lint, production build. Final full-suite regression and broader UI evaluation remain separate.

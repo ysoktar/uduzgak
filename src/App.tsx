@@ -858,6 +858,11 @@ export function App({
       <input
         id="task-search"
         value={searchQuery}
+        onKeyDown={(event) => {
+          if (event.key === 'Escape' && searchQuery !== '') {
+            updateFilterSortPreferences({ query: '' })
+          }
+        }}
         onChange={(event) =>
           updateFilterSortPreferences({ query: event.target.value })
         }
@@ -1139,6 +1144,24 @@ export function App({
         />
         Select all visible tasks
       </label>
+      {activeProjects.length > 0 && activeTasks.length === 0 ? (
+        <p role="status" aria-label="No tasks in workspace">No tasks yet. Add a task to a project below.</p>
+      ) : null}
+      {visibleTaskIds.length === 0 && activeTasks.length > 0 ? (
+        <div role="status" aria-label="No matching tasks">
+          <p>No tasks match the current filters.</p>
+          <button type="button" onClick={() => {
+            setCustomFieldFilterFieldId('')
+            updateFilterSortPreferences({
+              query: '', status: 'all', priority: 'all', dueDate: 'all',
+              customFieldFilter: undefined,
+            })
+          }}>Clear filters and show tasks</button>
+        </div>
+      ) : null}
+      <span role="status" aria-label="Visible task count">
+        {visibleTaskIds.length} visible {visibleTaskIds.length === 1 ? 'task' : 'tasks'}
+      </span>
       <span>
         {selectedVisibleTaskIds.length}{' '}
         {selectedVisibleTaskIds.length === 1 ? 'task' : 'tasks'} selected
