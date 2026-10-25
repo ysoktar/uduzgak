@@ -431,6 +431,8 @@ export interface TaskGanttWorkingDateRow {
   taskId: string
   earliestStartDate: string
   earliestFinishDate: string
+  latestStartDate: string
+  latestFinishDate: string
 }
 
 /** Derived logical working-day dates, anchored independently from stored schedules. */
@@ -449,6 +451,8 @@ export function createTaskGanttWorkingDateProjection(
       taskId: row.taskId,
       earliestStartDate: projectDate(row.earliestStart),
       earliestFinishDate: projectDate(Math.max(row.earliestStart, row.earliestFinish - 1)),
+      latestStartDate: projectDate(row.latestStart),
+      latestFinishDate: projectDate(Math.max(row.latestStart, row.latestFinish - 1)),
     })),
   }
 }
