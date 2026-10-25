@@ -35,3 +35,12 @@ it('TDD 505: an already-consumed slash event does not steal focus', () => {
   document.body.dispatchEvent(event)
   expect(document.activeElement).not.toBe(screen.getByLabelText('Search tasks'))
 })
+
+it('TDD 506: search shortcuts do not take focus from unrelated page controls', async () => {
+  const user = userEvent.setup()
+  render(<><button type="button">Outside app</button><App /></>)
+  const outside = screen.getByRole('button', { name: 'Outside app' })
+  await user.click(outside)
+  await user.keyboard('/')
+  expect(document.activeElement).toBe(outside)
+})
