@@ -3506,14 +3506,14 @@ export function App({
                         <li
                           key={`board-column-${entry.key}`}
                           className={`task-board-heading task-board-heading-${entry.key}`}
-                          aria-label={entry.key === 'doing' ? 'Drop task into Doing' : undefined}
-                          onDragOver={event => { if (entry.key === 'doing') event.preventDefault() }}
+                          aria-label={entry.key === 'doing' ? 'Drop task into Doing' : entry.key === 'done' ? 'Drop task into Done' : undefined}
+                          onDragOver={event => { if (entry.key === 'doing' || entry.key === 'done') event.preventDefault() }}
                           onDrop={event => {
-                            if (entry.key !== 'doing') return
+                            if (entry.key !== 'doing' && entry.key !== 'done') return
                             event.preventDefault()
                             const id=event.dataTransfer.getData('application/x-uduzgak-board-task')
                             const dragged=activeTasks.find(t=>t.id===id && t.projectId===project.id)
-                            if (dragged && dragged.status !== 'doing') onChangeTaskStatus?.(dragged.id,'doing')
+                            if (dragged && dragged.status !== entry.key) onChangeTaskStatus?.(dragged.id,entry.key)
                           }}
                         >
                           <h3>{entry.label}</h3>
