@@ -858,6 +858,11 @@ export function App({
       <input
         id="task-search"
         value={searchQuery}
+        onKeyDown={(event) => {
+          if (event.key === 'Escape' && searchQuery !== '') {
+            updateFilterSortPreferences({ query: '' })
+          }
+        }}
         onChange={(event) =>
           updateFilterSortPreferences({ query: event.target.value })
         }
