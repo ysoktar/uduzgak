@@ -324,3 +324,28 @@ it('projects latest working start and finish dates using dependency slack', () =
     latestFinishDate: '2026-10-23',
   })
 })
+
+it('places zero-day milestones on their working handoff date without scheduling unscheduled Tasks', () => {
+  const project = ganttModule.createTaskGanttWorkingDateProjection
+  const tasks = [
+    task('a', '2026-10-19', '2026-10-20'),
+    task('milestone', '2026-10-21', '2026-10-21', true),
+    task('b', '2026-10-21', '2026-10-21'),
+    task('unscheduled'),
+  ]
+  const before = JSON.stringify(tasks)
+  const result = project(tasks, [
+    blocks('e1', 'a', 'milestone'),
+    blocks('e2', 'milestone', 'b'),
+  ], '2026-10-19')
+  expect(result.rows.map((row) => row.taskId)).toEqual(['a', 'milestone', 'b'])
+  expect(result.rows.find((row) => row.taskId === 'milestone')).toMatchObject({
+    earliestStartDate: '2026-10-21',
+    earliestFinishDate: '2026-10-21',
+  })
+  expect(result.rows.find((row) => row.taskId === 'b')).toMatchObject({
+    earliestStartDate: '2026-10-21',
+    earliestFinishDate: '2026-10-21',
+  })
+  expect(JSON.stringify(tasks)).toBe(before)
+})
