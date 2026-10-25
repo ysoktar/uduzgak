@@ -299,11 +299,11 @@ export function App({
       const target = event.target
       const slash = event.key === '/' && !event.ctrlKey && !event.metaKey
       const controlSearch = event.key.toLowerCase() === 'k' && (event.ctrlKey !== event.metaKey)
-      if ((!slash && !controlSearch) || event.altKey ||
-        target instanceof HTMLInputElement ||
+      const editable = target instanceof HTMLInputElement ||
         target instanceof HTMLTextAreaElement ||
         target instanceof HTMLSelectElement ||
-        (target instanceof HTMLElement && target.isContentEditable)) return
+        (target instanceof HTMLElement && target.isContentEditable)
+      if ((!slash && !controlSearch) || event.altKey || (slash && editable)) return
       event.preventDefault()
       focusTaskSearch()
     }
