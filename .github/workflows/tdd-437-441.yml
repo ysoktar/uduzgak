@@ -16,6 +16,6 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci --include=dev --no-fund
-      - run: npm exec -- vitest run src/domain/task-gantt-critical-path.test.ts src/WorkspaceRoot.gantt-view.test.tsx --maxWorkers=1 --testTimeout=30000
       - run: npm run lint
       - run: npm run build
+      - run: npm exec -- vitest run src/domain/task-gantt-critical-path.test.ts src/WorkspaceRoot.gantt-view.test.tsx --maxWorkers=1 --testTimeout=30000
