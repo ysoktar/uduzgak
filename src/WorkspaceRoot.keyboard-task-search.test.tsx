@@ -40,3 +40,10 @@ it('TDD 495: slash reopens collapsed filters before focusing search', async () =
   expect(document.getElementById('workspace-filters')?.hidden).toBe(false)
   expect(document.activeElement).toBe(screen.getByLabelText('Search tasks'))
 })
+
+it('TDD 496: the Task search advertises its slash keyboard shortcut', () => {
+  render(<App />)
+  const search = screen.getByLabelText('Search tasks')
+  expect(search.getAttribute('aria-keyshortcuts')).toBe('/')
+  expect(screen.getByText('Press / to search tasks')).toBeTruthy()
+})
