@@ -1,0 +1,20 @@
+name: TDD 457-461 accessible task ordering
+on:
+  push:
+    branches: [tdd/457-461-accessible-task-reordering]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --include=dev --no-fund
+      - run: npm exec -- vitest run src/WorkspaceRoot.touch-reorder.test.tsx src/WorkspaceRoot.drag-order.test.tsx src/domain/manual-order-drop.test.ts --maxWorkers=1 --testTimeout=30000
+      - run: npm run lint
+      - run: npm run build
