@@ -410,6 +410,7 @@ export function App({
     })
   }
   const [error, setError] = useState<string | null>(null)
+  const [taskReorderResult, setTaskReorderResult] = useState('')
 
   function submitCustomField(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -857,6 +858,7 @@ export function App({
       </select>
 
       {error ? <p role="alert">{error}</p> : null}
+      <p role="status" aria-label="Task reorder result" aria-live="polite">{taskReorderResult}</p>
 
       <label htmlFor="task-search">Search tasks</label>
       <input
@@ -3932,7 +3934,10 @@ export function App({
                               candidate.projectId === task.projectId && candidate.listId === task.listId &&
                               candidate.parentTaskId === task.parentTaskId).map((candidate) => (
                               <button type="button" key={candidate.id}
-                                onClick={() => onMoveTaskBefore(task.id, candidate.id)}>
+                                onClick={() => {
+                                  onMoveTaskBefore(task.id, candidate.id)
+                                  setTaskReorderResult(`Moved ${task.title} before ${candidate.title}`)
+                                }}>
                                 Move task {task.title} before {candidate.title}
                               </button>
                             ))}
@@ -3944,7 +3949,10 @@ export function App({
                               candidate.projectId === task.projectId && candidate.listId === task.listId &&
                               candidate.parentTaskId === task.parentTaskId).map((candidate) => (
                               <button type="button" key={candidate.id}
-                                onClick={() => onMoveTaskAfter(task.id, candidate.id)}>
+                                onClick={() => {
+                                  onMoveTaskAfter(task.id, candidate.id)
+                                  setTaskReorderResult(`Moved ${task.title} after ${candidate.title}`)
+                                }}>
                                 Move task {task.title} after {candidate.title}
                               </button>
                             ))}
