@@ -1835,7 +1835,7 @@ export function App({
       </button>
 
       </div>
-      <div id="workspace-projects" className="workspace-projects">
+      <div id="workspace-projects" role="region" aria-label="Projects and tasks" className="workspace-projects">
       {onCreateArea ? (
         <section>
           <h2>Areas</h2>
