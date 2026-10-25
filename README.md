@@ -790,3 +790,14 @@ targets are highlighted; status dropdowns remain available without drag.
 The feature-branch GitHub Actions check passed 64 focused/regression tests,
 zero-warning lint, and production build (run 40243584572). Full-suite and
 real-device interaction audits have not been established by this run.
+
+### TDD 492–496 — keyboard Task search
+
+A `/` shortcut from the Workspace surface focuses Task search. It preserves
+ordinary slash input in editable controls and remains usable from the app header.
+If Task filters are collapsed, the shortcut opens them before focusing search.
+An accessible shortcut annotation and visible hint explain the interaction.
+Focused GitHub Actions run 40245762300 passed the keyboard discovery and
+disclosure tests, zero-warning lint and production build. TDD 493 is a
+regression guard for existing editable-input behavior, not a newly introduced
+behavior or an independently observed failing RED test.

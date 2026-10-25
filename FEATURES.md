@@ -749,3 +749,15 @@ Disclosure state is session-only; Workspace and view-preference documents are no
 The status dropdown remains the non-drag alternative. Focused GitHub Actions
 run 40243584572 passed 64 tests, zero-warning lint and build. This does not
 establish full-suite, real-device drag, or complete accessibility coverage.
+
+## Keyboard Task search — TDD 492–496
+
+- [x] `/` focuses Task search when typing outside editable fields (492).
+- [x] Slash remains ordinary input in editable controls (493, regression).
+- [x] Shortcut works from the app header (494).
+- [x] Shortcut reopens collapsed Task filters before focusing search (495).
+- [x] `aria-keyshortcuts` and a visible hint document the shortcut (496).
+
+Focused GitHub Actions run 40245762300 passed targeted tests, zero-warning
+lint, and production build. TDD 493 verifies pre-existing input behavior and
+is not counted as a newly demonstrated RED-to-GREEN behavior change.

@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 
 import { createTaskBoardColumns } from './domain/task-board'
 import { createTaskCalendarSections } from './domain/task-calendar'
@@ -277,6 +277,37 @@ export function App({
 }: AppProps) {
   const [activityHistoryOpen, setActivityHistoryOpen] = useState(false)
   const [showTaskFilters, setShowTaskFilters] = useState(true)
+  const taskSearchRef = useRef<HTMLInputElement>(null)
+  const focusSearchOnOpen = useRef(false)
+  useEffect(() => {
+    if (showTaskFilters && focusSearchOnOpen.current) {
+      focusSearchOnOpen.current = false
+      taskSearchRef.current?.focus()
+    }
+  }, [showTaskFilters])
+
+  function focusTaskSearch() {
+    if (!showTaskFilters) {
+      focusSearchOnOpen.current = true
+      setShowTaskFilters(true)
+    } else {
+      taskSearchRef.current?.focus()
+    }
+  }
+  useEffect(() => {
+    function handleTaskSearchShortcut(event: KeyboardEvent) {
+      const target = event.target
+      if (event.key !== '/' || event.altKey || event.ctrlKey || event.metaKey ||
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        target instanceof HTMLSelectElement ||
+        (target instanceof HTMLElement && target.isContentEditable)) return
+      event.preventDefault()
+      focusTaskSearch()
+    }
+    document.addEventListener('keydown', handleTaskSearchShortcut)
+    return () => document.removeEventListener('keydown', handleTaskSearchShortcut)
+  }, [showTaskFilters])
   const [showProjects, setShowProjects] = useState(true)
   const [relationshipTypes, setRelationshipTypes] = useState<
     Record<string, TaskRelationshipType>
@@ -806,8 +837,7 @@ export function App({
   return (
     <>
       <a className="skip-link" href="#workspace-content">Skip to workspace content</a>
-      <header className="workspace-app-header">
-        <h1>uduzgak</h1>
+      <header className="workspace-app-header">        <h1>uduzgak</h1>
       </header>
       <main id="workspace-content">
       <nav aria-label="Workspace navigation" className="workspace-navigation">
@@ -880,8 +910,11 @@ export function App({
       <p role="status" aria-label="Board drag result" aria-live="polite">{boardDragResult}</p>
 
       <label htmlFor="task-search">Search tasks</label>
+      <small className="task-search-shortcut-hint">Press / to search tasks</small>
       <input
+        aria-keyshortcuts="/"
         id="task-search"
+        ref={taskSearchRef}
         value={searchQuery}
         onKeyDown={(event) => {
           if (event.key === 'Escape' && searchQuery !== '') {
