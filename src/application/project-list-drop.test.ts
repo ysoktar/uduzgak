@@ -21,3 +21,13 @@ it('moves one Project before a sibling in its Area without changing Task data',(
  move!(a.id,c.id)
  expect(store.getState().projects.map(x=>x.id)).toEqual([b.id,a.id,c.id])
 })
+
+it('moves a Project after a peer and rejects self drops',()=>{
+ const {store,commands}=fixture()
+ const a=commands.addProject('A'), b=commands.addProject('B'), c=commands.addProject('C')
+ const move=(commands as typeof commands & {moveProjectAfter?:(source:string,target:string)=>void}).moveProjectAfter
+ expect(typeof move).toBe('function')
+ move!(a.id,b.id)
+ expect(store.getState().projects.map(p=>p.id)).toEqual([b.id,a.id,c.id])
+ expect(()=>move!(a.id,a.id)).toThrow('Cannot reorder Projects outside the same Area')
+})
