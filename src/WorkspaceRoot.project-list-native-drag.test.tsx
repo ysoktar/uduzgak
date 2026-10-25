@@ -50,3 +50,15 @@ it('drags a Project after a sibling',()=>{
  fireEvent.drop(screen.getByLabelText('Drop after project Gamma'),{dataTransfer})
  expect(store.getState().projects.map(p=>p.id)).toEqual([b.id,c.id,a.id])
 })
+
+it('drags a List after a sibling',()=>{
+ const {store,commands}=fixture()
+ const project=commands.addProject('P')
+ const a=commands.addTaskList(project.id,'Alpha'),b=commands.addTaskList(project.id,'Beta'),c=commands.addTaskList(project.id,'Gamma')
+ render(<WorkspaceRoot store={store} commands={commands}/>)
+ const dataTransfer=transfer(a.id)
+ fireEvent.dragStart(screen.getByLabelText('Drag list Alpha'),{dataTransfer})
+ fireEvent.dragOver(screen.getByLabelText('Drop after list Gamma'),{dataTransfer})
+ fireEvent.drop(screen.getByLabelText('Drop after list Gamma'),{dataTransfer})
+ expect(store.getState().lists?.map(l=>l.id)).toEqual([b.id,c.id,a.id])
+})
