@@ -277,6 +277,7 @@ export function App({
 }: AppProps) {
   const [activityHistoryOpen, setActivityHistoryOpen] = useState(false)
   const [showTaskFilters, setShowTaskFilters] = useState(true)
+  const [showProjects, setShowProjects] = useState(true)
   const [relationshipTypes, setRelationshipTypes] = useState<
     Record<string, TaskRelationshipType>
   >({})
@@ -1840,7 +1841,11 @@ export function App({
       </button>
 
       </div>
-      <div id="workspace-projects" role="region" aria-label="Projects and tasks" className="workspace-projects">
+      <button type="button" className="workspace-disclosure-button" aria-controls="workspace-projects"
+        aria-expanded={showProjects} onClick={() => setShowProjects(value => !value)}>
+        {showProjects ? "Hide projects and tasks" : "Show projects and tasks"}
+      </button>
+      <div id="workspace-projects" role="region" aria-label="Projects and tasks" className="workspace-projects" hidden={!showProjects}>
       {onCreateArea ? (
         <section>
           <h2>Areas</h2>
