@@ -791,6 +791,10 @@ export function App({
     <main id="workspace-content">
       <a className="skip-link" href="#workspace-content">Skip to workspace content</a>
       <h1>uduzgak</h1>
+      <nav aria-label="Workspace navigation" className="workspace-navigation">
+        <a href="#workspace-filters">Task filters</a>
+        <a href="#workspace-projects">Projects</a>
+      </nav>
       <p className="workspace-summary">
         {activeProjects.length} {projectLabel} · {workspaceSummary.total}{' '}
         {taskLabel} · {workspaceSummary.done} done
@@ -827,6 +831,7 @@ export function App({
         <p>Attachment metadata only. File content is not stored.</p>
       ) : null}
 
+      <div id="workspace-filters" className="workspace-filters">
       <label htmlFor="project-view">View project</label>
       <select
         id="project-view"
@@ -1789,6 +1794,8 @@ export function App({
         Clear task filters
       </button>
 
+      </div>
+      <div id="workspace-projects" className="workspace-projects">
       {onCreateArea ? (
         <section>
           <h2>Areas</h2>
@@ -4837,6 +4844,7 @@ export function App({
           </ul>
         </section>
       ) : null}
+      </div>
     </main>
   )
 }
