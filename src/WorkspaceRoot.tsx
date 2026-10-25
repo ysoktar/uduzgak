@@ -76,6 +76,7 @@ export function WorkspaceRoot({
       {commandError ? <p role="alert">{commandError}</p> : null}
       <nav aria-label="Workspace sections" className="workspace-section-nav">
         <a href="#workspace-dashboard">Dashboard</a>
+        <a href="#workspace-knowledge">Knowledge</a>
       </nav>
       <DashboardPanel dashboard={dashboard} />
       <KnowledgePanel
