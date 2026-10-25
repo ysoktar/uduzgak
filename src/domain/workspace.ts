@@ -189,6 +189,7 @@ export type WorkspaceBaseAction =
   | { type: 'list/deleted'; listId: string }
   | { type: 'list/nameChanged'; listId: string; name: string }
   | { type: 'list/moved'; listId: string; direction: MoveDirection }
+  | { type: 'list/reordered'; listId: string; targetListId: string; placement: 'before' | 'after' }
   | { type: 'relationship/added'; relationship: TaskRelationship }
   | { type: 'relationship/deleted'; relationshipId: string }
   | { type: 'projectTemplate/added'; template: ProjectTemplate }
@@ -205,6 +206,7 @@ export type WorkspaceBaseAction =
   | { type: 'project/descriptionChanged'; projectId: string; description: string | null }
   | { type: 'project/areaChanged'; projectId: string; areaId: string | null }
   | { type: 'project/moved'; projectId: string; direction: MoveDirection }
+  | { type: 'project/reordered'; projectId: string; targetProjectId: string; placement: 'before' | 'after' }
   | { type: 'task/added'; task: Task }
   | { type: 'task/archived'; taskId: string; archivedAt: string }
   | { type: 'task/archivedBulk'; taskIds: string[]; archivedAt: string }
@@ -1117,6 +1119,15 @@ export function workspaceReducer(
         ),
       }
 
+    case 'list/reordered': {
+      if (action.placement !== 'before' && action.placement !== 'after') throw new Error('Invalid List drop placement')
+      const source=(state.lists??[]).find(l=>l.id===action.listId)
+      const target=(state.lists??[]).find(l=>l.id===action.targetListId)
+      if (!source || !target || source.id===target.id || source.projectId!==target.projectId) throw new Error('Cannot reorder Lists outside the same Project')
+      const fn=action.placement==='before' ? moveItemBeforePeer : moveItemAfterPeer
+      return {...state,lists:fn(state.lists??[],source.id,target.id,(a,b)=>a.projectId===b.projectId)}
+    }
+
     case 'list/deleted':
       return {
         ...state,
@@ -1346,6 +1357,15 @@ export function workspaceReducer(
             candidate.areaId === target.areaId,
         ),
       }
+
+    case 'project/reordered': {
+      if (action.placement !== 'before' && action.placement !== 'after') throw new Error('Invalid Project drop placement')
+      const source = state.projects.find(p => p.id === action.projectId)
+      const target = state.projects.find(p => p.id === action.targetProjectId)
+      if (!source || !target || source.id === target.id || source.areaId !== target.areaId) throw new Error('Cannot reorder Projects outside the same Area')
+      const fn = action.placement === 'before' ? moveItemBeforePeer : moveItemAfterPeer
+      return {...state, projects: fn(state.projects, source.id, target.id, (a,b)=>a.areaId === b.areaId)}
+    }
 
     case 'project/deleted': {
       const deletedTaskIds = new Set(

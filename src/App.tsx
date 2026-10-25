@@ -104,6 +104,7 @@ export interface AppProps {
   onRenameTaskList?: (listId: string, name: string) => void
   onDeleteTaskList?: (listId: string) => void
   onMoveTaskList?: (listId: string, direction: MoveDirection) => void
+  onMoveTaskListBefore?: (listId: string, targetListId: string) => void
   onChangeTaskList?: (taskId: string, listId: string | null) => void
   onChangeTasksList?: (taskIds: string[], listId: string | null) => void
   onAddChecklistItem?: (taskId: string, text: string) => void
@@ -112,6 +113,7 @@ export interface AppProps {
   onDeleteChecklistItem?: (taskId: string, itemId: string) => void
   onMoveChecklistItem?: (taskId: string, itemId: string, direction: MoveDirection) => void
   onMoveProject?: (projectId: string, direction: MoveDirection) => void
+  onMoveProjectBefore?: (projectId: string, targetProjectId: string) => void
   onCreateProject?: (name: string) => void
   onSaveProjectTemplate?: (projectId: string, name: string) => void
   onCreateProjectFromTemplate?: (templateId: string) => void
@@ -209,6 +211,7 @@ export function App({
   onRenameTaskList,
   onDeleteTaskList,
   onMoveTaskList,
+  onMoveTaskListBefore,
   onChangeTaskList,
   onChangeTasksList,
   onAddChecklistItem,
@@ -217,6 +220,7 @@ export function App({
   onDeleteChecklistItem,
   onMoveChecklistItem,
   onMoveProject,
+  onMoveProjectBefore,
   onCreateProject,
   onSaveProjectTemplate,
   onCreateProjectFromTemplate,
@@ -2790,6 +2794,15 @@ export function App({
           return (
             <section key={project.id}>
               <h2>{project.name}</h2>
+              {onMoveProjectBefore ? (
+                <div className="workspace-reorder-controls" aria-label={`Reorder project ${project.name}`}>
+                  {activeProjects.filter(p=>p.id!==project.id && p.areaId===project.areaId).map(candidate=>(
+                    <button key={candidate.id} type="button" onClick={()=>onMoveProjectBefore(project.id,candidate.id)}>
+                      Move project {project.name} before {candidate.name}
+                    </button>
+                  ))}
+                </div>
+              ) : null}
               {onMoveProject ? (
                 <>
                   <button
@@ -2973,6 +2986,15 @@ export function App({
                               }
                               )
                             </span>
+                            {onMoveTaskListBefore ? (
+                              <div className="workspace-reorder-controls" aria-label={`Reorder list ${list.name}`}>
+                                {projectLists.filter(candidate=>candidate.id!==list.id).map(candidate=>(
+                                  <button key={candidate.id} type="button" onClick={()=>onMoveTaskListBefore(list.id,candidate.id)}>
+                                    Move list {list.name} before {candidate.name}
+                                  </button>
+                                ))}
+                              </div>
+                            ) : null}
                             {onMoveTaskList ? (
                               <>
                                 <button

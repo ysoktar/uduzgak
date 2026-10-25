@@ -685,3 +685,13 @@ Verified on the fork's GitHub Actions run 40238738296: 6 focused tests in four f
 - [x] Responsive wrapping and minimum 44px tap targets for reorder controls (461).
 
 This is not a completed touch-gesture drag system or a full accessibility review. Buttons work without native drag gestures; Task movements are constrained by the existing Workspace validation.
+
+## Project and List direct ordering — TDD 462–466
+
+- [x] Move a Project directly before another Project in its Area (462).
+- [x] Move a Project after a peer; reject invalid placement and self drops without persistence (463).
+- [x] Move Lists before/after peers within the same Project using one Workspace command (464).
+- [x] Accessible in-app Project move-before controls preserve existing up/down buttons (465).
+- [x] Accessible in-app List move-before controls preserve existing up/down buttons (466).
+
+This adds target-based buttons and domain commands, not pointer drag handles or cross-container movement for Projects and Lists.

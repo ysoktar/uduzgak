@@ -3433,3 +3433,7 @@ Final feature commit `be5adab8fee20dbe3e62bbde5620ec34dca24fe3` verified by [Git
 ## TDD 457–461 — accessible Task reordering
 
 Base: `ebffb340f5a3377119c32587adcedfbe6d0c145c`. Fork branch: `tdd/457-461-accessible-task-reordering`. Five RED-first behaviors: move-after buttons, move-before buttons, polite status announcement, native drop-after, responsive tap-target styling. The CSS test originally used `new URL('./styles.css', import.meta.url)` from jsdom and failed with `ERR_INVALID_URL_SCHEME`. User explicitly approved changing that single test file-read expression to `readFileSync('src/styles.css','utf8')`, leaving assertions intact. Final GitHub Actions run 40241379603 at commit `a3870730a1b3c384f57b81fbf36f6320d424dcde`: 9/9 targeted tests in 3 files, zero-warning lint, build passed. No full-suite or actual-device accessibility certification.
+
+## TDD 462–466 — Project/List direct order
+
+Base: `645bd9a77a5e615fa81d36a9678a8fb5623d5db4`; fork `ysoktar/uduzgak`, branch `tdd/462-466-project-list-drop-order`. Test-first cycles cover Project move-before, Project after and invalid placement, List move-before, Project UI controls, and List UI controls. Reordering uses peer-slot helpers already implemented in TDD 452–456, preserving group membership and unrelated scope. GitHub Actions run 40241783313 confirmed six targeted tests in two files, zero-warning lint and production build for final feature commit. Full test suite and final cross-device accessibility audit remain outstanding.
