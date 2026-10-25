@@ -153,6 +153,8 @@ export interface WorkspaceCommands {
   deleteChecklistItem(taskId: string, itemId: string): void
   moveChecklistItem(taskId: string, itemId: string, direction: MoveDirection): void
   moveProject(projectId: string, direction: MoveDirection): void
+  moveProjectBefore(projectId: string, targetProjectId: string): void
+  moveProjectAfter(projectId: string, targetProjectId: string): void
   addProject(name: string): ReturnType<typeof createProject>
   saveProjectTemplate(projectId: string, name: string): ReturnType<typeof createProjectTemplate>
   createProjectFromTemplate(templateId: string): ReturnType<typeof createProject>
@@ -804,6 +806,12 @@ export function createWorkspaceCommands(
       })
     },
 
+    moveProjectBefore(projectId, targetProjectId) {
+      store.dispatch({type:'project/reordered',projectId,targetProjectId,placement:'before'})
+    },
+    moveProjectAfter(projectId, targetProjectId) {
+      store.dispatch({type:'project/reordered',projectId,targetProjectId,placement:'after'})
+    },
     moveProject(projectId, direction) {
       store.dispatch({
         type: 'project/moved',
