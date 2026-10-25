@@ -278,7 +278,9 @@ it('advances a Gantt working-date anchor across weekends and configured holidays
   expect(move!('2026-10-16', 1)).toBe('2026-10-19')
   expect(move!('2026-10-17', 0)).toBe('2026-10-19')
   expect(move!('2026-10-16', 1, ['2026-10-19'])).toBe('2026-10-20')
+  expect(move!('2026-10-16', 0, [], [0, 1, 2, 3, 4])).toBe('2026-10-18')
   expect(move!('2026-10-16', 1, [], [0, 1, 2, 3, 4])).toBe('2026-10-18')
+  expect(move!('2026-10-16', 2, [], [0, 1, 2, 3, 4])).toBe('2026-10-19')
   expect(() => move!('2026-02-30', 0)).toThrow('Invalid Gantt anchor date')
   expect(() => move!('2026-10-16', -1)).toThrow('Invalid Gantt working offset')
 })
@@ -362,4 +364,23 @@ it('marks projected zero-duration milestones distinctly from ordinary working Ta
     { taskId: 'milestone', isMilestone: true },
     { taskId: 'regular', isMilestone: false },
   ])
+})
+
+it('normalizes a non-working projection anchor before applying dependency offsets', () => {
+  const tasks = [
+    task('first', '2026-10-16', '2026-10-18'),
+    task('second', '2026-10-19', '2026-10-19'),
+  ]
+  const relationships = [blocks('link', 'first', 'second')]
+  const snapshot = JSON.stringify({ tasks, relationships })
+  const result = ganttModule.createTaskGanttWorkingDateProjection(
+    tasks, relationships, '2026-10-16', [], [0, 1, 2, 3, 4],
+  )
+  expect(result.rows.map(({ taskId, earliestStartDate, earliestFinishDate }) => ({
+    taskId, earliestStartDate, earliestFinishDate,
+  }))).toEqual([
+    { taskId: 'first', earliestStartDate: '2026-10-18', earliestFinishDate: '2026-10-18' },
+    { taskId: 'second', earliestStartDate: '2026-10-19', earliestFinishDate: '2026-10-19' },
+  ])
+  expect(JSON.stringify({ tasks, relationships })).toBe(snapshot)
 })
