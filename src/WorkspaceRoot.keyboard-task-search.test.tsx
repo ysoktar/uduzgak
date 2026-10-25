@@ -29,3 +29,14 @@ it('TDD 494: slash from the app heading focuses Task search', async () => {
   await user.keyboard('/')
   expect(document.activeElement).toBe(screen.getByLabelText('Search tasks'))
 })
+
+it('TDD 495: slash reopens collapsed filters before focusing search', async () => {
+  const user = userEvent.setup()
+  render(<App />)
+  await user.click(screen.getByRole('button', { name: 'Hide task filters' }))
+  expect(document.getElementById('workspace-filters')?.hidden).toBe(true)
+  await user.click(screen.getByRole('heading', { name: 'uduzgak' }))
+  await user.keyboard('/')
+  expect(document.getElementById('workspace-filters')?.hidden).toBe(false)
+  expect(document.activeElement).toBe(screen.getByLabelText('Search tasks'))
+})
