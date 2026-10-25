@@ -12,3 +12,9 @@ it('TDD 507: Clear search control removes the Task query', async () => {
   await user.click(screen.getByRole('button', { name: 'Clear task search' }))
   expect(search.value).toBe('')
 })
+
+it('TDD 508: Clear search is disabled for an empty query', () => {
+  render(<App />)
+  const clear = screen.getByRole('button', { name: 'Clear task search' }) as HTMLButtonElement
+  expect(clear.disabled).toBe(true)
+})
