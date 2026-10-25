@@ -2506,8 +2506,9 @@ export function App({
           <a href="#project-create">Go to project creation</a>
         </div>
       ) : null}
+      <span id="project-create" />
       {onCreateProject ? (
-        <form id="project-create" onSubmit={submitProject}>
+        <form onSubmit={submitProject}>
           <label htmlFor="project-name">Project name</label>
           <input
             id="project-name"
