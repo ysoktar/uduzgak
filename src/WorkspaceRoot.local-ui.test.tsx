@@ -10,4 +10,13 @@ describe('local workspace accessibility', () => {
     expect(skip.getAttribute('href')).toBe('#workspace-content')
     expect(document.querySelector('main#workspace-content')).not.toBeNull()
   })
+  it('provides distinct task filters and projects landmarks for fast navigation', () => {
+    render(<App />)
+    expect(screen.getByRole('navigation', { name: 'Workspace navigation' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Task filters' }).getAttribute('href')).toBe('#workspace-filters')
+    expect(screen.getByRole('link', { name: 'Projects' }).getAttribute('href')).toBe('#workspace-projects')
+    expect(document.getElementById('workspace-filters')).toBeTruthy()
+    expect(document.getElementById('workspace-projects')).toBeTruthy()
+  })
+
 })
