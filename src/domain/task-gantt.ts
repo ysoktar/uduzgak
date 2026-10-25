@@ -429,6 +429,7 @@ export function shiftTaskGanttWorkingDate(
 
 export interface TaskGanttWorkingDateRow {
   taskId: string
+  isMilestone: boolean
   earliestStartDate: string
   earliestFinishDate: string
   latestStartDate: string
@@ -449,6 +450,7 @@ export function createTaskGanttWorkingDateProjection(
   return {
     rows: path.rows.map((row) => ({
       taskId: row.taskId,
+      isMilestone: row.isMilestone,
       earliestStartDate: projectDate(row.earliestStart),
       earliestFinishDate: projectDate(Math.max(row.earliestStart, row.earliestFinish - 1)),
       latestStartDate: projectDate(row.latestStart),
