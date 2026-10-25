@@ -10,6 +10,7 @@ import {
   createTaskGanttScheduleConflicts,
   normalizeTaskGanttNonWorkingDates,
   createTaskGanttWorkingCriticalPath,
+  createTaskGanttWorkingDateProjection,
 } from './domain/task-gantt'
 import { createTaskTableRows } from './domain/task-table'
 import { createTaskTimelineItems } from './domain/task-timeline'
@@ -327,6 +328,7 @@ export function App({
   const [ganttOverviewCriticalOnly, setGanttOverviewCriticalOnly] = useState(false)
   const [ganttShowLogicalOffsets, setGanttShowLogicalOffsets] = useState(false)
   const [ganttShowWorkingDays, setGanttShowWorkingDays] = useState(false)
+  const [ganttShowProjectedWorkingDates, setGanttShowProjectedWorkingDates] = useState(false)
   const [ganttSundayThursdayWeek, setGanttSundayThursdayWeek] = useState(
     initialViewPreferences.ganttWorkingWeek === 'sun-thu',
   )
@@ -2533,6 +2535,12 @@ export function App({
         </button>
       ) : null}
       {taskViewMode === 'gantt' && activeProjects.length > 0 && ganttShowWorkingDays ? (
+        <button type="button" aria-pressed={ganttShowProjectedWorkingDates}
+          onClick={() => setGanttShowProjectedWorkingDates((current) => !current)}>
+          Show Gantt projected working dates
+        </button>
+      ) : null}
+      {taskViewMode === 'gantt' && activeProjects.length > 0 && ganttShowWorkingDays ? (
         <button type="button" aria-pressed={ganttSundayThursdayWeek}
           onClick={() => {
             const next = !ganttSundayThursdayWeek
@@ -2649,6 +2657,18 @@ export function App({
             : null
           const ganttWorkingRows = new Map(
             (ganttWorkingPath?.rows ?? []).map((row) => [row.taskId, row] as const),
+          )
+          const ganttAnchorDate = tasks
+            .filter((task) => task.startDate !== undefined && task.dueDate !== undefined)
+            .map((task) => task.startDate!)
+            .sort()[0]
+          const ganttProjectedWorkingDates = ganttShowWorkingDays && ganttShowProjectedWorkingDates && ganttAnchorDate
+            ? createTaskGanttWorkingDateProjection(
+                tasks, relationships, ganttAnchorDate, ganttNonWorkingDates, ganttWorkingWeekdays,
+              )
+            : null
+          const ganttProjectedWorkingRows = new Map(
+            (ganttProjectedWorkingDates?.rows ?? []).map((row) => [row.taskId, row] as const),
           )
           const ganttOverviewItems = ganttOverviewWorkingCriticalOnly
             ? ganttItems.filter((item) => ganttWorkingRows.get(item.task.id)?.isCritical)
@@ -3141,6 +3161,11 @@ export function App({
                                 {ganttWorkingRows.get(item.task.id)!.isCritical
                                   ? 'Critical (0 working days slack)'
                                   : `Not critical (${ganttWorkingRows.get(item.task.id)!.slackDays} working days slack)`}
+                              </span>
+                            ) : null}
+                            {ganttShowWorkingDays && ganttShowProjectedWorkingDates && ganttProjectedWorkingRows.has(item.task.id) ? (
+                              <span aria-label={`Gantt projected working dates for ${item.task.title}`}>
+                                {`Earliest ${ganttProjectedWorkingRows.get(item.task.id)!.earliestStartDate} to ${ganttProjectedWorkingRows.get(item.task.id)!.earliestFinishDate}; latest ${ganttProjectedWorkingRows.get(item.task.id)!.latestStartDate} to ${ganttProjectedWorkingRows.get(item.task.id)!.latestFinishDate} (derived, not saved)`}
                               </span>
                             ) : null}
                             {ganttShowLogicalOffsets && criticalRow ? (
