@@ -302,3 +302,25 @@ it('projects earliest Gantt working offsets into dates across a holiday', () => 
   ])
   expect(JSON.stringify({ tasks, relationships })).toBe(before)
 })
+
+it('projects latest working start and finish dates using dependency slack', () => {
+  const project = (ganttModule as unknown as {
+    createTaskGanttWorkingDateProjection: (
+      tasks: readonly Task[], edges: readonly TaskRelationship[], anchor: string,
+    ) => { rows: Array<{ taskId: string; latestStartDate?: string; latestFinishDate?: string }> }
+  }).createTaskGanttWorkingDateProjection
+  const tasks = [
+    task('a', '2026-10-19', '2026-10-20'),
+    task('b', '2026-10-21', '2026-10-23'),
+    task('side', '2026-10-21', '2026-10-21'),
+  ]
+  const rows = project(tasks, [blocks('r1', 'a', 'b'), blocks('r2', 'a', 'side')], '2026-10-19').rows
+  expect(rows.find((row) => row.taskId === 'side')).toMatchObject({
+    latestStartDate: '2026-10-23',
+    latestFinishDate: '2026-10-23',
+  })
+  expect(rows.find((row) => row.taskId === 'b')).toMatchObject({
+    latestStartDate: '2026-10-21',
+    latestFinishDate: '2026-10-23',
+  })
+})
