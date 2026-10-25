@@ -3441,3 +3441,7 @@ Base: `645bd9a77a5e615fa81d36a9678a8fb5623d5db4`; fork `ysoktar/uduzgak`, branch
 ## TDD 467–471 — Project/List native drag-and-drop
 
 Base: `ef54f43c0848303c22ca0fe45911c3e0b5ef2246`; fork branch `tdd/467-471-project-list-native-drag`. RED-first tests: Project before, List before, Project after, List after, and responsive control styles. Implementation reuses TDD 462–466 scoped atomic commands without changing Project/List model semantics. GitHub Actions run 40242094726 passed 9/9 focused tests in 4 files, zero-warning lint and TypeScript/Vite build on the final feature source; not a full-suite or touch-device certification.
+
+## TDD 472–476 — semantic Workspace shell
+
+Base: `23cbf17fd5cdd10d1841d1fdb68dbab64c64ba09`. Fork branch `tdd/472-476-semantic-workspace-shell`. Test-first changes establish separate application header and Workspace main, named filter and projects regions, responsive header and Task table wrapping. Existing Workspace command flows and browser persistence unaffected. Final feature GitHub Actions run 40242442996 passed 8 targeted tests across three files, zero-warning lint and production TypeScript/Vite build. Full-suite and manual browser visual checks remain outstanding.
