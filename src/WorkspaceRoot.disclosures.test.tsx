@@ -28,3 +28,12 @@ it('toggles Projects and Tasks without deleting any data',async()=>{
  await user.click(screen.getByRole('button',{name:'Show projects and tasks'}))
  expect(projects?.hidden).toBe(false)
 })
+
+it('reopens hidden Task filters when navigating to Task filters',async()=>{
+ const user=userEvent.setup()
+ render(<App/>)
+ await user.click(screen.getByRole('button',{name:'Hide task filters'}))
+ expect(document.getElementById('workspace-filters')?.hidden).toBe(true)
+ await user.click(screen.getByRole('link',{name:'Task filters'}))
+ expect(document.getElementById('workspace-filters')?.hidden).toBe(false)
+})
