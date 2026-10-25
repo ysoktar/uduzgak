@@ -1139,6 +1139,9 @@ export function App({
         />
         Select all visible tasks
       </label>
+      {visibleTaskIds.length === 0 && activeTasks.length > 0 ? (
+        <p role="status" aria-label="No matching tasks">No tasks match the current filters.</p>
+      ) : null}
       <span role="status" aria-label="Visible task count">
         {visibleTaskIds.length} visible {visibleTaskIds.length === 1 ? 'task' : 'tasks'}
       </span>
