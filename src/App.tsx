@@ -276,6 +276,7 @@ export function App({
   onViewPreferencesChange,
 }: AppProps) {
   const [activityHistoryOpen, setActivityHistoryOpen] = useState(false)
+  const [showTaskFilters, setShowTaskFilters] = useState(true)
   const [relationshipTypes, setRelationshipTypes] = useState<
     Record<string, TaskRelationshipType>
   >({})
@@ -847,7 +848,11 @@ export function App({
         <p>Attachment metadata only. File content is not stored.</p>
       ) : null}
 
-      <div id="workspace-filters" role="region" aria-label="Task filters and sorting" className="workspace-filters">
+      <button type="button" className="workspace-disclosure-button" aria-controls="workspace-filters"
+        aria-expanded={showTaskFilters} onClick={() => setShowTaskFilters(value => !value)}>
+        {showTaskFilters ? "Hide task filters" : "Show task filters"}
+      </button>
+      <div id="workspace-filters" role="region" aria-label="Task filters and sorting" className="workspace-filters" hidden={!showTaskFilters}>
       <label htmlFor="project-view">View project</label>
       <select
         id="project-view"
