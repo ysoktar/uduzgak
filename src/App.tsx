@@ -105,6 +105,7 @@ export interface AppProps {
   onDeleteTaskList?: (listId: string) => void
   onMoveTaskList?: (listId: string, direction: MoveDirection) => void
   onMoveTaskListBefore?: (listId: string, targetListId: string) => void
+  onMoveTaskListAfter?: (listId: string, targetListId: string) => void
   onChangeTaskList?: (taskId: string, listId: string | null) => void
   onChangeTasksList?: (taskIds: string[], listId: string | null) => void
   onAddChecklistItem?: (taskId: string, text: string) => void
@@ -114,6 +115,7 @@ export interface AppProps {
   onMoveChecklistItem?: (taskId: string, itemId: string, direction: MoveDirection) => void
   onMoveProject?: (projectId: string, direction: MoveDirection) => void
   onMoveProjectBefore?: (projectId: string, targetProjectId: string) => void
+  onMoveProjectAfter?: (projectId: string, targetProjectId: string) => void
   onCreateProject?: (name: string) => void
   onSaveProjectTemplate?: (projectId: string, name: string) => void
   onCreateProjectFromTemplate?: (templateId: string) => void
@@ -212,6 +214,7 @@ export function App({
   onDeleteTaskList,
   onMoveTaskList,
   onMoveTaskListBefore,
+  onMoveTaskListAfter,
   onChangeTaskList,
   onChangeTasksList,
   onAddChecklistItem,
@@ -221,6 +224,7 @@ export function App({
   onMoveChecklistItem,
   onMoveProject,
   onMoveProjectBefore,
+  onMoveProjectAfter,
   onCreateProject,
   onSaveProjectTemplate,
   onCreateProjectFromTemplate,
@@ -2795,6 +2799,31 @@ export function App({
             <section key={project.id}>
               <h2>{project.name}</h2>
               {onMoveProjectBefore ? (
+                <div className="workspace-native-drag">
+                  <button type="button" draggable aria-label={`Drag project ${project.name}`}
+                    onDragStart={event => {
+                      event.dataTransfer.setData('application/x-uduzgak-project',project.id)
+                      event.dataTransfer.effectAllowed='move'
+                    }}>Drag project {project.name}</button>
+                  {onMoveProjectAfter ? (
+                    <button type="button" aria-label={`Drop after project ${project.name}`}
+                      onDragOver={event=>event.preventDefault()}
+                      onDrop={event=>{
+                        event.preventDefault()
+                        const source=event.dataTransfer.getData('application/x-uduzgak-project')
+                        if(source && source!==project.id)onMoveProjectAfter(source,project.id)
+                      }}>Drop after project {project.name}</button>
+                  ) : null}
+                  <button type="button" aria-label={`Drop before project ${project.name}`}
+                    onDragOver={event=>event.preventDefault()}
+                    onDrop={event=>{
+                      event.preventDefault()
+                      const source=event.dataTransfer.getData('application/x-uduzgak-project')
+                      if(source && source!==project.id)onMoveProjectBefore(source,project.id)
+                    }}>Drop before project {project.name}</button>
+                </div>
+              ) : null}
+              {onMoveProjectBefore ? (
                 <div className="workspace-reorder-controls" aria-label={`Reorder project ${project.name}`}>
                   {activeProjects.filter(p=>p.id!==project.id && p.areaId===project.areaId).map(candidate=>(
                     <button key={candidate.id} type="button" onClick={()=>onMoveProjectBefore(project.id,candidate.id)}>
@@ -2986,6 +3015,31 @@ export function App({
                               }
                               )
                             </span>
+                            {onMoveTaskListBefore ? (
+                              <div className="workspace-native-drag">
+                                <button type="button" draggable aria-label={`Drag list ${list.name}`}
+                                  onDragStart={event=>{
+                                    event.dataTransfer.setData('application/x-uduzgak-list',list.id)
+                                    event.dataTransfer.effectAllowed='move'
+                                  }}>Drag list {list.name}</button>
+                                {onMoveTaskListAfter ? (
+                                  <button type="button" aria-label={`Drop after list ${list.name}`}
+                                    onDragOver={event=>event.preventDefault()}
+                                    onDrop={event=>{
+                                      event.preventDefault()
+                                      const source=event.dataTransfer.getData('application/x-uduzgak-list')
+                                      if(source && source!==list.id)onMoveTaskListAfter(source,list.id)
+                                    }}>Drop after list {list.name}</button>
+                                ) : null}
+                                <button type="button" aria-label={`Drop before list ${list.name}`}
+                                  onDragOver={event=>event.preventDefault()}
+                                  onDrop={event=>{
+                                    event.preventDefault()
+                                    const source=event.dataTransfer.getData('application/x-uduzgak-list')
+                                    if(source && source!==list.id)onMoveTaskListBefore(source,list.id)
+                                  }}>Drop before list {list.name}</button>
+                              </div>
+                            ) : null}
                             {onMoveTaskListBefore ? (
                               <div className="workspace-reorder-controls" aria-label={`Reorder list ${list.name}`}>
                                 {projectLists.filter(candidate=>candidate.id!==list.id).map(candidate=>(
