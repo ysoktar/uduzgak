@@ -36,3 +36,10 @@ it('navigates to the Goals region',()=>{
  expect(nav.querySelector('a[href="#workspace-goals"]')?.textContent).toBe('Goals')
  expect(document.getElementById('workspace-goals')).toBeTruthy()
 })
+
+it('navigates to Workspace Automations',()=>{
+ renderRoot()
+ const nav=screen.getByRole('navigation',{name:'Workspace sections'})
+ expect(nav.querySelector('a[href="#workspace-automations"]')?.textContent).toBe('Automations')
+ expect(document.getElementById('workspace-automations')).toBeTruthy()
+})
