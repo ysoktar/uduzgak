@@ -134,6 +134,7 @@ export interface AppProps {
   onDeleteTask?: (taskId: string) => void
   onDeleteTasks?: (taskIds: string[]) => void
   onMoveTask?: (taskId: string, direction: MoveDirection) => void
+  onMoveTaskBefore?: (taskId: string, targetTaskId: string) => void
   onChangeTaskStatus?: (taskId: string, status: TaskStatus) => void
   onChangeTaskRecurrence?: (taskId: string, recurrence: TaskRecurrenceRule | null) => void
   onChangeTaskTimeEstimate?: (taskId: string, estimateMinutes: number | null) => void
@@ -237,6 +238,7 @@ export function App({
   onDeleteTask,
   onDeleteTasks,
   onMoveTask,
+  onMoveTaskBefore,
   onChangeTaskStatus,
   onChangeTaskRecurrence,
   onChangeTaskTimeEstimate,
@@ -3905,6 +3907,22 @@ export function App({
                               </label>
                             ))}
                           </fieldset>
+                        ) : null}
+                        {taskSort === 'manual' && onMoveTaskBefore && taskViewMode === 'list' ? (
+                          <>
+                            <button type="button" draggable aria-label={`Drag task ${task.title}`}
+                              onDragStart={(event) => {
+                                event.dataTransfer.setData('text/plain', task.id)
+                                event.dataTransfer.effectAllowed = 'move'
+                              }}>Drag {task.title}</button>
+                            <button type="button" aria-label={`Drop before task ${task.title}`}
+                              onDragOver={(event) => event.preventDefault()}
+                              onDrop={(event) => {
+                                event.preventDefault()
+                                const draggedTaskId = event.dataTransfer.getData('text/plain')
+                                if (draggedTaskId && draggedTaskId !== task.id) onMoveTaskBefore(draggedTaskId, task.id)
+                              }}>Drop before {task.title}</button>
+                          </>
                         ) : null}
                         {taskSort === 'manual' && onMoveTask ? (
                           <>
