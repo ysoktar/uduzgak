@@ -407,3 +407,18 @@ textarea {
     animation: none;
   }
 }
+
+/* Manual reordering remains usable on touch screens without requiring dragging. */
+.task-touch-reorder {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+.task-touch-reorder button {
+  min-height: 44px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}

@@ -135,6 +135,7 @@ export interface AppProps {
   onDeleteTasks?: (taskIds: string[]) => void
   onMoveTask?: (taskId: string, direction: MoveDirection) => void
   onMoveTaskBefore?: (taskId: string, targetTaskId: string) => void
+  onMoveTaskAfter?: (taskId: string, targetTaskId: string) => void
   onChangeTaskStatus?: (taskId: string, status: TaskStatus) => void
   onChangeTaskRecurrence?: (taskId: string, recurrence: TaskRecurrenceRule | null) => void
   onChangeTaskTimeEstimate?: (taskId: string, estimateMinutes: number | null) => void
@@ -239,6 +240,7 @@ export function App({
   onDeleteTasks,
   onMoveTask,
   onMoveTaskBefore,
+  onMoveTaskAfter,
   onChangeTaskStatus,
   onChangeTaskRecurrence,
   onChangeTaskTimeEstimate,
@@ -408,6 +410,7 @@ export function App({
     })
   }
   const [error, setError] = useState<string | null>(null)
+  const [taskReorderResult, setTaskReorderResult] = useState('')
 
   function submitCustomField(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -855,6 +858,7 @@ export function App({
       </select>
 
       {error ? <p role="alert">{error}</p> : null}
+      <p role="status" aria-label="Task reorder result" aria-live="polite">{taskReorderResult}</p>
 
       <label htmlFor="task-search">Search tasks</label>
       <input
@@ -3915,6 +3919,19 @@ export function App({
                                 event.dataTransfer.setData('text/plain', task.id)
                                 event.dataTransfer.effectAllowed = 'move'
                               }}>Drag {task.title}</button>
+                            {onMoveTaskAfter ? (
+                              <button type="button" aria-label={`Drop after task ${task.title}`}
+                                onDragOver={(event) => event.preventDefault()}
+                                onDrop={(event) => {
+                                  event.preventDefault()
+                                  const draggedTaskId = event.dataTransfer.getData('text/plain')
+                                  if (draggedTaskId && draggedTaskId !== task.id) {
+                                    onMoveTaskAfter(draggedTaskId, task.id)
+                                    const draggedTask = activeTasks.find((candidate) => candidate.id === draggedTaskId)
+                                    if (draggedTask) setTaskReorderResult(`Moved ${draggedTask.title} after ${task.title}`)
+                                  }
+                                }}>Drop after {task.title}</button>
+                            ) : null}
                             <button type="button" aria-label={`Drop before task ${task.title}`}
                               onDragOver={(event) => event.preventDefault()}
                               onDrop={(event) => {
@@ -3923,6 +3940,36 @@ export function App({
                                 if (draggedTaskId && draggedTaskId !== task.id) onMoveTaskBefore(draggedTaskId, task.id)
                               }}>Drop before {task.title}</button>
                           </>
+                        ) : null}
+                        {taskSort === 'manual' && taskViewMode === 'list' && onMoveTaskBefore ? (
+                          <div className="task-touch-reorder" aria-label={`Move task ${task.title} before a sibling`}>
+                            {activeTasks.filter((candidate) => candidate.id !== task.id &&
+                              candidate.projectId === task.projectId && candidate.listId === task.listId &&
+                              candidate.parentTaskId === task.parentTaskId).map((candidate) => (
+                              <button type="button" key={candidate.id}
+                                onClick={() => {
+                                  onMoveTaskBefore(task.id, candidate.id)
+                                  setTaskReorderResult(`Moved ${task.title} before ${candidate.title}`)
+                                }}>
+                                Move task {task.title} before {candidate.title}
+                              </button>
+                            ))}
+                          </div>
+                        ) : null}
+                        {taskSort === 'manual' && taskViewMode === 'list' && onMoveTaskAfter ? (
+                          <div className="task-touch-reorder" aria-label={`Reorder task ${task.title}`}>
+                            {activeTasks.filter((candidate) => candidate.id !== task.id &&
+                              candidate.projectId === task.projectId && candidate.listId === task.listId &&
+                              candidate.parentTaskId === task.parentTaskId).map((candidate) => (
+                              <button type="button" key={candidate.id}
+                                onClick={() => {
+                                  onMoveTaskAfter(task.id, candidate.id)
+                                  setTaskReorderResult(`Moved ${task.title} after ${candidate.title}`)
+                                }}>
+                                Move task {task.title} after {candidate.title}
+                              </button>
+                            ))}
+                          </div>
                         ) : null}
                         {taskSort === 'manual' && onMoveTask ? (
                           <>

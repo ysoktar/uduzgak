@@ -675,3 +675,13 @@ Verified on fork branch using GitHub Actions run 40237637414: 8 focused tests, z
 - [x] Reject self-drops, missing endpoints, and different Project/List/parent scopes before persistence (456).
 
 Verified on the fork's GitHub Actions run 40238738296: 6 focused tests in four files, zero-warning lint, production build. This is a first semantic/manual-mode drag interaction; mobile touch drag, keyboard drag lift/drop, visual previews, Project/List reordering, and full accessibility review remain open.
+
+## Accessible manual Task reordering — TDD 457–461
+
+- [x] Touch-friendly buttons move a Task after a sibling in manual List mode (457).
+- [x] Touch-friendly move-before selection alongside existing up/down buttons (458).
+- [x] Polite status message announces successful Task move actions (459).
+- [x] Native HTML drag-and-drop can drop a Task after a sibling (460).
+- [x] Responsive wrapping and minimum 44px tap targets for reorder controls (461).
+
+This is not a completed touch-gesture drag system or a full accessibility review. Buttons work without native drag gestures; Task movements are constrained by the existing Workspace validation.
