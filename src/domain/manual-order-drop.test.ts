@@ -16,3 +16,15 @@ it('moves a dragged item before a later peer without disturbing interleaved grou
   expect(move!(items, 'a', 'c', peers).map((item) => item.id)).toEqual(['b', 'x', 'a', 'c'])
   expect(items.map((item) => item.id)).toEqual(['a', 'x', 'b', 'c'])
 })
+
+it('rejects cross-group targets, missing items and self drops without changing the input', () => {
+  const items: Item[] = [
+    { id: 'a', group: 'one' }, { id: 'x', group: 'two' }, { id: 'b', group: 'one' },
+  ]
+  const move = order.moveItemBeforePeer
+  for (const [source, target] of [['a', 'x'], ['a', 'missing'], ['missing', 'b'], ['a', 'a']] as const) {
+    const result = move(items, source, target, peers)
+    expect(result).toEqual(items)
+    expect(result).not.toBe(items)
+  }
+})
