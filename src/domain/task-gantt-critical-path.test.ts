@@ -266,3 +266,19 @@ it('recomputes critical path when Sunday replaces Friday in a Gantt workweek', (
   ])
   expect(tasks).toEqual([friday, sunday])
 })
+
+it('advances a Gantt working-date anchor across weekends and configured holidays', () => {
+  const move = (ganttModule as unknown as {
+    shiftTaskGanttWorkingDate?: (
+      anchor: string, workingOffset: number, holidays?: readonly string[], weekdays?: readonly number[],
+    ) => string
+  }).shiftTaskGanttWorkingDate
+  expect(typeof move).toBe('function')
+  expect(move!('2026-10-16', 0)).toBe('2026-10-16')
+  expect(move!('2026-10-16', 1)).toBe('2026-10-19')
+  expect(move!('2026-10-17', 0)).toBe('2026-10-19')
+  expect(move!('2026-10-16', 1, ['2026-10-19'])).toBe('2026-10-20')
+  expect(move!('2026-10-16', 1, [], [0, 1, 2, 3, 4])).toBe('2026-10-18')
+  expect(() => move!('2026-02-30', 0)).toThrow('Invalid Gantt anchor date')
+  expect(() => move!('2026-10-16', -1)).toThrow('Invalid Gantt working offset')
+})
