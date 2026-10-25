@@ -3449,3 +3449,7 @@ Base: `23cbf17fd5cdd10d1841d1fdb68dbab64c64ba09`. Fork branch `tdd/472-476-seman
 ## TDD 477–481 — cross-panel section navigation
 
 Base: `823e6a4cf61ecbee721d054de922ecf8beed7def`. Fork branch `tdd/477-481-workspace-section-navigation`. Test-first additions anchor Dashboard, Knowledge, Goals and Automations and provide accessible responsive navigation at WorkspaceRoot. GitHub Actions run 40242762833 confirmed eight targeted tests in three files, zero-warning lint and production build on final feature source. This is not a full-suite or visual accessibility sign-off.
+
+## TDD 482–486 — Workspace panel disclosures
+
+Base: `8c872353126eed2f7716713dcc3ee5ed0f7e84a8`, fork branch `tdd/482-486-workspace-panel-disclosures`. RED-first tests cover Task filters disclosure, Project content disclosure, link-based reopening of each region, responsive disclosure styling. GitHub Actions run 40243137172 passed 8 targeted tests across three files, zero-warning lint and production TypeScript/Vite build. Session-only state; no Workspace storage changes. Full-suite and manual browser audits remain open.
