@@ -320,3 +320,45 @@ textarea {
 
 .task-gantt-schedule-warning > p { margin: 0; font-weight: 700; }
 .task-gantt-schedule-warning ul { margin-top: 8px; }
+
+/* Accessible landmarks and keyboard navigation for the local-first shell. */
+.skip-link {
+  position: absolute;
+  inset-block-start: 8px;
+  inset-inline-start: 8px;
+  z-index: 10;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #fff;
+  color: #17263c;
+  transform: translateY(-160%);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+:focus-visible {
+  outline: 3px solid #2b63ac;
+  outline-offset: 3px;
+}
+
+.workspace-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-bottom: 20px;
+}
+
+.workspace-navigation a {
+  color: #204c7d;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.workspace-empty-guidance {
+  padding: 16px;
+  border: 1px solid #dbe0e7;
+  border-radius: 12px;
+  background: #fff;
+}
