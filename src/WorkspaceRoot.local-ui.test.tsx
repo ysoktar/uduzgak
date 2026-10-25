@@ -18,5 +18,12 @@ describe('local workspace accessibility', () => {
     expect(document.getElementById('workspace-filters')).toBeTruthy()
     expect(document.getElementById('workspace-projects')).toBeTruthy()
   })
+  it('offers an explicit empty workspace starting point', () => {
+    render(<App />)
+    const empty = screen.getByRole('status', { name: 'Empty workspace guidance' })
+    expect(empty.textContent).toContain('Create your first project')
+    expect(screen.getByRole('link', { name: 'Go to project creation' }).getAttribute('href')).toBe('#project-create')
+    expect(document.getElementById('project-create')).toBeTruthy()
+  })
 
 })
