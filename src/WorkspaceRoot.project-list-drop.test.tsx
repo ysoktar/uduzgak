@@ -24,3 +24,12 @@ it('moves a Project before another from accessible on-screen controls',async()=>
  await user.click(screen.getByRole('button',{name:'Move project Alpha before Gamma'}))
  expect(store.getState().projects.map(p=>p.id)).toEqual([b.id,a.id,c.id])
 })
+
+it('moves a List before a sibling from accessible on-screen controls',async()=>{
+ const {user,store,commands}=fixture()
+ const project=commands.addProject('Project')
+ const a=commands.addTaskList(project.id,'A'),b=commands.addTaskList(project.id,'B'),c=commands.addTaskList(project.id,'C')
+ render(<WorkspaceRoot store={store} commands={commands}/>)
+ await user.click(screen.getByRole('button',{name:'Move list A before C'}))
+ expect(store.getState().lists?.map(l=>l.id)).toEqual([b.id,a.id,c.id])
+})
