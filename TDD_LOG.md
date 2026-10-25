@@ -3400,10 +3400,10 @@ Starting confirmed live boundary: `f81f8d024f467f042d8481ac8da0acb7c879efaf` (`T
 
 Pinned base: `d7d0739741fa54460071d0f285a0c09e27582274` (`TDD 427-431: add configurable Gantt workweek`). Five independent RED-first behaviors: 432 validate optional Gantt workweek preset in persisted view preferences; 433 validate sorted unique ISO holiday exclusions; 434 restore stored preset and exclusions into the initial Gantt UI; 435 persist preset changes and restore after reload; 436 persist holiday additions/removals and restore after reload. No new test files, no edits or weakening of historical tests. Live commit only after 5 targeted RED/GREEN cycles, focused regression, zero-warning lint, build, source/hash gates and non-force push. The Windows runner transcript is the authority for completion; this documentation alone is not execution evidence.
 
-## TDD 437–441 — derived Gantt working-date projection (fork branch, pending execution evidence)
+## TDD 437–441 — derived Gantt working-date projection (fork branch; verified in CI)
 
 Fork: `ysoktar/uduzgak`; branch: `tdd/437-441-gantt-working-date-projection`; base: `b2648c3dda1ecca162cd7d21a335161220893b74`.
 
 Test-first commits precede implementation changes for working-day offset dates (437), earliest projected ranges (438), latest dates from slack (439), milestone classification (440), and optional Gantt display (441). TDD 440 includes an additional milestone regression test because the original scenario appeared already supported; that existing new test was retained unchanged. Existing tests were not edited.
 
-The GitHub connector successfully wrote the branch. **This does not establish RED/GREEN execution success.** Focused Vitest, lint, and TypeScript/Vite build still require authoritative CI or local execution evidence. No merge into `main` is authorized until those checks pass.
+GitHub Actions run 40229438290 on commit `4991e3ef9a29d8d4e395370d13987eeda5afd780` completed successfully: focused Gantt domain/UI tests, zero-warning lint, and TypeScript/Vite build passed. Earlier branch runs exposed a non-working-anchor offset bug and a dependent projection-anchor bug; each was corrected with approved test expectations preserved. Historical tests were not modified. This confirms the final branch state, not that every earlier intermediate commit passed CI.
