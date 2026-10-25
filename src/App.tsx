@@ -135,6 +135,7 @@ export interface AppProps {
   onDeleteTasks?: (taskIds: string[]) => void
   onMoveTask?: (taskId: string, direction: MoveDirection) => void
   onMoveTaskBefore?: (taskId: string, targetTaskId: string) => void
+  onMoveTaskAfter?: (taskId: string, targetTaskId: string) => void
   onChangeTaskStatus?: (taskId: string, status: TaskStatus) => void
   onChangeTaskRecurrence?: (taskId: string, recurrence: TaskRecurrenceRule | null) => void
   onChangeTaskTimeEstimate?: (taskId: string, estimateMinutes: number | null) => void
@@ -239,6 +240,7 @@ export function App({
   onDeleteTasks,
   onMoveTask,
   onMoveTaskBefore,
+  onMoveTaskAfter,
   onChangeTaskStatus,
   onChangeTaskRecurrence,
   onChangeTaskTimeEstimate,
@@ -3923,6 +3925,18 @@ export function App({
                                 if (draggedTaskId && draggedTaskId !== task.id) onMoveTaskBefore(draggedTaskId, task.id)
                               }}>Drop before {task.title}</button>
                           </>
+                        ) : null}
+                        {taskSort === 'manual' && taskViewMode === 'list' && onMoveTaskAfter ? (
+                          <div className="task-touch-reorder" aria-label={`Reorder task ${task.title}`}>
+                            {activeTasks.filter((candidate) => candidate.id !== task.id &&
+                              candidate.projectId === task.projectId && candidate.listId === task.listId &&
+                              candidate.parentTaskId === task.parentTaskId).map((candidate) => (
+                              <button type="button" key={candidate.id}
+                                onClick={() => onMoveTaskAfter(task.id, candidate.id)}>
+                                Move task {task.title} after {candidate.title}
+                              </button>
+                            ))}
+                          </div>
                         ) : null}
                         {taskSort === 'manual' && onMoveTask ? (
                           <>
