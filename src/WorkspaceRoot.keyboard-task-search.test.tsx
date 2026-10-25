@@ -20,3 +20,12 @@ it('TDD 493: slash typed in an editable field does not steal focus', async () =>
   expect(document.activeElement).toBe(search)
   expect(search.value).toBe('/')
 })
+
+it('TDD 494: slash from the app heading focuses Task search', async () => {
+  const user = userEvent.setup()
+  render(<App />)
+  const heading = screen.getByRole('heading', { name: 'uduzgak' })
+  await user.click(heading)
+  await user.keyboard('/')
+  expect(document.activeElement).toBe(screen.getByLabelText('Search tasks'))
+})
