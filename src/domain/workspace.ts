@@ -189,6 +189,7 @@ export type WorkspaceBaseAction =
   | { type: 'list/deleted'; listId: string }
   | { type: 'list/nameChanged'; listId: string; name: string }
   | { type: 'list/moved'; listId: string; direction: MoveDirection }
+  | { type: 'list/reordered'; listId: string; targetListId: string; placement: 'before' | 'after' }
   | { type: 'relationship/added'; relationship: TaskRelationship }
   | { type: 'relationship/deleted'; relationshipId: string }
   | { type: 'projectTemplate/added'; template: ProjectTemplate }
@@ -1117,6 +1118,15 @@ export function workspaceReducer(
             candidate.projectId === target.projectId,
         ),
       }
+
+    case 'list/reordered': {
+      if (action.placement !== 'before' && action.placement !== 'after') throw new Error('Invalid List drop placement')
+      const source=(state.lists??[]).find(l=>l.id===action.listId)
+      const target=(state.lists??[]).find(l=>l.id===action.targetListId)
+      if (!source || !target || source.id===target.id || source.projectId!==target.projectId) throw new Error('Cannot reorder Lists outside the same Project')
+      const fn=action.placement==='before' ? moveItemBeforePeer : moveItemAfterPeer
+      return {...state,lists:fn(state.lists??[],source.id,target.id,(a,b)=>a.projectId===b.projectId)}
+    }
 
     case 'list/deleted':
       return {
