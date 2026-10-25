@@ -55,3 +55,25 @@ export function moveItemBeforePeer<T extends { id: string }>(
   slots.forEach((index, position) => { next[index] = peers[position] })
   return next
 }
+/** Move a peer immediately after the drop target without reordering unrelated groups. */
+export function moveItemAfterPeer<T extends { id: string }>(
+  items: T[],
+  sourceId: string,
+  targetId: string,
+  isPeer: (candidate: T, target: T) => boolean,
+): T[] {
+  const source = items.find((item) => item.id === sourceId)
+  const target = items.find((item) => item.id === targetId)
+  if (!source || !target || sourceId === targetId || !isPeer(source, target)) return [...items]
+  const slots = items.flatMap((item, index) => isPeer(item, source) ? [index] : [])
+  const peers = slots.map((index) => items[index])
+  const sourceIndex = peers.findIndex((item) => item.id === sourceId)
+  if (sourceIndex < 0) return [...items]
+  const [moved] = peers.splice(sourceIndex, 1)
+  const index = peers.findIndex((item) => item.id === targetId)
+  if (index < 0) return [...items]
+  peers.splice(index + 1, 0, moved)
+  const next = [...items]
+  slots.forEach((slot, position) => { next[slot] = peers[position] })
+  return next
+}
