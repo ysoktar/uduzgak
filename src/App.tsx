@@ -811,7 +811,7 @@ export function App({
       <main id="workspace-content">
       <nav aria-label="Workspace navigation" className="workspace-navigation">
         <a href="#workspace-filters" onClick={() => setShowTaskFilters(true)}>Task filters</a>
-        <a href="#workspace-projects">Projects</a>
+        <a href="#workspace-projects" onClick={() => setShowProjects(true)}>Projects</a>
       </nav>
       <p className="workspace-summary">
         {activeProjects.length} {projectLabel} · {workspaceSummary.total}{' '}
