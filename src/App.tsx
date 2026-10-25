@@ -1139,6 +1139,9 @@ export function App({
         />
         Select all visible tasks
       </label>
+      {activeProjects.length > 0 && activeTasks.length === 0 ? (
+        <p role="status" aria-label="No tasks in workspace">No tasks yet. Add a task to a project below.</p>
+      ) : null}
       {visibleTaskIds.length === 0 && activeTasks.length > 0 ? (
         <div role="status" aria-label="No matching tasks">
           <p>No tasks match the current filters.</p>
