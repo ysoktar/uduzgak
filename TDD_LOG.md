@@ -3423,3 +3423,9 @@ Test-first changes were committed separately on the branch. One newly added CSS 
 ## TDD 447–451 — local task discovery
 
 Fork branch `tdd/447-451-local-task-discovery` based on `2740313423c9153d3b84bce0ff6100f7c3f1914e`. Five test-first behaviors: visible count; no-match status; clear filters; distinguish empty Workspace; Escape search recovery. A syntax-only newline separator in the newly added test was approved explicitly by the user and changed no assertions. The final focused CI for commit `493181fb5fdafa96c876d99a78c9cfca222d45ec` passed 8/8 tests across 2 files, zero-warning lint and TypeScript/Vite build. GitHub Actions: https://github.com/ysoktar/uduzgak/actions/runs/40237637414. No full Vitest or visual browser QA was conducted.
+
+## TDD 452–456 — native manual Task drag-order
+
+Base `d4df2dc766bbc5ccc724c02ffcf8e1cb51b52d0d` on `ysoktar/uduzgak`. RED-first commits preceded each behavior: peer-slot move-before (452), move-after and invalid-drop helper (453), Workspace reorder commands (454), native UI drag/drop with existing keyboard buttons (455), and scoped invalid-drop rejection (456). Pure helper functions keep other-group positions unchanged; Workspace rejects cross-Project/List/parent and self drops without persistence.
+
+Final feature commit `be5adab8fee20dbe3e62bbde5620ec34dca24fe3` verified by [GitHub Actions run 40238738296](https://github.com/ysoktar/uduzgak/actions/runs/40238738296): 6/6 targeted tests, zero-warning lint, TypeScript/Vite build. This is not a full Vitest suite or completed drag-and-drop/accessibility audit.
