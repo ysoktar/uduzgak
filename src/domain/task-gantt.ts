@@ -395,3 +395,34 @@ export function normalizeTaskGanttWorkingWeekdays(weekdays: readonly number[]): 
   }
   return [...new Set(weekdays)].sort((a, b) => a - b)
 }
+
+/** Map a nonnegative logical working-day offset to an inclusive UTC calendar date.
+ * Offset zero is the first available working day on or after the anchor. */
+export function shiftTaskGanttWorkingDate(
+  anchor: string,
+  workingOffset: number,
+  nonWorkingDates: readonly string[] = [],
+  workingWeekdays: readonly number[] = [1, 2, 3, 4, 5],
+): string {
+  const instant = Date.parse(`${anchor}T00:00:00.000Z`)
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(anchor) || !Number.isFinite(instant) ||
+      new Date(instant).toISOString().slice(0, 10) !== anchor) {
+    throw new Error('Invalid Gantt anchor date')
+  }
+  if (!Number.isSafeInteger(workingOffset) || workingOffset < 0) {
+    throw new Error('Invalid Gantt working offset')
+  }
+  const excluded = new Set(normalizeTaskGanttNonWorkingDates(nonWorkingDates))
+  const weekdays = new Set(normalizeTaskGanttWorkingWeekdays(workingWeekdays))
+  let remaining = workingOffset
+  const date = new Date(instant)
+  while (true) {
+    const day = date.toISOString().slice(0, 10)
+    if (weekdays.has(date.getUTCDay()) && !excluded.has(day)) {
+      if (remaining === 0) return day
+      remaining--
+    }
+    date.setUTCDate(date.getUTCDate() + 1)
+    if (!Number.isFinite(date.getTime())) throw new Error('Gantt working date out of range')
+  }
+}
