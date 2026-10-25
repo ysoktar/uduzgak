@@ -1,0 +1,18 @@
+name: TDD 502-506 search focus robustness
+on:
+  push:
+    branches: [tdd/502-506-search-focus-robustness]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - run: npm ci --include=dev --no-fund
+      - run: npm exec -- vitest run src/WorkspaceRoot.search-focus-robustness.test.tsx src/WorkspaceRoot.search-keyboard-controls.test.tsx src/WorkspaceRoot.keyboard-task-search.test.tsx --maxWorkers=1 --testTimeout=30000
+      - run: npm run lint
+      - run: npm run build
