@@ -39,3 +39,13 @@ it('rejects an unknown Project reorder placement without writing state',()=>{
  expect(()=>store.dispatch({type:'project/reordered',projectId:a.id,targetProjectId:b.id,placement:'middle' as 'before'})).toThrow('Invalid Project drop placement')
  expect(JSON.stringify(store.getState())).toBe(before)
 })
+
+it('moves a List immediately before a sibling in the same Project',()=>{
+ const {store,commands}=fixture()
+ const project=commands.addProject('P')
+ const a=commands.addTaskList(project.id,'A'),b=commands.addTaskList(project.id,'B'),c=commands.addTaskList(project.id,'C')
+ const move=(commands as typeof commands & {moveTaskListBefore?:(id:string,target:string)=>void}).moveTaskListBefore
+ expect(typeof move).toBe('function')
+ move!(a.id,c.id)
+ expect(store.getState().lists?.map(l=>l.id)).toEqual([b.id,a.id,c.id])
+})
