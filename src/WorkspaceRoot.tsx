@@ -243,6 +243,9 @@ export function WorkspaceRoot({
       onMoveTaskList={(listId, direction) => {
         guardedCommands.moveTaskList(listId, direction)
       }}
+      onMoveTaskListBefore={(listId, targetListId) => {
+        guardedCommands.moveTaskListBefore(listId, targetListId)
+      }}
       onChangeTaskList={(taskId, listId) => {
         guardedCommands.changeTaskList(taskId, listId)
       }}
