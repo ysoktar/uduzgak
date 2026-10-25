@@ -437,3 +437,18 @@ textarea {
   max-width: 100%;
   overflow-wrap: anywhere;
 }
+
+/* App-owned shell: keep the product banner separate from Workspace sections. */
+.workspace-app-header {
+  width: 100%;
+  padding-inline: 16px;
+  border-bottom: 1px solid #dbe0e7;
+  background: #fff;
+}
+.workspace-app-header h1 {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-block: 18px;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  letter-spacing: -0.035em;
+}
