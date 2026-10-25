@@ -27,3 +27,11 @@ it('TDD 504: holding the slash key cannot repeatedly seize focus', () => {
   fireEvent.keyDown(document.body, { key: '/', repeat: true })
   expect(document.activeElement).not.toBe(screen.getByLabelText('Search tasks'))
 })
+
+it('TDD 505: an already-consumed slash event does not steal focus', () => {
+  render(<App />)
+  const event = new KeyboardEvent('keydown', { key: '/', bubbles: true, cancelable: true })
+  event.preventDefault()
+  document.body.dispatchEvent(event)
+  expect(document.activeElement).not.toBe(screen.getByLabelText('Search tasks'))
+})
