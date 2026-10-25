@@ -919,8 +919,12 @@ export function App({
         ref={taskSearchRef}
         value={searchQuery}
         onKeyDown={(event) => {
-          if (event.key === 'Escape' && searchQuery !== '') {
-            updateFilterSortPreferences({ query: '' })
+          if (event.key === 'Escape') {
+            if (searchQuery !== '') {
+              updateFilterSortPreferences({ query: '' })
+            } else {
+              event.currentTarget.blur()
+            }
           }
         }}
         onChange={(event) =>
