@@ -29,3 +29,10 @@ it('navigates to Notes, Docs and Wiki without changing Workspace data',()=>{
  expect(nav.querySelector('a[href="#workspace-knowledge"]')?.textContent).toBe('Knowledge')
  expect(document.getElementById('workspace-knowledge')).toBeTruthy()
 })
+
+it('navigates to the Goals region',()=>{
+ renderRoot()
+ const nav=screen.getByRole('navigation',{name:'Workspace sections'})
+ expect(nav.querySelector('a[href="#workspace-goals"]')?.textContent).toBe('Goals')
+ expect(document.getElementById('workspace-goals')).toBeTruthy()
+})
