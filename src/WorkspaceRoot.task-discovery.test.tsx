@@ -49,5 +49,15 @@ describe('local task discovery', () => {
     expect(empty.textContent).toContain('No tasks yet')
     expect(screen.queryByRole('status', { name: 'No matching tasks' })).toBeNull()
   })
+  it('clears the task search with Escape without changing saved tasks', async () => {
+    const { user, store } = fixture()
+    const before = JSON.stringify(store.getState())
+    const search = screen.getByLabelText('Search tasks') as HTMLInputElement
+    await user.type(search, 'Alpha')
+    expect(search.value).toBe('Alpha')
+    await user.keyboard('{Escape}')
+    expect(search.value).toBe('')
+    expect(JSON.stringify(store.getState())).toBe(before)
+  })
 
 })
