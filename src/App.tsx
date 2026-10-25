@@ -940,6 +940,10 @@ export function App({
         }
       />
 
+      <button type="button" onClick={() => updateFilterSortPreferences({ query: '' })}>
+        Clear task search
+      </button>
+
       <label htmlFor="task-status-filter">Filter by status</label>
       <select
         id="task-status-filter"
