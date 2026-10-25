@@ -31,7 +31,8 @@ describe('local task discovery', () => {
   it('reports the currently visible task count', () => {
     fixture()
     expect(screen.getByRole('status', { name: 'Visible task count' }).textContent).toContain('1 visible task')
-  })  it('explains when filters hide existing tasks', async () => {
+  })
+  it('explains when filters hide existing tasks', async () => {
     const { user } = fixture()
     await user.type(screen.getByLabelText('Search tasks'), 'not-found')
     expect(screen.getByRole('status', { name: 'No matching tasks' }).textContent).toContain('No tasks match')
