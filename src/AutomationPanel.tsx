@@ -533,7 +533,7 @@ export function AutomationPanel({
   }
 
   return (
-    <section aria-labelledby="automation-heading">
+    <section id="workspace-automations" aria-labelledby="automation-heading">
       <h2 id="automation-heading">Automations</h2>
       <form onSubmit={submitNewAutomation}>
         <label htmlFor="new-automation-name">New automation name</label>
