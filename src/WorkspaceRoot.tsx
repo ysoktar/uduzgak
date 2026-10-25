@@ -267,6 +267,9 @@ export function WorkspaceRoot({
       onMoveProject={(projectId, direction) => {
         guardedCommands.moveProject(projectId, direction)
       }}
+      onMoveProjectBefore={(projectId, targetProjectId) => {
+        guardedCommands.moveProjectBefore(projectId, targetProjectId)
+      }}
       onCreateProject={(name) => {
         guardedCommands.addProject(name)
       }}
