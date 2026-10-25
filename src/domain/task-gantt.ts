@@ -395,3 +395,68 @@ export function normalizeTaskGanttWorkingWeekdays(weekdays: readonly number[]): 
   }
   return [...new Set(weekdays)].sort((a, b) => a - b)
 }
+
+/** Map a nonnegative logical working-day offset to an inclusive UTC calendar date.
+ * Offset zero is the first available working day on or after the anchor. */
+export function shiftTaskGanttWorkingDate(
+  anchor: string,
+  workingOffset: number,
+  nonWorkingDates: readonly string[] = [],
+  workingWeekdays: readonly number[] = [1, 2, 3, 4, 5],
+): string {
+  const instant = Date.parse(`${anchor}T00:00:00.000Z`)
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(anchor) || !Number.isFinite(instant) ||
+      new Date(instant).toISOString().slice(0, 10) !== anchor) {
+    throw new Error('Invalid Gantt anchor date')
+  }
+  if (!Number.isSafeInteger(workingOffset) || workingOffset < 0) {
+    throw new Error('Invalid Gantt working offset')
+  }
+  const excluded = new Set(normalizeTaskGanttNonWorkingDates(nonWorkingDates))
+  const weekdays = new Set(normalizeTaskGanttWorkingWeekdays(workingWeekdays))
+  const date = new Date(instant)
+  const anchorIsWorking = weekdays.has(date.getUTCDay()) && !excluded.has(anchor)
+  let remaining = anchorIsWorking ? workingOffset : Math.max(0, workingOffset - 1)
+  while (true) {
+    const day = date.toISOString().slice(0, 10)
+    if (weekdays.has(date.getUTCDay()) && !excluded.has(day)) {
+      if (remaining === 0) return day
+      remaining--
+    }
+    date.setUTCDate(date.getUTCDate() + 1)
+    if (!Number.isFinite(date.getTime())) throw new Error('Gantt working date out of range')
+  }
+}
+
+export interface TaskGanttWorkingDateRow {
+  taskId: string
+  isMilestone: boolean
+  earliestStartDate: string
+  earliestFinishDate: string
+  latestStartDate: string
+  latestFinishDate: string
+}
+
+/** Derived logical working-day dates, anchored independently from stored schedules. */
+export function createTaskGanttWorkingDateProjection(
+  tasks: readonly Task[],
+  relationships: readonly TaskRelationship[],
+  anchor: string,
+  nonWorkingDates: readonly string[] = [],
+  workingWeekdays: readonly number[] = [1, 2, 3, 4, 5],
+): { rows: TaskGanttWorkingDateRow[] } {
+  const path = createTaskGanttWorkingCriticalPath(tasks, relationships, nonWorkingDates, workingWeekdays)
+  const firstWorkingDate = shiftTaskGanttWorkingDate(anchor, 0, nonWorkingDates, workingWeekdays)
+  const projectDate = (offset: number) =>
+    shiftTaskGanttWorkingDate(firstWorkingDate, offset, nonWorkingDates, workingWeekdays)
+  return {
+    rows: path.rows.map((row) => ({
+      taskId: row.taskId,
+      isMilestone: row.isMilestone,
+      earliestStartDate: projectDate(row.earliestStart),
+      earliestFinishDate: projectDate(Math.max(row.earliestStart, row.earliestFinish - 1)),
+      latestStartDate: projectDate(row.latestStart),
+      latestFinishDate: projectDate(Math.max(row.latestStart, row.latestFinish - 1)),
+    })),
+  }
+}

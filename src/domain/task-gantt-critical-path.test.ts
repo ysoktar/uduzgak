@@ -266,3 +266,121 @@ it('recomputes critical path when Sunday replaces Friday in a Gantt workweek', (
   ])
   expect(tasks).toEqual([friday, sunday])
 })
+
+it('advances a Gantt working-date anchor across weekends and configured holidays', () => {
+  const move = (ganttModule as unknown as {
+    shiftTaskGanttWorkingDate?: (
+      anchor: string, workingOffset: number, holidays?: readonly string[], weekdays?: readonly number[],
+    ) => string
+  }).shiftTaskGanttWorkingDate
+  expect(typeof move).toBe('function')
+  expect(move!('2026-10-16', 0)).toBe('2026-10-16')
+  expect(move!('2026-10-16', 1)).toBe('2026-10-19')
+  expect(move!('2026-10-17', 0)).toBe('2026-10-19')
+  expect(move!('2026-10-16', 1, ['2026-10-19'])).toBe('2026-10-20')
+  expect(move!('2026-10-16', 0, [], [0, 1, 2, 3, 4])).toBe('2026-10-18')
+  expect(move!('2026-10-16', 1, [], [0, 1, 2, 3, 4])).toBe('2026-10-18')
+  expect(move!('2026-10-16', 2, [], [0, 1, 2, 3, 4])).toBe('2026-10-19')
+  expect(() => move!('2026-02-30', 0)).toThrow('Invalid Gantt anchor date')
+  expect(() => move!('2026-10-16', -1)).toThrow('Invalid Gantt working offset')
+})
+
+it('projects earliest Gantt working offsets into dates across a holiday', () => {
+  const project = (ganttModule as unknown as {
+    createTaskGanttWorkingDateProjection?: (
+      tasks: readonly Task[], relationships: readonly TaskRelationship[], anchor: string,
+      holidays?: readonly string[], weekdays?: readonly number[],
+    ) => { rows: Array<{ taskId: string; earliestStartDate: string; earliestFinishDate: string }> }
+  }).createTaskGanttWorkingDateProjection
+  expect(typeof project).toBe('function')
+  const tasks = [task('a', '2026-10-19', '2026-10-20'), task('b', '2026-10-21', '2026-10-23')]
+  const relationships = [blocks('r1', 'a', 'b')]
+  const before = JSON.stringify({ tasks, relationships })
+  expect(project!(tasks, relationships, '2026-10-19', ['2026-10-22']).rows.map(
+    ({ taskId, earliestStartDate, earliestFinishDate }) => ({ taskId, earliestStartDate, earliestFinishDate }),
+  )).toEqual([
+    { taskId: 'a', earliestStartDate: '2026-10-19', earliestFinishDate: '2026-10-20' },
+    { taskId: 'b', earliestStartDate: '2026-10-21', earliestFinishDate: '2026-10-23' },
+  ])
+  expect(JSON.stringify({ tasks, relationships })).toBe(before)
+})
+
+it('projects latest working start and finish dates using dependency slack', () => {
+  const project = (ganttModule as unknown as {
+    createTaskGanttWorkingDateProjection: (
+      tasks: readonly Task[], edges: readonly TaskRelationship[], anchor: string,
+    ) => { rows: Array<{ taskId: string; latestStartDate?: string; latestFinishDate?: string }> }
+  }).createTaskGanttWorkingDateProjection
+  const tasks = [
+    task('a', '2026-10-19', '2026-10-20'),
+    task('b', '2026-10-21', '2026-10-23'),
+    task('side', '2026-10-21', '2026-10-21'),
+  ]
+  const rows = project(tasks, [blocks('r1', 'a', 'b'), blocks('r2', 'a', 'side')], '2026-10-19').rows
+  expect(rows.find((row) => row.taskId === 'side')).toMatchObject({
+    latestStartDate: '2026-10-23',
+    latestFinishDate: '2026-10-23',
+  })
+  expect(rows.find((row) => row.taskId === 'b')).toMatchObject({
+    latestStartDate: '2026-10-21',
+    latestFinishDate: '2026-10-23',
+  })
+})
+
+it('places zero-day milestones on their working handoff date without scheduling unscheduled Tasks', () => {
+  const project = ganttModule.createTaskGanttWorkingDateProjection
+  const tasks = [
+    task('a', '2026-10-19', '2026-10-20'),
+    task('milestone', '2026-10-21', '2026-10-21', true),
+    task('b', '2026-10-21', '2026-10-21'),
+    task('unscheduled'),
+  ]
+  const before = JSON.stringify(tasks)
+  const result = project(tasks, [
+    blocks('e1', 'a', 'milestone'),
+    blocks('e2', 'milestone', 'b'),
+  ], '2026-10-19')
+  expect(result.rows.map((row) => row.taskId)).toEqual(['a', 'milestone', 'b'])
+  expect(result.rows.find((row) => row.taskId === 'milestone')).toMatchObject({
+    earliestStartDate: '2026-10-21',
+    earliestFinishDate: '2026-10-21',
+  })
+  expect(result.rows.find((row) => row.taskId === 'b')).toMatchObject({
+    earliestStartDate: '2026-10-21',
+    earliestFinishDate: '2026-10-21',
+  })
+  expect(JSON.stringify(tasks)).toBe(before)
+})
+
+it('marks projected zero-duration milestones distinctly from ordinary working Tasks', () => {
+  const result = ganttModule.createTaskGanttWorkingDateProjection([
+    task('milestone', '2026-10-19', '2026-10-19', true),
+    task('regular', '2026-10-19', '2026-10-19'),
+  ], [], '2026-10-19')
+  expect(result.rows.map((row) => ({
+    taskId: row.taskId,
+    isMilestone: (row as typeof row & { isMilestone?: boolean }).isMilestone,
+  }))).toEqual([
+    { taskId: 'milestone', isMilestone: true },
+    { taskId: 'regular', isMilestone: false },
+  ])
+})
+
+it('normalizes a non-working projection anchor before applying dependency offsets', () => {
+  const tasks = [
+    task('first', '2026-10-16', '2026-10-18'),
+    task('second', '2026-10-19', '2026-10-19'),
+  ]
+  const relationships = [blocks('link', 'first', 'second')]
+  const snapshot = JSON.stringify({ tasks, relationships })
+  const result = ganttModule.createTaskGanttWorkingDateProjection(
+    tasks, relationships, '2026-10-16', [], [0, 1, 2, 3, 4],
+  )
+  expect(result.rows.map(({ taskId, earliestStartDate, earliestFinishDate }) => ({
+    taskId, earliestStartDate, earliestFinishDate,
+  }))).toEqual([
+    { taskId: 'first', earliestStartDate: '2026-10-18', earliestFinishDate: '2026-10-18' },
+    { taskId: 'second', earliestStartDate: '2026-10-19', earliestFinishDate: '2026-10-19' },
+  ])
+  expect(JSON.stringify({ tasks, relationships })).toBe(snapshot)
+})

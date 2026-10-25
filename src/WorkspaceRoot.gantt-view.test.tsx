@@ -314,3 +314,23 @@ it('loads saved Gantt workweek and holiday exceptions into the initial working-d
   expect(screen.getByRole('button', { name: 'Remove Gantt non-working date 2026-10-19' })).toBeTruthy()
   expect(JSON.stringify(store.getState())).toBe(before)
 })
+
+it('reveals optional derived Gantt working dates without changing Task schedules', async () => {
+  const { user, store } = renderCriticalGanttWorkspace()
+  const before = JSON.stringify(store.getState())
+  await user.click(screen.getByRole('button', { name: 'Show Gantt working-day analysis' }))
+  expect(screen.queryByLabelText('Gantt projected working dates for Alpha')).toBeNull()
+  const toggle = screen.getByRole('button', { name: 'Show Gantt projected working dates' })
+  await user.click(toggle)
+  expect(toggle.getAttribute('aria-pressed')).toBe('true')
+  expect(screen.getByLabelText('Gantt projected working dates for Alpha').textContent).toContain(
+    'Earliest 2026-10-19 to 2026-10-20',
+  )
+  expect(screen.getByLabelText('Gantt projected working dates for Beta').textContent).toContain(
+    'Earliest 2026-10-21 to 2026-10-23',
+  )
+  expect(screen.queryByLabelText('Gantt projected working dates for Unscheduled')).toBeNull()
+  await user.click(toggle)
+  expect(screen.queryByLabelText('Gantt projected working dates for Alpha')).toBeNull()
+  expect(JSON.stringify(store.getState())).toBe(before)
+})
