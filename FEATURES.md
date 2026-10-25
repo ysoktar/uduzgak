@@ -695,3 +695,13 @@ This is not a completed touch-gesture drag system or a full accessibility review
 - [x] Accessible in-app List move-before controls preserve existing up/down buttons (466).
 
 This adds target-based buttons and domain commands, not pointer drag handles or cross-container movement for Projects and Lists.
+
+## Native Project/List drag controls — TDD 467–471
+
+- [x] Drag a Project before an in-Area peer, preserving unrelated ordering (467).
+- [x] Drag a List before an in-Project peer (468).
+- [x] Drag a Project after a peer (469).
+- [x] Drag a List after a peer (470).
+- [x] Responsive native drag controls with touch-sized fallback buttons (471).
+
+These controls reuse the scoped atomic reorder commands and preserve existing keyboard up/down plus direct-placement controls. Touch gesture support and comprehensive real-device accessibility testing remain outstanding.
