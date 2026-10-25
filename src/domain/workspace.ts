@@ -1949,6 +1949,13 @@ export function workspaceReducer(
         candidate.projectId === target.projectId &&
         candidate.listId === target.listId &&
         candidate.parentTaskId === target.parentTaskId
+      const source = state.tasks.find((task) => task.id === action.taskId)
+      const destination = state.tasks.find((task) => task.id === action.targetTaskId)
+      if (!source || !destination) throw new Error('Cannot reorder a missing Task')
+      if (source.id === destination.id) throw new Error('Cannot reorder a Task onto itself')
+      if (!sameScope(source, destination)) {
+        throw new Error('Cannot reorder Tasks outside the same sibling group')
+      }
       const reorder = action.placement === 'before' ? moveItemBeforePeer : moveItemAfterPeer
       return {
         ...state,
