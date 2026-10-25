@@ -33,3 +33,14 @@ it('drags a To-do Task into Doing without copying the Task',async()=>{
  expect(store.getState().tasks.find(t=>t.id===alpha.id)?.status).toBe('doing')
  expect(store.getState().tasks).toHaveLength(1)
 })
+
+it('drags a Doing Task into Done using the Board heading',async()=>{
+ const {user,store,alpha}=await fixture()
+ await user.selectOptions(screen.getByLabelText('Status for Alpha'),'doing')
+ const dataTransfer=transfer(alpha.id)
+ fireEvent.dragStart(screen.getByLabelText('Doing board task Alpha'),{dataTransfer})
+ const done=screen.getByLabelText('Drop task into Done')
+ fireEvent.dragOver(done,{dataTransfer})
+ fireEvent.drop(done,{dataTransfer})
+ expect(store.getState().tasks.find(t=>t.id===alpha.id)?.status).toBe('done')
+})
