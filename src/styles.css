@@ -320,3 +320,90 @@ textarea {
 
 .task-gantt-schedule-warning > p { margin: 0; font-weight: 700; }
 .task-gantt-schedule-warning ul { margin-top: 8px; }
+
+/* Accessible landmarks and keyboard navigation for the local-first shell. */
+.skip-link {
+  position: absolute;
+  inset-block-start: 8px;
+  inset-inline-start: 8px;
+  z-index: 10;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #fff;
+  color: #17263c;
+  transform: translateY(-160%);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+:focus-visible {
+  outline: 3px solid #2b63ac;
+  outline-offset: 3px;
+}
+
+.workspace-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-bottom: 20px;
+}
+
+.workspace-navigation a {
+  color: #204c7d;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.workspace-empty-guidance {
+  padding: 16px;
+  border: 1px solid #dbe0e7;
+  border-radius: 12px;
+  background: #fff;
+}
+
+/* Prevent fixed-width inputs and long task names from overflowing on phones. */
+.workspace-filters,
+.workspace-projects {
+  min-width: 0;
+}
+
+.workspace-projects li,
+.workspace-projects section,
+.workspace-navigation {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .workspace-filters input,
+  .workspace-filters select,
+  .workspace-filters textarea,
+  .workspace-filters button,
+  .workspace-projects input,
+  .workspace-projects select,
+  .workspace-projects textarea {
+    max-width: 100%;
+  }
+
+  .workspace-projects li,
+  .workspace-projects form {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .workspace-navigation {
+    gap: 12px;
+  }
+
+  .workspace-projects section {
+    padding: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skip-link,
+  .workspace-navigation a {
+    transition: none;
+    animation: none;
+  }
+}

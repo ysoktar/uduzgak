@@ -6,6 +6,12 @@ Vite, and browser `localStorage`.
 The project is still in its feature-first phase. Core data rules and workflows
 are being added before a final visual design system or backend is introduced.
 
+## Current local-first status (October 2026)
+
+Repository: `https://github.com/ysoktar/uduzgak`. Local-first Workspace data and view preferences remain in browser storage. The user-facing frontend has a tested semantic-navigation foundation, including a main-content skip link, filter/project landmarks, new-workspace guidance, keyboard focus outlines and narrow-screen CSS. TDD 442–446 checks: 64 targeted tests across three files, zero-warning lint and production build on GitHub Actions [run 40234617984](https://github.com/ysoktar/uduzgak/actions/runs/40234617984). Final visual composition, responsive QA, drag interactions and an end-to-end accessibility audit remain open; backend identity, sync and collaboration remain separate.
+
+The older verification checkpoints below are historical milestones rather than the latest repository commit.
+
 ## Verified behavior checkpoint
 
 The confirmed starting checkpoint for TDD 261-265 is TDD 260.

@@ -1,0 +1,21 @@
+name: Local UI TDD checks
+on:
+  push:
+    branches:
+      - tdd/442-446-local-ui-accessibility
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --include=dev --no-fund
+      - run: npm run lint
+      - run: npm run build
+      - run: npm exec -- vitest run src/WorkspaceRoot.local-ui.test.tsx src/WorkspaceRoot.test.tsx src/local-ui-styles.test.ts --maxWorkers=1 --testTimeout=30000
