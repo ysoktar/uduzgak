@@ -847,7 +847,7 @@ export function App({
         <p>Attachment metadata only. File content is not stored.</p>
       ) : null}
 
-      <div id="workspace-filters" className="workspace-filters">
+      <div id="workspace-filters" role="region" aria-label="Task filters and sorting" className="workspace-filters">
       <label htmlFor="project-view">View project</label>
       <select
         id="project-view"
