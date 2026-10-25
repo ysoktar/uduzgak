@@ -276,6 +276,8 @@ export function App({
   onViewPreferencesChange,
 }: AppProps) {
   const [activityHistoryOpen, setActivityHistoryOpen] = useState(false)
+  const [showTaskFilters, setShowTaskFilters] = useState(true)
+  const [showProjects, setShowProjects] = useState(true)
   const [relationshipTypes, setRelationshipTypes] = useState<
     Record<string, TaskRelationshipType>
   >({})
@@ -808,8 +810,8 @@ export function App({
       </header>
       <main id="workspace-content">
       <nav aria-label="Workspace navigation" className="workspace-navigation">
-        <a href="#workspace-filters">Task filters</a>
-        <a href="#workspace-projects">Projects</a>
+        <a href="#workspace-filters" onClick={() => setShowTaskFilters(true)}>Task filters</a>
+        <a href="#workspace-projects" onClick={() => setShowProjects(true)}>Projects</a>
       </nav>
       <p className="workspace-summary">
         {activeProjects.length} {projectLabel} · {workspaceSummary.total}{' '}
@@ -847,7 +849,11 @@ export function App({
         <p>Attachment metadata only. File content is not stored.</p>
       ) : null}
 
-      <div id="workspace-filters" role="region" aria-label="Task filters and sorting" className="workspace-filters">
+      <button type="button" className="workspace-disclosure-button" aria-controls="workspace-filters"
+        aria-expanded={showTaskFilters} onClick={() => setShowTaskFilters(value => !value)}>
+        {showTaskFilters ? "Hide task filters" : "Show task filters"}
+      </button>
+      <div id="workspace-filters" role="region" aria-label="Task filters and sorting" className="workspace-filters" hidden={!showTaskFilters}>
       <label htmlFor="project-view">View project</label>
       <select
         id="project-view"
@@ -1835,7 +1841,11 @@ export function App({
       </button>
 
       </div>
-      <div id="workspace-projects" role="region" aria-label="Projects and tasks" className="workspace-projects">
+      <button type="button" className="workspace-disclosure-button" aria-controls="workspace-projects"
+        aria-expanded={showProjects} onClick={() => setShowProjects(value => !value)}>
+        {showProjects ? "Hide projects and tasks" : "Show projects and tasks"}
+      </button>
+      <div id="workspace-projects" role="region" aria-label="Projects and tasks" className="workspace-projects" hidden={!showProjects}>
       {onCreateArea ? (
         <section>
           <h2>Areas</h2>

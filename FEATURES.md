@@ -725,3 +725,13 @@ The shell is a semantic and responsive foundation, not a final independent navig
 - [x] Responsive wrapping and keyboard-visible focus for section links (481).
 
 Navigation is anchor-based and local-first; existing panel creation/editing and persistence remain unchanged. Complete keyboard/ARIA visual audit remains open.
+
+## Workspace panel disclosures — TDD 482–486
+
+- [x] Hide/reopen Task filters using an explicit expanded-state control (482).
+- [x] Hide/reopen Project/Task content without changing data (483).
+- [x] Task filters navigation reopens hidden filter region (484).
+- [x] Projects navigation reopens hidden content region (485).
+- [x] Responsive, touch-sized disclosure controls (486).
+
+Disclosure state is session-only; Workspace and view-preference documents are not modified. Regions are open by default to preserve established workflows and keyboard navigation.
