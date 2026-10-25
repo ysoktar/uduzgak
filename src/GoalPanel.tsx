@@ -199,7 +199,7 @@ export function GoalPanel({
   }
 
   return (
-    <section aria-label="Goals">
+    <section id="workspace-goals" aria-label="Goals">
       <h2>Goals</h2>
       <form onSubmit={addGoal}>
         <label htmlFor="new-goal-name">New Goal name</label>

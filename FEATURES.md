@@ -715,3 +715,13 @@ These controls reuse the scoped atomic reorder commands and preserve existing ke
 - [x] Fixed-layout Task table cells wrap long content (476).
 
 The shell is a semantic and responsive foundation, not a final independent navigation design or visual QA sign-off.
+
+## Workspace section navigation — TDD 477–481
+
+- [x] Navigate to Dashboard from named Workspace section index (477).
+- [x] Navigate to Knowledge Notes/Docs/Wiki region (478).
+- [x] Navigate to Goals region (479).
+- [x] Navigate to Automations region (480).
+- [x] Responsive wrapping and keyboard-visible focus for section links (481).
+
+Navigation is anchor-based and local-first; existing panel creation/editing and persistence remain unchanged. Complete keyboard/ARIA visual audit remains open.

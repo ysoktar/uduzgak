@@ -92,7 +92,7 @@ export function KnowledgePanel(props: KnowledgePanelProps) {
   }
 
   return (
-    <section aria-label="Knowledge">
+    <section id="workspace-knowledge" aria-label="Knowledge">
       <h2>Notes / Docs / Wiki</h2>
       <form onSubmit={addDocument}>
         <label htmlFor="new-knowledge-title">New document title</label>

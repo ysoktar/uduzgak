@@ -3445,3 +3445,7 @@ Base: `ef54f43c0848303c22ca0fe45911c3e0b5ef2246`; fork branch `tdd/467-471-proje
 ## TDD 472–476 — semantic Workspace shell
 
 Base: `23cbf17fd5cdd10d1841d1fdb68dbab64c64ba09`. Fork branch `tdd/472-476-semantic-workspace-shell`. Test-first changes establish separate application header and Workspace main, named filter and projects regions, responsive header and Task table wrapping. Existing Workspace command flows and browser persistence unaffected. Final feature GitHub Actions run 40242442996 passed 8 targeted tests across three files, zero-warning lint and production TypeScript/Vite build. Full-suite and manual browser visual checks remain outstanding.
+
+## TDD 477–481 — cross-panel section navigation
+
+Base: `823e6a4cf61ecbee721d054de922ecf8beed7def`. Fork branch `tdd/477-481-workspace-section-navigation`. Test-first additions anchor Dashboard, Knowledge, Goals and Automations and provide accessible responsive navigation at WorkspaceRoot. GitHub Actions run 40242762833 confirmed eight targeted tests in three files, zero-warning lint and production build on final feature source. This is not a full-suite or visual accessibility sign-off.
