@@ -452,3 +452,14 @@ textarea {
   font-size: clamp(1.5rem, 3vw, 2rem);
   letter-spacing: -0.035em;
 }
+
+/* Fixed Task table cells wrap long titles and values on narrow screens. */
+.task-table-summary {
+  table-layout: fixed;
+  max-width: 100%;
+}
+.task-table-summary th,
+.task-table-summary td {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
