@@ -13,6 +13,6 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: '22', cache: npm }
       - run: npm ci --include=dev --no-fund
-      - run: npm exec -- vitest run src/WorkspaceRoot.project-list-native-drag.test.tsx src/WorkspaceRoot.project-list-drop.test.tsx src/local-ui-styles.test.ts --maxWorkers=1 --testTimeout=30000
+      - run: npm exec -- vitest run src/WorkspaceRoot.project-list-native-drag.test.tsx src/WorkspaceRoot.project-list-drop.test.tsx src/local-ui-styles.test.ts src/project-list-drag-styles.test.ts --maxWorkers=1 --testTimeout=30000
       - run: npm run lint
       - run: npm run build
