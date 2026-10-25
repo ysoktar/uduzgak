@@ -17,3 +17,10 @@ it('provides a named task-filter region with the existing search input',()=>{
  expect(region.id).toBe('workspace-filters')
  expect(region.contains(screen.getByLabelText('Search tasks'))).toBe(true)
 })
+
+it('labels the Projects and Tasks region separately from Task filters',()=>{
+ render(<App />)
+ const region=screen.getByRole('region',{name:'Projects and tasks'})
+ expect(region.id).toBe('workspace-projects')
+ expect(region.contains(screen.getByRole('region',{name:'Task filters and sorting'}))).toBe(false)
+})
