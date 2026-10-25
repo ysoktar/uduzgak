@@ -145,6 +145,8 @@ export interface WorkspaceCommands {
   renameTaskList(listId: string, name: string): void
   deleteTaskList(listId: string): void
   moveTaskList(listId: string, direction: MoveDirection): void
+  moveTaskListBefore(listId: string, targetListId: string): void
+  moveTaskListAfter(listId: string, targetListId: string): void
   changeTaskList(taskId: string, listId: string | null): void
   changeTasksList(taskIds: string[], listId: string | null): void
   addChecklistItem(taskId: string, text: string): ReturnType<typeof createChecklistItem>
@@ -711,6 +713,12 @@ export function createWorkspaceCommands(
       return list
     },
 
+    moveTaskListBefore(listId,targetListId) {
+      store.dispatch({type:'list/reordered',listId,targetListId,placement:'before'})
+    },
+    moveTaskListAfter(listId,targetListId) {
+      store.dispatch({type:'list/reordered',listId,targetListId,placement:'after'})
+    },
     moveTaskList(listId, direction) {
       store.dispatch({
         type: 'list/moved',
