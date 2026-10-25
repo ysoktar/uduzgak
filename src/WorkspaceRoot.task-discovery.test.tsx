@@ -36,5 +36,12 @@ describe('local task discovery', () => {
     await user.type(screen.getByLabelText('Search tasks'), 'not-found')
     expect(screen.getByRole('status', { name: 'No matching tasks' }).textContent).toContain('No tasks match')
   })
+  it('clears active search from a zero-results recovery control', async () => {
+    const { user } = fixture()
+    await user.type(screen.getByLabelText('Search tasks'), 'not-found')
+    await user.click(screen.getByRole('button', { name: 'Clear filters and show tasks' }))
+    expect((screen.getByLabelText('Search tasks') as HTMLInputElement).value).toBe('')
+    expect(screen.getByRole('status', { name: 'Visible task count' }).textContent).toContain('1 visible task')
+  })
 
 })
