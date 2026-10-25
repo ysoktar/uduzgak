@@ -1,0 +1,18 @@
+name: TDD 462-466 Project and List reordering
+on:
+  push:
+    branches: [tdd/462-466-project-list-drop-order]
+permissions:
+  contents: read
+jobs:
+  focused:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - run: npm ci --include=dev --no-fund
+      - run: npm exec -- vitest run src/application/project-list-drop.test.ts src/WorkspaceRoot.project-list-drop.test.tsx --maxWorkers=1 --testTimeout=30000
+      - run: npm run lint
+      - run: npm run build
