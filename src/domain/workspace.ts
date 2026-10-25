@@ -1349,6 +1349,7 @@ export function workspaceReducer(
       }
 
     case 'project/reordered': {
+      if (action.placement !== 'before' && action.placement !== 'after') throw new Error('Invalid Project drop placement')
       const source = state.projects.find(p => p.id === action.projectId)
       const target = state.projects.find(p => p.id === action.targetProjectId)
       if (!source || !target || source.id === target.id || source.areaId !== target.areaId) throw new Error('Cannot reorder Projects outside the same Area')
