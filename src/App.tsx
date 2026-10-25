@@ -283,6 +283,7 @@ export function App({
     if (showTaskFilters && focusSearchOnOpen.current) {
       focusSearchOnOpen.current = false
       taskSearchRef.current?.focus()
+      taskSearchRef.current?.select()
     }
   }, [showTaskFilters])
 
@@ -292,6 +293,7 @@ export function App({
       setShowTaskFilters(true)
     } else {
       taskSearchRef.current?.focus()
+      taskSearchRef.current?.select()
     }
   }
   useEffect(() => {
