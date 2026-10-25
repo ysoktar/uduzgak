@@ -1,5 +1,5 @@
 /** @vitest-environment jsdom */
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { expect, it } from 'vitest'
 import { App } from './App'
@@ -14,4 +14,10 @@ it('TDD 502: shortcut selects existing Task search text for immediate replacemen
   expect(document.activeElement).toBe(search)
   expect(search.selectionStart).toBe(0)
   expect(search.selectionEnd).toBe(search.value.length)
+})
+
+it('TDD 503: IME composition does not invoke the search shortcut', () => {
+  render(<App />)
+  fireEvent.keyDown(document.body, { key: '/', isComposing: true })
+  expect(document.activeElement).not.toBe(screen.getByLabelText('Search tasks'))
 })
