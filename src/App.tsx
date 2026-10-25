@@ -913,8 +913,9 @@ export function App({
 
       <label htmlFor="task-search">Search tasks</label>
       <small className="task-search-shortcut-hint">Press / to search tasks</small>
+      <small className="task-search-shortcut-hint">Or use Ctrl+K / Cmd+K</small>
       <input
-        aria-keyshortcuts="/"
+        aria-keyshortcuts="/ Control+K Meta+K"
         id="task-search"
         ref={taskSearchRef}
         value={searchQuery}
