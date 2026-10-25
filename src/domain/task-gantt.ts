@@ -414,8 +414,9 @@ export function shiftTaskGanttWorkingDate(
   }
   const excluded = new Set(normalizeTaskGanttNonWorkingDates(nonWorkingDates))
   const weekdays = new Set(normalizeTaskGanttWorkingWeekdays(workingWeekdays))
-  let remaining = workingOffset
   const date = new Date(instant)
+  const anchorIsWorking = weekdays.has(date.getUTCDay()) && !excluded.has(anchor)
+  let remaining = anchorIsWorking ? workingOffset : Math.max(0, workingOffset - 1)
   while (true) {
     const day = date.toISOString().slice(0, 10)
     if (weekdays.has(date.getUTCDay()) && !excluded.has(day)) {
