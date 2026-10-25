@@ -3926,6 +3926,18 @@ export function App({
                               }}>Drop before {task.title}</button>
                           </>
                         ) : null}
+                        {taskSort === 'manual' && taskViewMode === 'list' && onMoveTaskBefore ? (
+                          <div className="task-touch-reorder" aria-label={`Move task ${task.title} before a sibling`}>
+                            {activeTasks.filter((candidate) => candidate.id !== task.id &&
+                              candidate.projectId === task.projectId && candidate.listId === task.listId &&
+                              candidate.parentTaskId === task.parentTaskId).map((candidate) => (
+                              <button type="button" key={candidate.id}
+                                onClick={() => onMoveTaskBefore(task.id, candidate.id)}>
+                                Move task {task.title} before {candidate.title}
+                              </button>
+                            ))}
+                          </div>
+                        ) : null}
                         {taskSort === 'manual' && taskViewMode === 'list' && onMoveTaskAfter ? (
                           <div className="task-touch-reorder" aria-label={`Reorder task ${task.title}`}>
                             {activeTasks.filter((candidate) => candidate.id !== task.id &&
