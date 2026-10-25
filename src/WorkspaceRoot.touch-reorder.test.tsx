@@ -41,3 +41,12 @@ it('announces a completed touch-friendly reorder to screen readers',async()=>{
   await user.click(screen.getByRole('button',{name:'Move task Alpha after Gamma'}))
   expect(screen.getByRole('status',{name:'Task reorder result'}).textContent).toContain('Moved Alpha after Gamma')
 })
+
+it('supports native drag-and-drop after a sibling',async()=>{
+  const {store,alpha,beta,gamma}=await fixture()
+  const dataTransfer={setData:(_kind:string,_id:string)=>{},getData:(_kind:string)=>alpha.id,effectAllowed:'move',dropEffect:'move'}
+  fireEvent.dragStart(screen.getByLabelText('Drag task Alpha'),{dataTransfer})
+  fireEvent.dragOver(screen.getByLabelText('Drop after task Gamma'),{dataTransfer})
+  fireEvent.drop(screen.getByLabelText('Drop after task Gamma'),{dataTransfer})
+  expect(store.getState().tasks.map(t=>t.id)).toEqual([beta.id,gamma.id,alpha.id])
+})
