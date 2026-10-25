@@ -17,3 +17,14 @@ it('toggles Task filters with an expanded-state disclosure button',async()=>{
  await user.click(open)
  expect(filters?.hidden).toBe(false)
 })
+
+it('toggles Projects and Tasks without deleting any data',async()=>{
+ const user=userEvent.setup()
+ render(<App/>)
+ const projects=document.getElementById('workspace-projects')
+ expect(projects?.hidden).toBe(false)
+ await user.click(screen.getByRole('button',{name:'Hide projects and tasks'}))
+ expect(projects?.hidden).toBe(true)
+ await user.click(screen.getByRole('button',{name:'Show projects and tasks'}))
+ expect(projects?.hidden).toBe(false)
+})
