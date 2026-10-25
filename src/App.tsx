@@ -807,7 +807,12 @@ export function App({
   return (
     <>
       <a className="skip-link" href="#workspace-content">Skip to workspace content</a>
-      <header className="workspace-app-header">
+      <header className="workspace-app-header" onKeyDown={(event) => {
+        if (event.key === '/' && !event.altKey && !event.ctrlKey && !event.metaKey) {
+          event.preventDefault()
+          taskSearchRef.current?.focus()
+        }
+      }}>
         <h1>uduzgak</h1>
       </header>
       <main id="workspace-content" onKeyDown={(event) => {
