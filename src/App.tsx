@@ -2500,8 +2500,14 @@ export function App({
         </section>
       ) : null}
 
+      {activeProjects.length === 0 ? (
+        <div role="status" aria-label="Empty workspace guidance" className="workspace-empty-guidance">
+          <p>Create your first project to organize tasks and lists.</p>
+          <a href="#project-create">Go to project creation</a>
+        </div>
+      ) : null}
       {onCreateProject ? (
-        <form onSubmit={submitProject}>
+        <form id="project-create" onSubmit={submitProject}>
           <label htmlFor="project-name">Project name</label>
           <input
             id="project-name"
