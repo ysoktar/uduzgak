@@ -788,7 +788,8 @@ export function App({
   }
 
   return (
-    <main>
+    <main id="workspace-content">
+      <a className="skip-link" href="#workspace-content">Skip to workspace content</a>
       <h1>uduzgak</h1>
       <p className="workspace-summary">
         {activeProjects.length} {projectLabel} · {workspaceSummary.total}{' '}
