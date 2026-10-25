@@ -349,3 +349,17 @@ it('places zero-day milestones on their working handoff date without scheduling 
   })
   expect(JSON.stringify(tasks)).toBe(before)
 })
+
+it('marks projected zero-duration milestones distinctly from ordinary working Tasks', () => {
+  const result = ganttModule.createTaskGanttWorkingDateProjection([
+    task('milestone', '2026-10-19', '2026-10-19', true),
+    task('regular', '2026-10-19', '2026-10-19'),
+  ], [], '2026-10-19')
+  expect(result.rows.map((row) => ({
+    taskId: row.taskId,
+    isMilestone: (row as typeof row & { isMilestone?: boolean }).isMilestone,
+  }))).toEqual([
+    { taskId: 'milestone', isMilestone: true },
+    { taskId: 'regular', isMilestone: false },
+  ])
+})
