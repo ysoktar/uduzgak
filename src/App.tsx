@@ -305,7 +305,7 @@ export function App({
         target instanceof HTMLTextAreaElement ||
         target instanceof HTMLSelectElement ||
         (target instanceof HTMLElement && target.isContentEditable)
-      if (event.isComposing || (!slash && !controlSearch) || event.altKey || (slash && editable)) return
+      if (event.repeat || event.isComposing || (!slash && !controlSearch) || event.altKey || (slash && editable)) return
       event.preventDefault()
       focusTaskSearch()
     }
