@@ -3919,6 +3919,19 @@ export function App({
                                 event.dataTransfer.setData('text/plain', task.id)
                                 event.dataTransfer.effectAllowed = 'move'
                               }}>Drag {task.title}</button>
+                            {onMoveTaskAfter ? (
+                              <button type="button" aria-label={`Drop after task ${task.title}`}
+                                onDragOver={(event) => event.preventDefault()}
+                                onDrop={(event) => {
+                                  event.preventDefault()
+                                  const draggedTaskId = event.dataTransfer.getData('text/plain')
+                                  if (draggedTaskId && draggedTaskId !== task.id) {
+                                    onMoveTaskAfter(draggedTaskId, task.id)
+                                    const draggedTask = activeTasks.find((candidate) => candidate.id === draggedTaskId)
+                                    if (draggedTask) setTaskReorderResult(`Moved ${draggedTask.title} after ${task.title}`)
+                                  }
+                                }}>Drop after {task.title}</button>
+                            ) : null}
                             <button type="button" aria-label={`Drop before task ${task.title}`}
                               onDragOver={(event) => event.preventDefault()}
                               onDrop={(event) => {
