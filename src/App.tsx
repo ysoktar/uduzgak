@@ -114,6 +114,7 @@ export interface AppProps {
   onMoveChecklistItem?: (taskId: string, itemId: string, direction: MoveDirection) => void
   onMoveProject?: (projectId: string, direction: MoveDirection) => void
   onMoveProjectBefore?: (projectId: string, targetProjectId: string) => void
+  onMoveProjectAfter?: (projectId: string, targetProjectId: string) => void
   onCreateProject?: (name: string) => void
   onSaveProjectTemplate?: (projectId: string, name: string) => void
   onCreateProjectFromTemplate?: (templateId: string) => void
@@ -221,6 +222,7 @@ export function App({
   onMoveChecklistItem,
   onMoveProject,
   onMoveProjectBefore,
+  onMoveProjectAfter,
   onCreateProject,
   onSaveProjectTemplate,
   onCreateProjectFromTemplate,
@@ -2801,6 +2803,15 @@ export function App({
                       event.dataTransfer.setData('application/x-uduzgak-project',project.id)
                       event.dataTransfer.effectAllowed='move'
                     }}>Drag project {project.name}</button>
+                  {onMoveProjectAfter ? (
+                    <button type="button" aria-label={`Drop after project ${project.name}`}
+                      onDragOver={event=>event.preventDefault()}
+                      onDrop={event=>{
+                        event.preventDefault()
+                        const source=event.dataTransfer.getData('application/x-uduzgak-project')
+                        if(source && source!==project.id)onMoveProjectAfter(source,project.id)
+                      }}>Drop after project {project.name}</button>
+                  ) : null}
                   <button type="button" aria-label={`Drop before project ${project.name}`}
                     onDragOver={event=>event.preventDefault()}
                     onDrop={event=>{
