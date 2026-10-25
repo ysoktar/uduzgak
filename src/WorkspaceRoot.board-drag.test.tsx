@@ -44,3 +44,14 @@ it('drags a Doing Task into Done using the Board heading',async()=>{
  fireEvent.drop(done,{dataTransfer})
  expect(store.getState().tasks.find(t=>t.id===alpha.id)?.status).toBe('done')
 })
+
+it('drags a Doing Task back into To do',async()=>{
+ const {user,store,alpha}=await fixture()
+ await user.selectOptions(screen.getByLabelText('Status for Alpha'),'doing')
+ const dataTransfer=transfer(alpha.id)
+ fireEvent.dragStart(screen.getByLabelText('Doing board task Alpha'),{dataTransfer})
+ const todo=screen.getByLabelText('Drop task into To do')
+ fireEvent.dragOver(todo,{dataTransfer})
+ fireEvent.drop(todo,{dataTransfer})
+ expect(store.getState().tasks.find(t=>t.id===alpha.id)?.status).toBe('todo')
+})
