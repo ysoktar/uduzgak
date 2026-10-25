@@ -6,3 +6,9 @@ it('styles a distinct responsive application header',()=>{
  expect(css).toContain('max-width: 1120px')
  expect(css).toContain('padding-inline:')
 })
+
+it('wraps long Task table content without horizontal page overflow',()=>{
+ expect(css).toContain('.task-table-summary')
+ expect(css).toContain('table-layout: fixed')
+ expect(css).toContain('overflow-wrap: anywhere')
+})
