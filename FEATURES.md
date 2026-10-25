@@ -665,3 +665,13 @@ These settings live in view preferences, not Workspace Task data. Legacy view-pr
 - [x] Clear focused Task search with Escape without mutating Workspace Task data (451).
 
 Verified on fork branch using GitHub Actions run 40237637414: 8 focused tests, zero-warning lint, production build. Final full-suite regression and broader UI evaluation remain separate.
+
+## Manual Task drag-and-drop — TDD 452–456
+
+- [x] Reorder one Task before a target within the same sibling scope, preserving interleaved other-group positions (452).
+- [x] Move after a chosen sibling while respecting missing/self/cross-group no-op behavior in the pure helper (453).
+- [x] Atomic Workspace command and persistence for a single Task drop (454).
+- [x] Manual List-mode native drag handle and drop-before control, retaining keyboard-accessible up/down buttons (455).
+- [x] Reject self-drops, missing endpoints, and different Project/List/parent scopes before persistence (456).
+
+Verified on the fork's GitHub Actions run 40238738296: 6 focused tests in four files, zero-warning lint, production build. This is a first semantic/manual-mode drag interaction; mobile touch drag, keyboard drag lift/drop, visual previews, Project/List reordering, and full accessibility review remain open.

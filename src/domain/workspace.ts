@@ -61,6 +61,8 @@ import { renamePerson, type Person } from './person'
 import { renameTag, type Tag } from './tag'
 import {
   moveItemWithinGroup,
+  moveItemBeforePeer,
+  moveItemAfterPeer,
   type MoveDirection,
 } from './manual-order'
 import {
@@ -242,6 +244,7 @@ export type WorkspaceBaseAction =
   | { type: 'task/listChanged'; taskId: string; listId: string | null }
   | { type: 'task/listChangedBulk'; taskIds: string[]; listId: string | null }
   | { type: 'task/moved'; taskId: string; direction: MoveDirection }
+  | { type: 'task/reordered'; taskId: string; targetTaskId: string; placement: 'before' | 'after' }
   | { type: 'task/customFieldValueChanged'; taskId: string; fieldId: string; value: CustomFieldValue | null }
   | { type: 'task/customFieldValueChangedBulk'; taskIds: string[]; fieldId: string; value: CustomFieldValue | null }
   | { type: 'task/assigneeAdded'; taskId: string; personId: string }
@@ -1940,6 +1943,25 @@ export function workspaceReducer(
             candidate.parentTaskId === target.parentTaskId,
         ),
       }
+
+    case 'task/reordered': {
+      const sameScope = (candidate: Task, target: Task) =>
+        candidate.projectId === target.projectId &&
+        candidate.listId === target.listId &&
+        candidate.parentTaskId === target.parentTaskId
+      const source = state.tasks.find((task) => task.id === action.taskId)
+      const destination = state.tasks.find((task) => task.id === action.targetTaskId)
+      if (!source || !destination) throw new Error('Cannot reorder a missing Task')
+      if (source.id === destination.id) throw new Error('Cannot reorder a Task onto itself')
+      if (!sameScope(source, destination)) {
+        throw new Error('Cannot reorder Tasks outside the same sibling group')
+      }
+      const reorder = action.placement === 'before' ? moveItemBeforePeer : moveItemAfterPeer
+      return {
+        ...state,
+        tasks: reorder(state.tasks, action.taskId, action.targetTaskId, sameScope),
+      }
+    }
 
     case 'task/customFieldValueChanged': {
       const targetTask = state.tasks.find(

@@ -198,6 +198,8 @@ export interface WorkspaceCommands {
   changeTaskProject(taskId: string, projectId: string): void
   changeTasksProject(taskIds: string[], projectId: string): void
   moveTask(taskId: string, direction: MoveDirection): void
+  moveTaskBefore(taskId: string, targetTaskId: string): void
+  moveTaskAfter(taskId: string, targetTaskId: string): void
   deleteTask(taskId: string): void
   deleteTasks(taskIds: string[]): void
   deleteProject(projectId: string): void
@@ -1472,6 +1474,14 @@ export function createWorkspaceCommands(
         taskId,
         direction,
       })
+    },
+
+    moveTaskBefore(taskId, targetTaskId) {
+      store.dispatch({ type: 'task/reordered', taskId, targetTaskId, placement: 'before' })
+    },
+
+    moveTaskAfter(taskId, targetTaskId) {
+      store.dispatch({ type: 'task/reordered', taskId, targetTaskId, placement: 'after' })
     },
 
     deleteTask(taskId) {
