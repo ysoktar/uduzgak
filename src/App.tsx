@@ -112,6 +112,7 @@ export interface AppProps {
   onDeleteChecklistItem?: (taskId: string, itemId: string) => void
   onMoveChecklistItem?: (taskId: string, itemId: string, direction: MoveDirection) => void
   onMoveProject?: (projectId: string, direction: MoveDirection) => void
+  onMoveProjectBefore?: (projectId: string, targetProjectId: string) => void
   onCreateProject?: (name: string) => void
   onSaveProjectTemplate?: (projectId: string, name: string) => void
   onCreateProjectFromTemplate?: (templateId: string) => void
@@ -217,6 +218,7 @@ export function App({
   onDeleteChecklistItem,
   onMoveChecklistItem,
   onMoveProject,
+  onMoveProjectBefore,
   onCreateProject,
   onSaveProjectTemplate,
   onCreateProjectFromTemplate,
@@ -2790,6 +2792,15 @@ export function App({
           return (
             <section key={project.id}>
               <h2>{project.name}</h2>
+              {onMoveProjectBefore ? (
+                <div className="workspace-reorder-controls" aria-label={`Reorder project ${project.name}`}>
+                  {activeProjects.filter(p=>p.id!==project.id && p.areaId===project.areaId).map(candidate=>(
+                    <button key={candidate.id} type="button" onClick={()=>onMoveProjectBefore(project.id,candidate.id)}>
+                      Move project {project.name} before {candidate.name}
+                    </button>
+                  ))}
+                </div>
+              ) : null}
               {onMoveProject ? (
                 <>
                   <button
