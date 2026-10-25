@@ -28,3 +28,13 @@ it('rejects cross-group targets, missing items and self drops without changing t
     expect(result).not.toBe(items)
   }
 })
+
+it('places an item after a selected peer using stable sibling slots', () => {
+  const items: Item[] = [
+    { id: 'a', group: 'one' }, { id: 'x', group: 'two' },
+    { id: 'b', group: 'one' }, { id: 'c', group: 'one' },
+  ]
+  const move = (order as typeof order & { moveItemAfterPeer?: typeof order.moveItemBeforePeer }).moveItemAfterPeer
+  expect(typeof move).toBe('function')
+  expect(move!(items, 'a', 'b', peers).map((item) => item.id)).toEqual(['b', 'x', 'a', 'c'])
+})
