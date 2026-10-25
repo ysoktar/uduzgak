@@ -37,3 +37,11 @@ it('TDD 500: Escape blurs an already-empty Task search', async () => {
   await user.keyboard('{Escape}')
   expect(document.activeElement).not.toBe(search)
 })
+
+it('TDD 501: search advertises its Ctrl+K and Meta+K alternatives', () => {
+  render(<App />)
+  const search = screen.getByLabelText('Search tasks')
+  expect(search.getAttribute('aria-keyshortcuts')).toContain('Control+K')
+  expect(search.getAttribute('aria-keyshortcuts')).toContain('Meta+K')
+  expect(screen.getByText('Or use Ctrl+K / Cmd+K')).toBeTruthy()
+})
