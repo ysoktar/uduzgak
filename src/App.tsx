@@ -104,6 +104,7 @@ export interface AppProps {
   onRenameTaskList?: (listId: string, name: string) => void
   onDeleteTaskList?: (listId: string) => void
   onMoveTaskList?: (listId: string, direction: MoveDirection) => void
+  onMoveTaskListBefore?: (listId: string, targetListId: string) => void
   onChangeTaskList?: (taskId: string, listId: string | null) => void
   onChangeTasksList?: (taskIds: string[], listId: string | null) => void
   onAddChecklistItem?: (taskId: string, text: string) => void
@@ -210,6 +211,7 @@ export function App({
   onRenameTaskList,
   onDeleteTaskList,
   onMoveTaskList,
+  onMoveTaskListBefore,
   onChangeTaskList,
   onChangeTasksList,
   onAddChecklistItem,
@@ -2984,6 +2986,15 @@ export function App({
                               }
                               )
                             </span>
+                            {onMoveTaskListBefore ? (
+                              <div className="workspace-reorder-controls" aria-label={`Reorder list ${list.name}`}>
+                                {projectLists.filter(candidate=>candidate.id!==list.id).map(candidate=>(
+                                  <button key={candidate.id} type="button" onClick={()=>onMoveTaskListBefore(list.id,candidate.id)}>
+                                    Move list {list.name} before {candidate.name}
+                                  </button>
+                                ))}
+                              </div>
+                            ) : null}
                             {onMoveTaskList ? (
                               <>
                                 <button
