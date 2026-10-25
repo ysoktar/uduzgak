@@ -1,5 +1,5 @@
 /** @vitest-environment jsdom */
-import {fireEvent,render,screen} from '@testing-library/react'
+import {act,fireEvent,render,screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {expect,it} from 'vitest'
 import {createWorkspaceCommands} from './application/workspace-commands'
@@ -54,4 +54,19 @@ it('drags a Doing Task back into To do',async()=>{
  fireEvent.dragOver(todo,{dataTransfer})
  fireEvent.drop(todo,{dataTransfer})
  expect(store.getState().tasks.find(t=>t.id===alpha.id)?.status).toBe('todo')
+})
+
+it('rejects a drop into another Project Board and announces why',async()=>{
+ const {store,commands,alpha}=await fixture()
+ act(()=>{
+   const other=commands.addProject('Other board')
+   commands.addTask(other.id,'External')
+ })
+ const heading=screen.getByRole('heading',{name:'Other board'})
+ const target=heading.closest('section')?.querySelector('[aria-label="Drop task into Doing"]')
+ expect(target).not.toBeNull()
+ const dataTransfer=transfer(alpha.id)
+ fireEvent.drop(target!,{dataTransfer})
+ expect(store.getState().tasks.find(task=>task.id===alpha.id)?.status).toBe('todo')
+ expect(screen.getByRole('status',{name:'Board drag result'}).textContent).toContain('Cannot move tasks between project boards')
 })
