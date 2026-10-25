@@ -422,3 +422,18 @@ textarea {
   max-width: 100%;
   overflow-wrap: anywhere;
 }
+
+/* Native Project/List drag actions remain reachable without pointer dragging. */
+.workspace-native-drag {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+}
+.workspace-native-drag button {
+  min-height: 44px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
