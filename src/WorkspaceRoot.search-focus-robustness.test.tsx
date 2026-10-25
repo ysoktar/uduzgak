@@ -21,3 +21,9 @@ it('TDD 503: IME composition does not invoke the search shortcut', () => {
   fireEvent.keyDown(document.body, { key: '/', isComposing: true })
   expect(document.activeElement).not.toBe(screen.getByLabelText('Search tasks'))
 })
+
+it('TDD 504: holding the slash key cannot repeatedly seize focus', () => {
+  render(<App />)
+  fireEvent.keyDown(document.body, { key: '/', repeat: true })
+  expect(document.activeElement).not.toBe(screen.getByLabelText('Search tasks'))
+})
