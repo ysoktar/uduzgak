@@ -294,6 +294,20 @@ export function App({
       taskSearchRef.current?.focus()
     }
   }
+  useEffect(() => {
+    function handleTaskSearchShortcut(event: KeyboardEvent) {
+      const target = event.target
+      if (event.key !== '/' || event.altKey || event.ctrlKey || event.metaKey ||
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        target instanceof HTMLSelectElement ||
+        (target instanceof HTMLElement && target.isContentEditable)) return
+      event.preventDefault()
+      focusTaskSearch()
+    }
+    document.addEventListener('keydown', handleTaskSearchShortcut)
+    return () => document.removeEventListener('keydown', handleTaskSearchShortcut)
+  }, [showTaskFilters])
   const [showProjects, setShowProjects] = useState(true)
   const [relationshipTypes, setRelationshipTypes] = useState<
     Record<string, TaskRelationshipType>
@@ -823,24 +837,9 @@ export function App({
   return (
     <>
       <a className="skip-link" href="#workspace-content">Skip to workspace content</a>
-      <header className="workspace-app-header" onKeyDown={(event) => {
-        if (event.key === '/' && !event.altKey && !event.ctrlKey && !event.metaKey) {
-          event.preventDefault()
-          focusTaskSearch()
-        }
-      }}>
-        <h1>uduzgak</h1>
+      <header className="workspace-app-header">        <h1>uduzgak</h1>
       </header>
-      <main id="workspace-content" onKeyDown={(event) => {
-        if (event.key === '/' && !event.altKey && !event.ctrlKey && !event.metaKey &&
-          !(event.target instanceof HTMLInputElement) &&
-          !(event.target instanceof HTMLTextAreaElement) &&
-          !(event.target instanceof HTMLSelectElement) &&
-          !(event.target instanceof HTMLElement && event.target.isContentEditable)) {
-          event.preventDefault()
-          focusTaskSearch()
-        }
-      }}>
+      <main id="workspace-content">
       <nav aria-label="Workspace navigation" className="workspace-navigation">
         <a href="#workspace-filters" onClick={() => setShowTaskFilters(true)}>Task filters</a>
         <a href="#workspace-projects" onClick={() => setShowProjects(true)}>Projects</a>
