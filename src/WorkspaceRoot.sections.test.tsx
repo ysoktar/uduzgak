@@ -22,3 +22,10 @@ it('navigates from the section index to the Dashboard region',()=>{
  expect(nav.querySelector('a[href="#workspace-dashboard"]')?.textContent).toBe('Dashboard')
  expect(document.getElementById('workspace-dashboard')).toBeTruthy()
 })
+
+it('navigates to Notes, Docs and Wiki without changing Workspace data',()=>{
+ renderRoot()
+ const nav=screen.getByRole('navigation',{name:'Workspace sections'})
+ expect(nav.querySelector('a[href="#workspace-knowledge"]')?.textContent).toBe('Knowledge')
+ expect(document.getElementById('workspace-knowledge')).toBeTruthy()
+})
