@@ -705,3 +705,13 @@ This adds target-based buttons and domain commands, not pointer drag handles or 
 - [x] Responsive native drag controls with touch-sized fallback buttons (471).
 
 These controls reuse the scoped atomic reorder commands and preserve existing keyboard up/down plus direct-placement controls. Touch gesture support and comprehensive real-device accessibility testing remain outstanding.
+
+## Semantic workspace shell — TDD 472–476
+
+- [x] Product banner separate from the Workspace main landmark (472).
+- [x] Named Task filters and sorting region (473).
+- [x] Named Projects and Tasks region (474).
+- [x] Distinct responsive application heading styles (475).
+- [x] Fixed-layout Task table cells wrap long content (476).
+
+The shell is a semantic and responsive foundation, not a final independent navigation design or visual QA sign-off.
