@@ -282,3 +282,23 @@ it('advances a Gantt working-date anchor across weekends and configured holidays
   expect(() => move!('2026-02-30', 0)).toThrow('Invalid Gantt anchor date')
   expect(() => move!('2026-10-16', -1)).toThrow('Invalid Gantt working offset')
 })
+
+it('projects earliest Gantt working offsets into dates across a holiday', () => {
+  const project = (ganttModule as unknown as {
+    createTaskGanttWorkingDateProjection?: (
+      tasks: readonly Task[], relationships: readonly TaskRelationship[], anchor: string,
+      holidays?: readonly string[], weekdays?: readonly number[],
+    ) => { rows: Array<{ taskId: string; earliestStartDate: string; earliestFinishDate: string }> }
+  }).createTaskGanttWorkingDateProjection
+  expect(typeof project).toBe('function')
+  const tasks = [task('a', '2026-10-19', '2026-10-20'), task('b', '2026-10-21', '2026-10-23')]
+  const relationships = [blocks('r1', 'a', 'b')]
+  const before = JSON.stringify({ tasks, relationships })
+  expect(project!(tasks, relationships, '2026-10-19', ['2026-10-22']).rows.map(
+    ({ taskId, earliestStartDate, earliestFinishDate }) => ({ taskId, earliestStartDate, earliestFinishDate }),
+  )).toEqual([
+    { taskId: 'a', earliestStartDate: '2026-10-19', earliestFinishDate: '2026-10-20' },
+    { taskId: 'b', earliestStartDate: '2026-10-21', earliestFinishDate: '2026-10-23' },
+  ])
+  expect(JSON.stringify({ tasks, relationships })).toBe(before)
+})
