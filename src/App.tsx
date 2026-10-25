@@ -924,6 +924,8 @@ export function App({
       <input
         aria-keyshortcuts="/ Control+K Meta+K"
         id="task-search"
+        type="search"
+        enterKeyHint="search"
         ref={taskSearchRef}
         value={searchQuery}
         onKeyDown={(event) => {
@@ -939,6 +941,13 @@ export function App({
           updateFilterSortPreferences({ query: event.target.value })
         }
       />
+
+      <button type="button" disabled={searchQuery === ''} onClick={() => {
+        updateFilterSortPreferences({ query: '' })
+        taskSearchRef.current?.focus()
+      }}>
+        Clear task search
+      </button>
 
       <label htmlFor="task-status-filter">Filter by status</label>
       <select
