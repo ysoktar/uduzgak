@@ -77,6 +77,7 @@ export function WorkspaceRoot({
       <nav aria-label="Workspace sections" className="workspace-section-nav">
         <a href="#workspace-dashboard">Dashboard</a>
         <a href="#workspace-knowledge">Knowledge</a>
+        <a href="#workspace-goals">Goals</a>
       </nav>
       <DashboardPanel dashboard={dashboard} />
       <KnowledgePanel
