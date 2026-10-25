@@ -482,3 +482,14 @@ textarea {
   outline: 3px solid #2b63ac;
   outline-offset: 3px;
 }
+
+/* Disclosure controls avoid permanently occupying small Workspace screens. */
+.workspace-disclosure-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  max-width: 100%;
+  margin: 12px 8px 6px 0;
+  overflow-wrap: anywhere;
+}
