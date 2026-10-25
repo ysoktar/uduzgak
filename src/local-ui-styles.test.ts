@@ -8,7 +8,8 @@ describe('local workspace styling contracts', () => {
     expect(css).toMatch(/\.skip-link:focus-visible\s*\{/)
     expect(css).toMatch(/:focus-visible\s*\{/)
     expect(css).toContain('outline-offset:')
-  })  it('keeps workspace controls readable on narrow screens and respects reduced motion', () => {
+  })
+  it('keeps workspace controls readable on narrow screens and respects reduced motion', () => {
     expect(css).toContain('@media (max-width: 600px)')
     expect(css).toContain('overflow-wrap: anywhere')
     expect(css).toContain('@media (prefers-reduced-motion: reduce)')
