@@ -10,3 +10,10 @@ it('exposes a top-level application banner and a separate main content landmark'
  expect(screen.getByRole('main').id).toBe('workspace-content')
  expect(header.contains(screen.getByRole('main'))).toBe(false)
 })
+
+it('provides a named task-filter region with the existing search input',()=>{
+ render(<App />)
+ const region=screen.getByRole('region',{name:'Task filters and sorting'})
+ expect(region.id).toBe('workspace-filters')
+ expect(region.contains(screen.getByLabelText('Search tasks'))).toBe(true)
+})
