@@ -205,6 +205,7 @@ export type WorkspaceBaseAction =
   | { type: 'project/descriptionChanged'; projectId: string; description: string | null }
   | { type: 'project/areaChanged'; projectId: string; areaId: string | null }
   | { type: 'project/moved'; projectId: string; direction: MoveDirection }
+  | { type: 'project/reordered'; projectId: string; targetProjectId: string; placement: 'before' | 'after' }
   | { type: 'task/added'; task: Task }
   | { type: 'task/archived'; taskId: string; archivedAt: string }
   | { type: 'task/archivedBulk'; taskIds: string[]; archivedAt: string }
@@ -1346,6 +1347,14 @@ export function workspaceReducer(
             candidate.areaId === target.areaId,
         ),
       }
+
+    case 'project/reordered': {
+      const source = state.projects.find(p => p.id === action.projectId)
+      const target = state.projects.find(p => p.id === action.targetProjectId)
+      if (!source || !target || source.id === target.id || source.areaId !== target.areaId) throw new Error('Cannot reorder Projects outside the same Area')
+      const fn = action.placement === 'before' ? moveItemBeforePeer : moveItemAfterPeer
+      return {...state, projects: fn(state.projects, source.id, target.id, (a,b)=>a.areaId === b.areaId)}
+    }
 
     case 'project/deleted': {
       const deletedTaskIds = new Set(
