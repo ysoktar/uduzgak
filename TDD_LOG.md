@@ -3407,3 +3407,15 @@ Fork: `ysoktar/uduzgak`; branch: `tdd/437-441-gantt-working-date-projection`; ba
 Test-first commits precede implementation changes for working-day offset dates (437), earliest projected ranges (438), latest dates from slack (439), milestone classification (440), and optional Gantt display (441). TDD 440 includes an additional milestone regression test because the original scenario appeared already supported; that existing new test was retained unchanged. Existing tests were not edited.
 
 GitHub Actions run 40229438290 on commit `4991e3ef9a29d8d4e395370d13987eeda5afd780` completed successfully: focused Gantt domain/UI tests, zero-warning lint, and TypeScript/Vite build passed. Earlier branch runs exposed a non-working-anchor offset bug and a dependent projection-anchor bug; each was corrected with approved test expectations preserved. Historical tests were not modified. This confirms the final branch state, not that every earlier intermediate commit passed CI.
+
+## TDD 442–446 — local UI navigation and accessibility foundation
+
+Fork: `ysoktar/uduzgak`. Branch: `tdd/442-446-local-ui-accessibility`. Parent: `e826e58cbd3e5a7c650b7bebfb050f742484797f`.
+
+- 442 — named workspace main landmark and keyboard skip link
+- 443 — filter/project navigation targets and semantic navigation region
+- 444 — first-project empty workspace guidance
+- 445 — visible keyboard focus and skip-link CSS
+- 446 — narrow-screen overflow and reduced-motion CSS
+
+Test-first changes were committed separately on the branch. One newly added CSS contract test had adjacent `})  it(` syntax; the user explicitly approved inserting only the missing line break, without changing either assertion. Final branch implementation CI for commit `81990bcbb009be39a6f27f2b4c6aa7ed2ce616a7`: [GitHub Actions run 40234617984](https://github.com/ysoktar/uduzgak/actions/runs/40234617984), 64/64 targeted Vitest tests in three files, lint 0 warnings/0 errors, TypeScript/Vite build passed. This is not a full-suite or end-to-end accessibility sign-off.

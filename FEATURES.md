@@ -404,6 +404,16 @@ attached to the current local Person model.
 
 Feature behavior currently takes priority over a final design system.
 
+Verified keyboard navigation and local-first shell foundations (TDD 442–446):
+- [x] Skip link to the named workspace main landmark (442).
+- [x] Named navigation and stable filter/project section targets (443).
+- [x] First-project empty workspace guidance (444).
+- [x] Visible `:focus-visible` outline and keyboard-reachable skip link (445).
+- [x] Narrow-screen overflow controls and reduced-motion CSS rules (446).
+
+These are foundations, not sign-off for the final application shell, cross-device responsive QA, full keyboard audit, full accessibility review, original visual design, or touch/drag interactions. They do not require a backend.
+
+
 - [ ] Independent app shell and navigation design
 - [ ] Responsive layout
 - [ ] Typography and spacing system
