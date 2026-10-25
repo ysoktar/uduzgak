@@ -31,3 +31,11 @@ it('moves a Project after a peer and rejects self drops',()=>{
  expect(store.getState().projects.map(p=>p.id)).toEqual([b.id,a.id,c.id])
  expect(()=>move!(a.id,a.id)).toThrow('Cannot reorder Projects outside the same Area')
 })
+
+it('rejects an unknown Project reorder placement without writing state',()=>{
+ const {store,commands}=fixture()
+ const a=commands.addProject('A'),b=commands.addProject('B')
+ const before=JSON.stringify(store.getState())
+ expect(()=>store.dispatch({type:'project/reordered',projectId:a.id,targetProjectId:b.id,placement:'middle' as 'before'})).toThrow('Invalid Project drop placement')
+ expect(JSON.stringify(store.getState())).toBe(before)
+})
