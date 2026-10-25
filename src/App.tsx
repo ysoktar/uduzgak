@@ -3003,6 +3003,22 @@ export function App({
                               )
                             </span>
                             {onMoveTaskListBefore ? (
+                              <div className="workspace-native-drag">
+                                <button type="button" draggable aria-label={`Drag list ${list.name}`}
+                                  onDragStart={event=>{
+                                    event.dataTransfer.setData('application/x-uduzgak-list',list.id)
+                                    event.dataTransfer.effectAllowed='move'
+                                  }}>Drag list {list.name}</button>
+                                <button type="button" aria-label={`Drop before list ${list.name}`}
+                                  onDragOver={event=>event.preventDefault()}
+                                  onDrop={event=>{
+                                    event.preventDefault()
+                                    const source=event.dataTransfer.getData('application/x-uduzgak-list')
+                                    if(source && source!==list.id)onMoveTaskListBefore(source,list.id)
+                                  }}>Drop before list {list.name}</button>
+                              </div>
+                            ) : null}
+                            {onMoveTaskListBefore ? (
                               <div className="workspace-reorder-controls" aria-label={`Reorder list ${list.name}`}>
                                 {projectLists.filter(candidate=>candidate.id!==list.id).map(candidate=>(
                                   <button key={candidate.id} type="button" onClick={()=>onMoveTaskListBefore(list.id,candidate.id)}>
