@@ -105,6 +105,7 @@ export interface AppProps {
   onDeleteTaskList?: (listId: string) => void
   onMoveTaskList?: (listId: string, direction: MoveDirection) => void
   onMoveTaskListBefore?: (listId: string, targetListId: string) => void
+  onMoveTaskListAfter?: (listId: string, targetListId: string) => void
   onChangeTaskList?: (taskId: string, listId: string | null) => void
   onChangeTasksList?: (taskIds: string[], listId: string | null) => void
   onAddChecklistItem?: (taskId: string, text: string) => void
@@ -213,6 +214,7 @@ export function App({
   onDeleteTaskList,
   onMoveTaskList,
   onMoveTaskListBefore,
+  onMoveTaskListAfter,
   onChangeTaskList,
   onChangeTasksList,
   onAddChecklistItem,
@@ -3020,6 +3022,15 @@ export function App({
                                     event.dataTransfer.setData('application/x-uduzgak-list',list.id)
                                     event.dataTransfer.effectAllowed='move'
                                   }}>Drag list {list.name}</button>
+                                {onMoveTaskListAfter ? (
+                                  <button type="button" aria-label={`Drop after list ${list.name}`}
+                                    onDragOver={event=>event.preventDefault()}
+                                    onDrop={event=>{
+                                      event.preventDefault()
+                                      const source=event.dataTransfer.getData('application/x-uduzgak-list')
+                                      if(source && source!==list.id)onMoveTaskListAfter(source,list.id)
+                                    }}>Drop after list {list.name}</button>
+                                ) : null}
                                 <button type="button" aria-label={`Drop before list ${list.name}`}
                                   onDragOver={event=>event.preventDefault()}
                                   onDrop={event=>{
