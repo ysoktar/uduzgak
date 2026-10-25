@@ -11,7 +11,7 @@ function formatPercent(value: number): string {
 
 export function DashboardPanel({ dashboard }: DashboardPanelProps) {
   return (
-    <section aria-labelledby="dashboard-heading">
+    <section id="workspace-dashboard" aria-labelledby="dashboard-heading">
       <h2 id="dashboard-heading">Dashboard</h2>
       <div aria-label="Dashboard KPIs">
         <article aria-label="Active Tasks">
