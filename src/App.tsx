@@ -3506,6 +3506,15 @@ export function App({
                         <li
                           key={`board-column-${entry.key}`}
                           className={`task-board-heading task-board-heading-${entry.key}`}
+                          aria-label={entry.key === 'doing' ? 'Drop task into Doing' : undefined}
+                          onDragOver={event => { if (entry.key === 'doing') event.preventDefault() }}
+                          onDrop={event => {
+                            if (entry.key !== 'doing') return
+                            event.preventDefault()
+                            const id=event.dataTransfer.getData('application/x-uduzgak-board-task')
+                            const dragged=activeTasks.find(t=>t.id===id && t.projectId===project.id)
+                            if (dragged && dragged.status !== 'doing') onChangeTaskStatus?.(dragged.id,'doing')
+                          }}
                         >
                           <h3>{entry.label}</h3>
                         </li>
@@ -3591,6 +3600,13 @@ export function App({
                     return (
                       <li
                         key={task.id}
+                        draggable={taskViewMode === 'board'}
+                        onDragStart={event => {
+                          if(taskViewMode === 'board') {
+                            event.dataTransfer.setData('application/x-uduzgak-board-task',task.id)
+                            event.dataTransfer.effectAllowed='move'
+                          }
+                        }}
                         className={
                           taskViewMode === 'board'
                             ? `task-board-card task-board-card-${task.status}`
