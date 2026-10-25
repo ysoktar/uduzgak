@@ -78,6 +78,7 @@ export function WorkspaceRoot({
         <a href="#workspace-dashboard">Dashboard</a>
         <a href="#workspace-knowledge">Knowledge</a>
         <a href="#workspace-goals">Goals</a>
+        <a href="#workspace-automations">Automations</a>
       </nav>
       <DashboardPanel dashboard={dashboard} />
       <KnowledgePanel
