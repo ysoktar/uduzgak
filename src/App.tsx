@@ -297,11 +297,13 @@ export function App({
   useEffect(() => {
     function handleTaskSearchShortcut(event: KeyboardEvent) {
       const target = event.target
-      if (event.key !== '/' || event.altKey || event.ctrlKey || event.metaKey ||
-        target instanceof HTMLInputElement ||
+      const slash = event.key === '/' && !event.ctrlKey && !event.metaKey
+      const controlSearch = event.key.toLowerCase() === 'k' && (event.ctrlKey !== event.metaKey)
+      const editable = target instanceof HTMLInputElement ||
         target instanceof HTMLTextAreaElement ||
         target instanceof HTMLSelectElement ||
-        (target instanceof HTMLElement && target.isContentEditable)) return
+        (target instanceof HTMLElement && target.isContentEditable)
+      if ((!slash && !controlSearch) || event.altKey || (slash && editable)) return
       event.preventDefault()
       focusTaskSearch()
     }
@@ -911,14 +913,19 @@ export function App({
 
       <label htmlFor="task-search">Search tasks</label>
       <small className="task-search-shortcut-hint">Press / to search tasks</small>
+      <small className="task-search-shortcut-hint">Or use Ctrl+K / Cmd+K</small>
       <input
-        aria-keyshortcuts="/"
+        aria-keyshortcuts="/ Control+K Meta+K"
         id="task-search"
         ref={taskSearchRef}
         value={searchQuery}
         onKeyDown={(event) => {
-          if (event.key === 'Escape' && searchQuery !== '') {
-            updateFilterSortPreferences({ query: '' })
+          if (event.key === 'Escape') {
+            if (searchQuery !== '') {
+              updateFilterSortPreferences({ query: '' })
+            } else {
+              event.currentTarget.blur()
+            }
           }
         }}
         onChange={(event) =>
