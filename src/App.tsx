@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useRef, useState, type FormEvent } from 'react'
 
 import { createTaskBoardColumns } from './domain/task-board'
 import { createTaskCalendarSections } from './domain/task-calendar'
@@ -277,6 +277,7 @@ export function App({
 }: AppProps) {
   const [activityHistoryOpen, setActivityHistoryOpen] = useState(false)
   const [showTaskFilters, setShowTaskFilters] = useState(true)
+  const taskSearchRef = useRef<HTMLInputElement>(null)
   const [showProjects, setShowProjects] = useState(true)
   const [relationshipTypes, setRelationshipTypes] = useState<
     Record<string, TaskRelationshipType>
@@ -809,7 +810,16 @@ export function App({
       <header className="workspace-app-header">
         <h1>uduzgak</h1>
       </header>
-      <main id="workspace-content">
+      <main id="workspace-content" onKeyDown={(event) => {
+        if (event.key === '/' && !event.altKey && !event.ctrlKey && !event.metaKey &&
+          !(event.target instanceof HTMLInputElement) &&
+          !(event.target instanceof HTMLTextAreaElement) &&
+          !(event.target instanceof HTMLSelectElement) &&
+          !(event.target instanceof HTMLElement && event.target.isContentEditable)) {
+          event.preventDefault()
+          taskSearchRef.current?.focus()
+        }
+      }}>
       <nav aria-label="Workspace navigation" className="workspace-navigation">
         <a href="#workspace-filters" onClick={() => setShowTaskFilters(true)}>Task filters</a>
         <a href="#workspace-projects" onClick={() => setShowProjects(true)}>Projects</a>
@@ -882,6 +892,7 @@ export function App({
       <label htmlFor="task-search">Search tasks</label>
       <input
         id="task-search"
+        ref={taskSearchRef}
         value={searchQuery}
         onKeyDown={(event) => {
           if (event.key === 'Escape' && searchQuery !== '') {
