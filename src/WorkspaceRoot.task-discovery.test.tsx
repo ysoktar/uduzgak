@@ -43,5 +43,11 @@ describe('local task discovery', () => {
     expect((screen.getByLabelText('Search tasks') as HTMLInputElement).value).toBe('')
     expect(screen.getByRole('status', { name: 'Visible task count' }).textContent).toContain('1 visible task')
   })
+  it('distinguishes an empty project from filtered-out tasks', () => {
+    fixture(false)
+    const empty = screen.getByRole('status', { name: 'No tasks in workspace' })
+    expect(empty.textContent).toContain('No tasks yet')
+    expect(screen.queryByRole('status', { name: 'No matching tasks' })).toBeNull()
+  })
 
 })
