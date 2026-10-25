@@ -27,3 +27,9 @@ it('TDD 509: clearing the query returns focus to Task search', async () => {
   await user.click(screen.getByRole('button', { name: 'Clear task search' }))
   expect(document.activeElement).toBe(search)
 })
+
+it('TDD 510: Task search exposes its input search semantics', () => {
+  render(<App />)
+  const search = screen.getByLabelText('Search tasks') as HTMLInputElement
+  expect(search.type).toBe('search')
+})
