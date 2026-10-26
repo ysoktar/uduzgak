@@ -921,3 +921,13 @@ This is an in-memory derived planning projection. It does not persist allocation
 - [x] No mutation of Task or relationship inputs (596, regression).
 
 All five are defensive regression tests of the existing resource projection. Full `npm run check` is the merge gate.
+
+## Gantt resource projection display — TDD 597–601
+
+- [x] Gantt displays derived logical resource-plan duration (597).
+- [x] Scheduled Tasks show derived resource slots (598).
+- [x] Unscheduled Tasks receive no resource slots (599, regression).
+- [x] Summary is Gantt-only (600, regression).
+- [x] Existing critical-path summary remains distinct (601, regression).
+
+Focused CI run 40316400117 passed tests, lint and build. No persisted Task dates are changed.

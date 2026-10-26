@@ -12,6 +12,7 @@ import {
   createTaskGanttWorkingCriticalPath,
   createTaskGanttWorkingDateProjection,
 } from './domain/task-gantt'
+import { createTaskGanttResourcePlan } from './domain/task-gantt-resource-plan'
 import { createTaskTableRows } from './domain/task-table'
 import { createTaskTimelineItems } from './domain/task-timeline'
 import { groupTasks, type TaskGroup } from './domain/task-group'
@@ -2794,6 +2795,10 @@ export function App({
           const ganttWorkingPath = taskViewMode === 'gantt' && ganttShowWorkingDays
             ? createTaskGanttWorkingCriticalPath(tasks, relationships, ganttNonWorkingDates, ganttWorkingWeekdays)
             : null
+          const ganttResourcePlan = taskViewMode === 'gantt'
+            ? createTaskGanttResourcePlan(tasks, relationships, ganttNonWorkingDates, ganttWorkingWeekdays)
+            : null
+          const ganttResourceRows = new Map((ganttResourcePlan?.rows ?? []).map(row => [row.taskId, row] as const))
           const ganttWorkingRows = new Map(
             (ganttWorkingPath?.rows ?? []).map((row) => [row.taskId, row] as const),
           )
@@ -3323,6 +3328,11 @@ export function App({
                         : `Logical critical path: ${ganttCriticalPath.durationDays} days (visible scheduled tasks; blocks dependencies only)`}
                     </p>
                   ) : null}
+                  {taskViewMode === 'gantt' && ganttResourcePlan ? (
+                    <p aria-label={`Gantt resource plan for ${project.name}`}>
+                      Resource-constrained logical plan: ${ganttResourcePlan.durationDays} working days
+                    </p>
+                  ) : null}
                   {taskViewMode === 'gantt' && ganttWorkingPath ? (
                     <p aria-label={`Gantt working-day critical path for ${project.name}`}>
                       {ganttWorkingPath.rows.length === 0
@@ -3357,6 +3367,11 @@ export function App({
                             }
                           >
                             <span>{item.task.title}</span>
+                            {ganttResourceRows.has(item.task.id) ? (
+                              <span aria-label={`Gantt resource slot for ${item.task.title}`}>
+                                {ganttResourceRows.get(item.task.id)!.earliestStart}–{ganttResourceRows.get(item.task.id)!.earliestFinish} logical working-day slots
+                              </span>
+                            ) : null}
                             {criticalRow ? (
                               <span aria-label={`Critical path status for ${item.task.title}`}>
                                 {criticalRow.isCritical

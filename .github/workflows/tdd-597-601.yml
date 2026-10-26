@@ -1,0 +1,18 @@
+name: TDD 597-601 Gantt resource visibility
+on:
+  push:
+    branches: [tdd/597-601-gantt-resource-visibility]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - run: npm ci --include=dev --no-fund
+      - run: npm exec -- vitest run src/WorkspaceRoot.gantt-resource-visibility.test.tsx src/domain/task-gantt-resource-plan.test.ts --maxWorkers=1 --testTimeout=30000
+      - run: npm run lint
+      - run: npm run build
