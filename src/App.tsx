@@ -462,6 +462,11 @@ export function App({
   const [error, setError] = useState<string | null>(null)
   const [taskReorderResult, setTaskReorderResult] = useState('')
   const [boardDragResult, setBoardDragResult] = useState('')
+  const [lastBoardStatusChange, setLastBoardStatusChange] = useState<{
+    taskId: string
+    previousStatus: TaskStatus
+    taskTitle: string
+  } | null>(null)
 
   function submitCustomField(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -919,6 +924,13 @@ export function App({
       <p role="status" aria-label="Board drag result" aria-live="polite">{boardDragResult}</p>
       {boardDragResult ? (
         <button type="button" onClick={() => setBoardDragResult('')}>Dismiss Board status message</button>
+      ) : null}
+      {lastBoardStatusChange && onChangeTaskStatus ? (
+        <button type="button" onClick={() => {
+          onChangeTaskStatus(lastBoardStatusChange.taskId, lastBoardStatusChange.previousStatus)
+          setBoardDragResult(`Restored ${lastBoardStatusChange.taskTitle} to ${lastBoardStatusChange.previousStatus === 'todo' ? 'To do' : lastBoardStatusChange.previousStatus === 'doing' ? 'Doing' : 'Done'}`)
+          setLastBoardStatusChange(null)
+        }}>Undo Board status change</button>
       ) : null}
 
       <label htmlFor="task-search">Search tasks</label>
@@ -3596,6 +3608,7 @@ export function App({
                               return
                             }
                             onChangeTaskStatus?.(dragged.id,entry.key)
+                            setLastBoardStatusChange({ taskId: dragged.id, previousStatus: dragged.status, taskTitle: dragged.title })
                             setBoardDragResult(`Moved ${dragged.title} into ${entry.key}`)
                           }}
                         >
@@ -3734,6 +3747,7 @@ export function App({
                           <button type="button" onClick={() => {
                             const nextStatus = task.status === 'todo' ? 'doing' : 'done'
                             onChangeTaskStatus(task.id, nextStatus)
+                            setLastBoardStatusChange({ taskId: task.id, previousStatus: task.status, taskTitle: task.title })
                             setBoardDragResult(`Moved ${task.title} to ${nextStatus === 'doing' ? 'Doing' : 'Done'}`)
                           }}>Move {task.title} to {task.status === 'todo' ? 'Doing' : 'Done'}</button>
                         ) : null}
@@ -3747,12 +3761,14 @@ export function App({
                         {taskViewMode === 'board' && onChangeTaskStatus && task.status === 'todo' ? (
                           <button type="button" onClick={() => {
                             onChangeTaskStatus(task.id, 'done')
+                            setLastBoardStatusChange({ taskId: task.id, previousStatus: task.status, taskTitle: task.title })
                             setBoardDragResult(`Moved ${task.title} to Done`)
                           }}>Move {task.title} directly to Done</button>
                         ) : null}
                         {taskViewMode === 'board' && onChangeTaskStatus && task.status === 'done' ? (
                           <button type="button" onClick={() => {
                             onChangeTaskStatus(task.id, 'todo')
+                            setLastBoardStatusChange({ taskId: task.id, previousStatus: task.status, taskTitle: task.title })
                             setBoardDragResult(`Moved ${task.title} to To do`)
                           }}>Move {task.title} directly to To do</button>
                         ) : null}

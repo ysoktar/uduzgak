@@ -811,3 +811,13 @@ Targeted GitHub Actions run 40301218449 passed tests, zero-warning lint and prod
 - [x] Dismiss transient Board status feedback (536).
 
 Focused CI run 40301814304 passed targeted tests, zero-warning lint, and production build.
+
+## Board status Undo — TDD 537–541
+
+- [x] Undo last quick status action (537).
+- [x] Undo last direct status action (538).
+- [x] Undo last Board drop status action (539).
+- [x] Undo is single-use (540, regression).
+- [x] Human-readable restored-status feedback (541).
+
+Undo is session-only and stores one previous-status record, not an operation history. Focused CI run 40302351475 passed tests, lint, and build.
