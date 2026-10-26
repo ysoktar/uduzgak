@@ -4511,12 +4511,13 @@ export function App({
                             <select
                               id={`task-status-${task.id}`}
                               value={task.status}
-                              onChange={(event) =>
+                              onChange={(event) => {
                                 onChangeTaskStatus(
                                   task.id,
                                   event.target.value as TaskStatus,
                                 )
-                              }
+                                setLastBoardStatusChange(null)
+                              }}
                             >
                               <option value="todo">To do</option>
                               <option value="doing">Doing</option>
