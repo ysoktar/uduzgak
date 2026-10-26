@@ -3748,7 +3748,7 @@ export function App({
                         </label>
                         <span>{task.title}</span>
                         {taskViewMode === 'board' && onChangeTaskStatus ? (
-                          <div className="task-board-actions" role="group" aria-label={`Board status actions for ${task.title}`}>
+                          <div className="task-board-actions" role="group" aria-label={`Board status actions for ${task.title}`} aria-describedby={`board-keyboard-help-${project.id}`}>
                         {taskViewMode === 'board' && onChangeTaskStatus && task.status !== 'done' ? (
                           <button type="button" onClick={() => {
                             const nextStatus = task.status === 'todo' ? 'doing' : 'done'
