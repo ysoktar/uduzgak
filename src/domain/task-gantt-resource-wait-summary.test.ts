@@ -18,3 +18,8 @@ it('TDD 607: derived resource plan identifies blocked task IDs', () => {
   const plan=createTaskGanttResourcePlan([task('a',['p1']),task('b',['p1'])],[])
   expect(plan.waitingTaskIds).toEqual(['b'])
 })
+
+it('TDD 608: contention-free schedules have no waiting Tasks', () => {
+  const plan=createTaskGanttResourcePlan([task('a',['p1']),task('b',['p2'])],[])
+  expect(plan.waitingTaskIds).toEqual([])
+})
