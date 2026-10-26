@@ -62,3 +62,13 @@ it('TDD 520: cross-project drop error identifies the attempted Task', async () =
   expect(screen.getByRole('status', { name: 'Board drag result' }).textContent).toContain('Task is no longer available')
   expect(store.getState().tasks.find(t => t.id === task.id)?.status).toBe('todo')
 })
+
+it('TDD 521: a successful Board drop clears a previous stale-task warning', async () => {
+  const { store, task } = await fixture()
+  const target = screen.getByLabelText('Drop task into Doing')
+  fireEvent.drop(target, { dataTransfer: transfer('missing-task') })
+  expect(screen.getByRole('status', { name: 'Board drag result' }).textContent).toContain('Task is no longer available')
+  fireEvent.drop(target, { dataTransfer: transfer(task.id) })
+  expect(screen.getByRole('status', { name: 'Board drag result' }).textContent).toContain('Moved Alpha notes into doing')
+  expect(store.getState().tasks.find(t => t.id === task.id)?.status).toBe('doing')
+})
