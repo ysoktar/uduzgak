@@ -951,3 +951,13 @@ Focused CI run 40316750025 passed tests, lint and build. Resource waits are logi
 - [x] Zero-duration milestone behavior verified (611, regression).
 
 CI run 40317083761 passed focused tests, lint and build. Visual summary integration remains separate.
+
+## Gantt resource wait display — TDD 612–616
+
+- [x] Gantt displays a derived resource-waiting Task count (612).
+- [x] Delayed Tasks show their resource-only wait (613).
+- [x] Non-waiting Tasks do not show false warnings (614, regression).
+- [x] Independently assigned Tasks show no contention (615, regression).
+- [x] Resource-wait display is Gantt-only (616, regression).
+
+Focused CI run 40317479184 passed tests, lint and build. These are logical offsets, not automated date changes.
