@@ -40,3 +40,9 @@ it('TDD 533: quick To do advancement names Doing instead of a status code', asyn
   await user.click(screen.getByRole('button', { name: 'Move Alpha notes to Doing' }))
   expect(screen.getByRole('status', { name: 'Board drag result' }).textContent).toContain('Moved Alpha notes to Doing')
 })
+
+it('TDD 534: quick Doing advancement also names Done', async () => {
+  const { user } = await fixture('doing')
+  await user.click(screen.getByRole('button', { name: 'Move Alpha notes to Done' }))
+  expect(screen.getByRole('status', { name: 'Board drag result' }).textContent).toContain('Moved Alpha notes to Done')
+})
