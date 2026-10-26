@@ -51,3 +51,9 @@ it('TDD 600: resource analysis stays scoped to Gantt mode', () => {
   fixture(true,'list')
   expect(screen.queryByLabelText('Gantt resource plan for Resource Demo')).toBeNull()
 })
+
+it('TDD 601: resource summary remains separate from existing critical-path summary', () => {
+  fixture()
+  expect(screen.getByLabelText('Gantt resource plan for Resource Demo')).toBeTruthy()
+  expect(screen.getByLabelText('Gantt critical path for Resource Demo')).toBeTruthy()
+})
