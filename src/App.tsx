@@ -3558,6 +3558,7 @@ export function App({
                         <button type="button" data-testid="board-reset-filters" title="Clear active Board task filters" aria-description="Clear filters while keeping the current view" onClick={() => {
                           setCustomFieldFilterFieldId('')
                           updateFilterSortPreferences({ query: '', status: 'all', priority: 'all', dueDate: 'all', customFieldFilter: undefined })
+                          setBoardDragResult('Board filters cleared')
                         }}>Show all Board tasks</button>
                       ) : null}
                       <p role="status" aria-label="Board visible summary">
