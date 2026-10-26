@@ -809,3 +809,7 @@ Board headings now show visible Task counts, including empty-column guidance and
 ### TDD 517–521 — Board drop feedback
 
 Board drop targets now announce empty payloads, unknown/stale Task identifiers, and attempts to drop a Task into the column it already occupies. Existing cross-Project rejection and successful-move feedback remain intact. Tests 520–521 are regression coverage for no mutation after an unknown ID and clearing obsolete status on a later valid drop; they do not represent new RED-to-GREEN behavior. Focused verification: GitHub Actions run 40299681043 (tests, zero-warning lint, production build).
+
+### TDD 522–526 — Board quick status actions
+
+Board Task cards expose pointer/keyboard-accessible buttons for advancing a To do Task to Doing, then a Doing Task to Done, or reversing one column. Controls are absent at status boundaries, and the existing status selector and drag/drop path remain. TDD 526 is a boundary regression check. GitHub Actions feature run 40300788163 passed focused tests, lint and production build; real-device usability audits remain separate.
