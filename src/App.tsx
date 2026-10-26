@@ -3333,6 +3333,11 @@ export function App({
                       Resource-constrained logical plan: ${ganttResourcePlan.durationDays} working days
                     </p>
                   ) : null}
+                  {taskViewMode === 'gantt' && ganttResourcePlan ? (
+                    <p aria-label={`Gantt resource waiting summary for ${project.name}`}>
+                      {ganttResourcePlan.waitingTaskIds.length} {ganttResourcePlan.waitingTaskIds.length === 1 ? 'task' : 'tasks'} waiting for a person
+                    </p>
+                  ) : null}
                   {taskViewMode === 'gantt' && ganttWorkingPath ? (
                     <p aria-label={`Gantt working-day critical path for ${project.name}`}>
                       {ganttWorkingPath.rows.length === 0
