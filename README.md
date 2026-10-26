@@ -877,3 +877,7 @@ Derived resource Gantt rows now expose `resourceWaitDays` separately from the de
 ### TDD 607–611 — resource contention summary
 
 The pure Gantt resource projection now exposes ordered `waitingTaskIds` for Tasks whose logical start is delayed by shared-person capacity, not merely by predecessor dependencies. No-wait schedules yield an empty summary; milestone and dependency-only cases remain excluded. This is derived, non-persistent information. Focused CI run 40317083761 passed tests, lint and build.
+
+### TDD 612–616 — Gantt resource wait visibility
+
+The Gantt view now presents an accessible count of Tasks delayed by assignment capacity and a per-Task resource-wait label in logical working-day slots. Tasks not delayed by a shared person have no wait marker, independent people yield zero contention, and List view is unaffected. These derived offsets are not actual rescheduled start dates. Focused GitHub Actions run 40317479184 passed tests, lint and build.
