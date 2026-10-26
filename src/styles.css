@@ -522,3 +522,8 @@ textarea {
 .task-board-actions button {
   min-height: 44px;
 }
+
+.task-board-actions {
+  display: flex;
+  flex-wrap: wrap;
+}
