@@ -35,3 +35,12 @@ it('TDD 542: Board Undo is hidden outside the Board layout', async () => {
   await user.selectOptions(screen.getByLabelText('Task view'), 'list')
   expect(screen.queryByRole('button', { name: 'Undo Board status change' })).toBeNull()
 })
+
+it('TDD 543: returning to Board preserves an unused Undo', async () => {
+  const { user, store, task } = await fixture()
+  await user.click(screen.getByRole('button', { name: 'Move Alpha notes to Doing' }))
+  await user.selectOptions(screen.getByLabelText('Task view'), 'list')
+  await user.selectOptions(screen.getByLabelText('Task view'), 'board')
+  await user.click(screen.getByRole('button', { name: 'Undo Board status change' }))
+  expect(store.getState().tasks.find(t => t.id === task.id)?.status).toBe('todo')
+})
