@@ -901,3 +901,13 @@ Focused CI run 40310011714 passed tests, lint and build after the approved unuse
 - [x] Combined filter reset retains Board and reveals tasks (586, regression).
 
 Focused CI run 40310413163 passed tests, lint and build.
+
+## Logical Gantt resource plan — TDD 587–591
+
+- [x] Sequential logical slots for Tasks sharing an assignee (587).
+- [x] Concurrent tasks for independent assignees (588).
+- [x] Blocking dependencies delay successor starts (589).
+- [x] Unassigned Tasks do not reserve other resources (590).
+- [x] Validated holidays and workweek determine occupancy duration (591, user-approved assertion correction).
+
+This is an in-memory derived planning projection. It does not persist allocation or auto-reschedule tasks; full resource leveling and visual integration remain open. Focused CI run 40315381648 passed tests, lint and build.

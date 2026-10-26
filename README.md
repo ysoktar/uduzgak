@@ -857,3 +857,7 @@ The Board's contextual reset control has descriptive title and ARIA text, a stab
 ### TDD 582–586 — Board reset feedback
 
 Clearing active Board filters now announces `Board filters cleared` in the existing live status region and returns focus to Task search when the reset button disappears. Regression coverage confirms the reset retains task sort order, the reset button is absent with no active filters, and combined search/status/priority filtering resets while retaining Board mode. Focused CI run 40310413163 passed tests, zero-warning lint and production build; this is not a full regression-suite result.
+
+### TDD 587–591 — logical Gantt resource plan
+
+A new pure, deterministic Gantt resource projection reserves each assigned person for one scheduled Task at a time, permits independent people to work concurrently, respects blocking dependencies, and uses configured working weekdays and excluded dates to derive durations. Unassigned Tasks do not consume a person. The calculation is non-persistent and not an optimal resource-leveling engine or actual calendar-date forecast. The TDD 591 test expected duration was corrected from four to three working-day slots after explicit approval. GitHub Actions run 40315381648 passed focused/regression tests, lint and build.
