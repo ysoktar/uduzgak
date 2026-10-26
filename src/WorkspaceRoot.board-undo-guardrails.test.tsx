@@ -51,3 +51,11 @@ it('TDD 544: a backward quick transition can also be undone', async () => {
   await user.click(screen.getByRole('button', { name: 'Undo Board status change' }))
   expect(store.getState().tasks.find(t => t.id === task.id)?.status).toBe('doing')
 })
+
+it('TDD 545: the latest Board status transition replaces older Undo history', async () => {
+  const { user, store, task } = await fixture()
+  await user.click(screen.getByRole('button', { name: 'Move Alpha notes to Doing' }))
+  await user.click(screen.getByRole('button', { name: 'Move Alpha notes to Done' }))
+  await user.click(screen.getByRole('button', { name: 'Undo Board status change' }))
+  expect(store.getState().tasks.find(t => t.id === task.id)?.status).toBe('doing')
+})
