@@ -56,3 +56,13 @@ it('TDD 585: the Board reset button disappears when there are no active filters'
   await fixture()
   expect(screen.queryByRole('button', { name: 'Show all Board tasks' })).toBeNull()
 })
+
+it('TDD 586: a combined Board reset preserves Board mode and reveals tasks', async () => {
+  const { user } = await fixture()
+  await user.type(screen.getByLabelText('Search tasks'), 'unmatched')
+  await user.selectOptions(screen.getByLabelText('Filter by status'), 'done')
+  await user.selectOptions(screen.getByLabelText('Filter by priority'), 'high')
+  await user.click(screen.getByRole('button', { name: 'Show all Board tasks' }))
+  expect((screen.getByLabelText('Task view') as HTMLSelectElement).value).toBe('board')
+  expect(screen.getByRole('status', { name: 'Visible task count' }).textContent).toContain('1 visible task')
+})
