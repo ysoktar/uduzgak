@@ -35,3 +35,10 @@ it('TDD 547: status dropdown invalidates a pending Board Undo', async () => {
   await user.selectOptions(screen.getByLabelText('Status for Alpha notes'), 'done')
   expect(screen.queryByRole('button', { name: 'Undo Board status change' })).toBeNull()
 })
+
+it('TDD 548: Undo identifies which Task will be restored', async () => {
+  const { user } = await fixture()
+  await user.click(screen.getByRole('button', { name: 'Move Alpha notes to Doing' }))
+  const undo = screen.getByRole('button', { name: 'Undo Board status change' })
+  expect(undo.getAttribute('title')).toContain('Alpha notes')
+})
