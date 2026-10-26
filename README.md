@@ -813,3 +813,7 @@ Board drop targets now announce empty payloads, unknown/stale Task identifiers, 
 ### TDD 522–526 — Board quick status actions
 
 Board Task cards expose pointer/keyboard-accessible buttons for advancing a To do Task to Doing, then a Doing Task to Done, or reversing one column. Controls are absent at status boundaries, and the existing status selector and drag/drop path remain. TDD 526 is a boundary regression check. GitHub Actions feature run 40300788163 passed focused tests, lint and production build; real-device usability audits remain separate.
+
+### TDD 527–531 — direct Board status actions
+
+Board Task cards now have direct skip-column status buttons for To do → Done and Done → To do, supplementing the existing single-step buttons, dropdown and drag/drop. Doing Tasks do not show skip buttons; these controls are scoped to Board mode. Successful direct Done action feedback uses the human-readable column name. TDD 529 and 531 are regression checks; focused GitHub Actions run 40301218449 passed tests, lint and build.

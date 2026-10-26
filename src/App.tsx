@@ -3741,6 +3741,18 @@ export function App({
                             setBoardDragResult(`Moved ${task.title} into ${previousStatus}`)
                           }}>Move {task.title} to {task.status === 'done' ? 'Doing' : 'To do'}</button>
                         ) : null}
+                        {taskViewMode === 'board' && onChangeTaskStatus && task.status === 'todo' ? (
+                          <button type="button" onClick={() => {
+                            onChangeTaskStatus(task.id, 'done')
+                            setBoardDragResult(`Moved ${task.title} to Done`)
+                          }}>Move {task.title} directly to Done</button>
+                        ) : null}
+                        {taskViewMode === 'board' && onChangeTaskStatus && task.status === 'done' ? (
+                          <button type="button" onClick={() => {
+                            onChangeTaskStatus(task.id, 'todo')
+                            setBoardDragResult(`Moved ${task.title} into todo`)
+                          }}>Move {task.title} directly to To do</button>
+                        ) : null}
                         <span
                           aria-label={`Subtask count for ${task.title}`}
                         >
