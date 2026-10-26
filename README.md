@@ -829,3 +829,7 @@ The Board offers a one-step, session-only Undo control after the most recent qui
 ### TDD 547–551 — Board Undo safety
 
 Manual status changes through the Task status selector invalidate a pending Board Undo, preventing accidental reversal of a newer status choice. Undo identifies the affected Task in its tooltip. Regression tests confirm same-status drops, rejected unknown-task drops and dismissing transient feedback do not discard the last valid Undo. Focused GitHub Actions run 40303993233 passed tests, zero-warning lint and production build; no persistence change was made.
+
+### TDD 552–556 — accessible Board controls
+
+Board Undo tooltips identify both the Task and previous status. Board guidance explains button/select alternatives to dragging, drop targets refer to that help through project-scoped `aria-describedby`, and the status live region announces full messages atomically. Help is limited to Board mode. Focused CI run 40304503056 passed tests, lint and production build; this is not a full accessibility audit.

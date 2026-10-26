@@ -831,3 +831,13 @@ Undo is session-only and stores one previous-status record, not an operation his
 - [x] Dismissing status message does not clear Undo (551, regression).
 
 Focused GitHub Actions run 40303993233 passed tests, lint and build.
+
+## Accessible Board controls — TDD 552–556
+
+- [x] Undo tooltip identifies Task and restored status (552).
+- [x] Board guidance describes keyboard and non-drag alternatives (553).
+- [x] Atomic Board status live region (554).
+- [x] Per-project drop-target reference to keyboard help (555).
+- [x] Board-only help visibility (556, regression).
+
+Focused GitHub Actions run 40304503056 passed tests, lint and build. Complete accessibility evaluation remains pending.

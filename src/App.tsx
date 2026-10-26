@@ -921,12 +921,12 @@ export function App({
 
       {error ? <p role="alert">{error}</p> : null}
       <p role="status" aria-label="Task reorder result" aria-live="polite">{taskReorderResult}</p>
-      <p role="status" aria-label="Board drag result" aria-live="polite">{boardDragResult}</p>
+      <p role="status" aria-label="Board drag result" aria-live="polite" aria-atomic="true">{boardDragResult}</p>
       {boardDragResult ? (
         <button type="button" onClick={() => setBoardDragResult('')}>Dismiss Board status message</button>
       ) : null}
       {taskViewMode === 'board' && lastBoardStatusChange && onChangeTaskStatus ? (
-        <button type="button" title={`Undo status change for ${lastBoardStatusChange.taskTitle}`} onClick={() => {
+        <button type="button" title={`Undo status change for ${lastBoardStatusChange.taskTitle} to ${lastBoardStatusChange.previousStatus === 'todo' ? 'To do' : lastBoardStatusChange.previousStatus === 'doing' ? 'Doing' : 'Done'}`} onClick={() => {
           onChangeTaskStatus(lastBoardStatusChange.taskId, lastBoardStatusChange.previousStatus)
           setBoardDragResult(`Restored ${lastBoardStatusChange.taskTitle} to ${lastBoardStatusChange.previousStatus === 'todo' ? 'To do' : lastBoardStatusChange.previousStatus === 'doing' ? 'Doing' : 'Done'}`)
           setLastBoardStatusChange(null)
@@ -3552,9 +3552,12 @@ export function App({
                     </table>
                   ) : null}
                   {taskViewMode === 'board' ? (
-                    <p role="status" aria-label="Board visible summary">
-                      {tasks.length} of {projectTasks.length} tasks visible
-                    </p>
+                    <>
+                      <p role="status" aria-label="Board visible summary">
+                        {tasks.length} of {projectTasks.length} tasks visible
+                      </p>
+                      <p id={`board-keyboard-help-${project.id}`}>Use status buttons or the status selector to move tasks without dragging.</p>
+                    </>
                   ) : null}
                   <ul
                     className={
@@ -3585,6 +3588,7 @@ export function App({
                         <li
                           key={`board-column-${entry.key}`}
                           className={`task-board-heading task-board-heading-${entry.key}`}
+                          aria-describedby={`board-keyboard-help-${project.id}`}
                           aria-label={entry.key === 'todo' ? 'Drop task into To do' : entry.key === 'doing' ? 'Drop task into Doing' : 'Drop task into Done'}
                           onDragOver={event => event.preventDefault()}
                           onDrop={event => {
