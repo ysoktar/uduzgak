@@ -3727,7 +3727,7 @@ export function App({
                           Select task {task.title}
                         </label>
                         <span>{task.title}</span>
-                        {taskViewMode === 'board' && onChangeTaskStatus ? (
+                        {taskViewMode === 'board' && onChangeTaskStatus && task.status !== 'done' ? (
                           <button type="button" onClick={() => {
                             const nextStatus = task.status === 'todo' ? 'doing' : 'done'
                             onChangeTaskStatus(task.id, nextStatus)
