@@ -46,3 +46,8 @@ it('TDD 599: unscheduled Gantt tasks have no invented resource slots', () => {
   fixture(false)
   expect(screen.queryByLabelText('Gantt resource slot for Alpha notes')).toBeNull()
 })
+
+it('TDD 600: resource analysis stays scoped to Gantt mode', () => {
+  fixture(true,'list')
+  expect(screen.queryByLabelText('Gantt resource plan for Resource Demo')).toBeNull()
+})
