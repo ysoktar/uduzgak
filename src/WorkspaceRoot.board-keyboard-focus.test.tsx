@@ -46,3 +46,9 @@ it('TDD 569: keyboard direct move to Done restores focus to selector', async () 
   fireEvent.click(screen.getByRole('button', { name: 'Move Alpha notes directly to Done' }), { detail: 0 })
   expect(document.activeElement).toBe(screen.getByLabelText('Status for Alpha notes'))
 })
+
+it('TDD 570: keyboard direct return to To do focuses selector', async () => {
+  await fixture('done')
+  fireEvent.click(screen.getByRole('button', { name: 'Move Alpha notes directly to To do' }), { detail: 0 })
+  expect(document.activeElement).toBe(screen.getByLabelText('Status for Alpha notes'))
+})
