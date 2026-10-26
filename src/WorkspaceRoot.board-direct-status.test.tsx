@@ -45,3 +45,9 @@ it('TDD 529: Doing Tasks have no direct skip-status action', async () => {
   await fixture('doing')
   expect(screen.queryByRole('button', { name: /directly to/ })).toBeNull()
 })
+
+it('TDD 530: direct Done feedback uses the readable column label', async () => {
+  const { user } = await fixture()
+  await user.click(screen.getByRole('button', { name: 'Move Alpha notes directly to Done' }))
+  expect(screen.getByRole('status', { name: 'Board drag result' }).textContent).toContain('Moved Alpha notes to Done')
+})
