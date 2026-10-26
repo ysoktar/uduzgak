@@ -33,3 +33,9 @@ it('TDD 577: Board reset advertises what it clears', async () => {
   await user.type(screen.getByLabelText('Search tasks'), 'missing')
   expect(screen.getByRole('button', { name: 'Show all Board tasks' }).getAttribute('title')).toContain('filters')
 })
+
+it('TDD 578: Board filter reset has a stable test identifier', async () => {
+  const { user } = await fixture()
+  await user.type(screen.getByLabelText('Search tasks'), 'missing')
+  expect(screen.getByRole('button', { name: 'Show all Board tasks' }).getAttribute('data-testid')).toBe('board-reset-filters')
+})
