@@ -35,3 +35,9 @@ it('TDD 522: Board To do task advances to Doing using a button', async () => {
   await user.click(screen.getByRole('button', { name: 'Move Alpha notes to Doing' }))
   expect(store.getState().tasks.find(t => t.id === task.id)?.status).toBe('doing')
 })
+
+it('TDD 523: Board Doing task advances to Done', async () => {
+  const { user, store, task } = await fixture('doing')
+  await user.click(screen.getByRole('button', { name: 'Move Alpha notes to Done' }))
+  expect(store.getState().tasks.find(t => t.id === task.id)?.status).toBe('done')
+})
