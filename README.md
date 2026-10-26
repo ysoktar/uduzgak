@@ -821,3 +821,7 @@ Board Task cards now have direct skip-column status buttons for To do → Done a
 ### TDD 532–536 — Board status announcements
 
 Direct return to To do and single-step Board actions now announce human-readable status labels; a dismissal button clears an obsolete Board status message without changing Task state. Tests 534 is a regression guard for Done labels. Feature CI run 40301814304 passed focused tests, lint and build after correcting a JSX closing-brace syntax error without changing tests.
+
+### TDD 537–541 — undo last Board status change
+
+The Board offers a one-step, session-only Undo control after the most recent quick button, direct button, or drag/drop status transition. Undo restores the previous Task status, announces the restored human-readable status, and disappears after use. It does not introduce a persisted undo history or change the storage schema. TDD 540 is a single-use regression guard. Focused GitHub Actions run 40302351475 passed tests, zero-warning lint, and production build.
