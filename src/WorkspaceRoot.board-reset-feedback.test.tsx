@@ -34,3 +34,11 @@ it('TDD 582: clearing Board filters announces completion', async () => {
   await user.click(screen.getByRole('button', { name: 'Show all Board tasks' }))
   expect(screen.getByRole('status', { name: 'Board drag result' }).textContent).toContain('Board filters cleared')
 })
+
+it('TDD 583: resetting Board filters returns focus to search', async () => {
+  const { user } = await fixture()
+  const search = screen.getByLabelText('Search tasks')
+  await user.type(search, 'unmatched')
+  await user.click(screen.getByRole('button', { name: 'Show all Board tasks' }))
+  expect(document.activeElement).toBe(search)
+})
