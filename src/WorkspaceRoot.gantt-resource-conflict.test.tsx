@@ -39,3 +39,8 @@ it('TDD 612: Gantt summary reports one resource-waiting Task', () => {
   fixture()
   expect(screen.getByLabelText('Gantt resource waiting summary for Resource Demo').textContent).toContain('1 task waiting for a person')
 })
+
+it('TDD 613: waiting Task shows its resource delay', () => {
+  fixture()
+  expect(screen.getByLabelText('Gantt resource wait for Beta').textContent).toContain('2 working days')
+})
