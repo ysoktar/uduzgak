@@ -527,3 +527,9 @@ textarea {
   display: flex;
   flex-wrap: wrap;
 }
+
+.task-board-actions button {
+  min-height: 44px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
