@@ -891,3 +891,13 @@ Run the branch's full `npm run check` workflow before merging. Only the developm
 - [x] ARIA description explains current view retention (581).
 
 Focused CI run 40310011714 passed tests, lint and build after the approved unused import removal.
+
+## Board reset feedback — TDD 582–586
+
+- [x] Announce completed Board filter reset (582).
+- [x] Return focus to Task search after reset (583).
+- [x] Preserve sort order while resetting filters (584, regression).
+- [x] Hide reset control with no active filters (585, regression).
+- [x] Combined filter reset retains Board and reveals tasks (586, regression).
+
+Focused CI run 40310413163 passed tests, lint and build.

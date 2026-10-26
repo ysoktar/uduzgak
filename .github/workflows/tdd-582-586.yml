@@ -1,0 +1,18 @@
+name: TDD 582-586 Board reset feedback
+on:
+  push:
+    branches: [tdd/582-586-board-reset-feedback]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - run: npm ci --include=dev --no-fund
+      - run: npm exec -- vitest run src/WorkspaceRoot.board-reset-feedback.test.tsx src/WorkspaceRoot.board-filter-reset.test.tsx --maxWorkers=1 --testTimeout=30000
+      - run: npm run lint
+      - run: npm run build
