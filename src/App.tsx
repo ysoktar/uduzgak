@@ -3750,7 +3750,7 @@ export function App({
                         {taskViewMode === 'board' && onChangeTaskStatus && task.status === 'done' ? (
                           <button type="button" onClick={() => {
                             onChangeTaskStatus(task.id, 'todo')
-                            setBoardDragResult(`Moved ${task.title} into todo`)
+                            setBoardDragResult(`Moved ${task.title} to To do`)
                           }}>Move {task.title} directly to To do</button>
                         ) : null}
                         <span
