@@ -841,3 +841,7 @@ Board drop headings now use a move cursor rather than a copy cursor; the existin
 ### TDD 562–566 — Board action grouping
 
 Board status transition buttons are now grouped by Task with an accessible group label and a reference to the Board keyboard-movement guidance. CSS ensures touch-sized button targets, wrapping control rows and constrained button width. Targeted GitHub Actions run 40306310799 passed relevant tests, zero-warning lint and production build. Manual keyboard and real-device review remains separate.
+
+### TDD 567–571 — Board keyboard focus recovery
+
+When a Board status button is activated through a keyboard-style click, focus moves to that Task's persistent status selector instead of being lost if the action button disappears on rerender. Covers forward, backward and direct status actions plus Undo. Pointer clicks retain their ordinary focus behavior. Focused GitHub Actions run 40306821848 passed tests, zero-warning lint and production build; this remains narrower than full browser/device accessibility testing.
