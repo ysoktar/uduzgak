@@ -32,3 +32,8 @@ it('TDD 619: excluded holidays shift projected finish dates', () => {
   expect(rows[0].startDate).toBe('2026-10-19')
   expect(rows[0].finishDate).toBe('2026-10-21')
 })
+
+it('TDD 620: zero-day milestones project to a single working date', () => {
+  const rows=createTaskGanttResourceDateProjection([task('m',['p1'],'2026-10-19','2026-10-19',true)],[],'2026-10-19').rows
+  expect(rows[0]).toEqual({taskId:'m',startDate:'2026-10-19',finishDate:'2026-10-19',isMilestone:true})
+})
