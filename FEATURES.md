@@ -881,3 +881,13 @@ Focused CI run 40306821848 passed tests, lint and build. Device keyboard audits 
 - [x] Clear custom-field filter (576, approved selector correction).
 
 Run the branch's full `npm run check` workflow before merging. Only the development clone is modified.
+
+## Board reset control accessibility — TDD 577–581
+
+- [x] Descriptive Board reset title (577).
+- [x] Stable Board reset test identifier (578).
+- [x] No unsupported shortcut advertised (579, regression).
+- [x] Native button remains in keyboard tab order (580, regression).
+- [x] ARIA description explains current view retention (581).
+
+Focused CI run 40310011714 passed tests, lint and build after the approved unused import removal.
