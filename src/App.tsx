@@ -2815,6 +2815,7 @@ export function App({
                     type: 'board-column' as const,
                     key: column.key,
                     label: column.label,
+                    count: column.tasks.length,
                   },
                   ...column.tasks.map((task) => ({
                     type: 'task' as const,
@@ -3581,6 +3582,7 @@ export function App({
                           }}
                         >
                           <h3>{entry.label}</h3>
+                          <span>{entry.count} {entry.count === 1 ? 'task' : 'tasks'}</span>
                         </li>
                       )
                     }
