@@ -3584,6 +3584,10 @@ export function App({
                               setBoardDragResult('Cannot move tasks between project boards')
                               return
                             }
+                            if (!dragged) {
+                              setBoardDragResult('Task is no longer available for Board drop')
+                              return
+                            }
                             if (dragged && dragged.status !== entry.key) {
                               onChangeTaskStatus?.(dragged.id,entry.key)
                               setBoardDragResult(`Moved ${dragged.title} into ${entry.key}`)
