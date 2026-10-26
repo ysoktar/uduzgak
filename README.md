@@ -833,3 +833,7 @@ Manual status changes through the Task status selector invalidate a pending Boar
 ### TDD 552–556 — accessible Board controls
 
 Board Undo tooltips identify both the Task and previous status. Board guidance explains button/select alternatives to dragging, drop targets refer to that help through project-scoped `aria-describedby`, and the status live region announces full messages atomically. Help is limited to Board mode. Focused CI run 40304503056 passed tests, lint and production build; this is not a full accessibility audit.
+
+### TDD 557–561 — responsive Board controls
+
+Board drop headings now use a move cursor rather than a copy cursor; the existing test was updated only after explicit approval. Board task cards wrap long text, Board buttons have touch-sized minimum heights and constrained widths, and Board headings safely wrap labels. Focused GitHub Actions run 40305468753 passed the new and existing CSS tests, zero-warning lint and production build. These are style assertions; manual device testing remains outstanding.
