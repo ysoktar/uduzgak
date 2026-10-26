@@ -51,3 +51,11 @@ it('TDD 574: Board reset clears priority filters', async () => {
   await user.click(screen.getByRole('button', { name: 'Show all Board tasks' }))
   expect(priority.value).toBe('all')
 })
+
+it('TDD 575: Board reset clears due-date filtering', async () => {
+  const { user } = await fixture()
+  const due = screen.getByLabelText('Filter by due date') as HTMLSelectElement
+  await user.selectOptions(due, 'withDueDate')
+  await user.click(screen.getByRole('button', { name: 'Show all Board tasks' }))
+  expect(due.value).toBe('all')
+})
