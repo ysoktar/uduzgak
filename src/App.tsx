@@ -3734,6 +3734,13 @@ export function App({
                             setBoardDragResult(`Moved ${task.title} into ${nextStatus}`)
                           }}>Move {task.title} to {task.status === 'todo' ? 'Doing' : 'Done'}</button>
                         ) : null}
+                        {taskViewMode === 'board' && onChangeTaskStatus && task.status !== 'todo' ? (
+                          <button type="button" onClick={() => {
+                            const previousStatus = task.status === 'done' ? 'doing' : 'todo'
+                            onChangeTaskStatus(task.id, previousStatus)
+                            setBoardDragResult(`Moved ${task.title} into ${previousStatus}`)
+                          }}>Move {task.title} to {task.status === 'done' ? 'Doing' : 'To do'}</button>
+                        ) : null}
                         <span
                           aria-label={`Subtask count for ${task.title}`}
                         >
