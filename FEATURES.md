@@ -861,3 +861,13 @@ CI run 40305468753 passed focused CSS checks, lint and production build. Real-de
 - [x] Board groups reference keyboard movement guidance (566).
 
 Focused CI 40306310799 passed targeted tests, lint and build. Responsive design still requires real-device QA.
+
+## Board keyboard focus recovery — TDD 567–571
+
+- [x] Keyboard quick advance moves focus to Task status selector (567).
+- [x] Keyboard backward move restores selector focus (568).
+- [x] Keyboard direct Done restores selector focus (569).
+- [x] Keyboard direct To do restores selector focus (570).
+- [x] Keyboard Undo restores Task selector focus (571).
+
+Focused CI run 40306821848 passed tests, lint and build. Device keyboard audits remain outstanding.
