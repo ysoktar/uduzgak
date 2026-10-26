@@ -23,3 +23,8 @@ it('TDD 608: contention-free schedules have no waiting Tasks', () => {
   const plan=createTaskGanttResourcePlan([task('a',['p1']),task('b',['p2'])],[])
   expect(plan.waitingTaskIds).toEqual([])
 })
+
+it('TDD 609: resource-wait identifiers preserve the source Task order', () => {
+  const plan=createTaskGanttResourcePlan([task('a',['p1']),task('b',['p1']),task('c',['p1'])],[])
+  expect(plan.waitingTaskIds).toEqual(['b','c'])
+})
