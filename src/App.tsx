@@ -3333,6 +3333,11 @@ export function App({
                       Resource-constrained logical plan: ${ganttResourcePlan.durationDays} working days
                     </p>
                   ) : null}
+                  {taskViewMode === 'gantt' && ganttResourcePlan ? (
+                    <p aria-label={`Gantt resource waiting summary for ${project.name}`}>
+                      {ganttResourcePlan.waitingTaskIds.length} {ganttResourcePlan.waitingTaskIds.length === 1 ? 'task' : 'tasks'} waiting for a person
+                    </p>
+                  ) : null}
                   {taskViewMode === 'gantt' && ganttWorkingPath ? (
                     <p aria-label={`Gantt working-day critical path for ${project.name}`}>
                       {ganttWorkingPath.rows.length === 0
@@ -3367,6 +3372,11 @@ export function App({
                             }
                           >
                             <span>{item.task.title}</span>
+                            {(ganttResourceRows.get(item.task.id)?.resourceWaitDays ?? 0) > 0 ? (
+                              <span aria-label={`Gantt resource wait for ${item.task.title}`}>
+                                {ganttResourceRows.get(item.task.id)!.resourceWaitDays} working days waiting for an assigned person
+                              </span>
+                            ) : null}
                             {ganttResourceRows.has(item.task.id) ? (
                               <span aria-label={`Gantt resource slot for ${item.task.title}`}>
                                 {ganttResourceRows.get(item.task.id)!.earliestStart}–{ganttResourceRows.get(item.task.id)!.earliestFinish} logical working-day slots
