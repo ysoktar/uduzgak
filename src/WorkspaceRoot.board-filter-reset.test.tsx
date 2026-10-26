@@ -43,3 +43,11 @@ it('TDD 573: Board reset clears active status filter', async () => {
   await user.click(screen.getByRole('button', { name: 'Show all Board tasks' }))
   expect(status.value).toBe('all')
 })
+
+it('TDD 574: Board reset clears priority filters', async () => {
+  const { user } = await fixture()
+  const priority = screen.getByLabelText('Filter by priority') as HTMLSelectElement
+  await user.selectOptions(priority, 'high')
+  await user.click(screen.getByRole('button', { name: 'Show all Board tasks' }))
+  expect(priority.value).toBe('all')
+})
