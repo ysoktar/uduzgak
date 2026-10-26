@@ -2815,6 +2815,7 @@ export function App({
                     type: 'board-column' as const,
                     key: column.key,
                     label: column.label,
+                    count: column.tasks.length,
                   },
                   ...column.tasks.map((task) => ({
                     type: 'task' as const,
@@ -3535,6 +3536,11 @@ export function App({
                       </tbody>
                     </table>
                   ) : null}
+                  {taskViewMode === 'board' ? (
+                    <p role="status" aria-label="Board visible summary">
+                      {tasks.length} of {projectTasks.length} tasks visible
+                    </p>
+                  ) : null}
                   <ul
                     className={
                       taskViewMode === 'board'
@@ -3580,7 +3586,11 @@ export function App({
                             }
                           }}
                         >
-                          <h3>{entry.label}</h3>
+                          <div role="group" aria-label={`${entry.label} Board column`}>
+                            <h3>{entry.label}</h3>
+                            <span>{entry.count} {entry.count === 1 ? 'task' : 'tasks'}</span>
+                            {entry.count === 0 ? <small>Drop a task here</small> : null}
+                          </div>
                         </li>
                       )
                     }

@@ -1,0 +1,62 @@
+/** @vitest-environment jsdom */
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { expect, it } from 'vitest'
+import { createWorkspaceCommands } from './application/workspace-commands'
+import { createWorkspaceStore } from './application/workspace-store'
+import type { KeyValueStore } from './persistence/workspace-storage'
+import { WorkspaceRoot } from './WorkspaceRoot'
+
+class MemoryStore implements KeyValueStore {
+  private readonly data = new Map<string, string>()
+  getItem(key: string) { return this.data.get(key) ?? null }
+  setItem(key: string, value: string) { this.data.set(key, value) }
+}
+
+async function fixture(withSecondTask = false) {
+  const user = userEvent.setup()
+  const store = createWorkspaceStore(new MemoryStore())
+  let sequence = 0
+  const commands = createWorkspaceCommands(store, {
+    nextId: () => `board-${++sequence}`,
+    now: () => '2026-10-26T10:00:00.000Z',
+  })
+  const project = commands.addProject('Board project')
+  commands.addTask(project.id, 'Alpha notes')
+  if (withSecondTask) commands.addTask(project.id, 'Beta review')
+  render(<WorkspaceRoot store={store} commands={commands} />)
+  await user.selectOptions(screen.getByLabelText('Task view'), 'board')
+  return { user, store }
+}
+
+it('TDD 512: Board headings show visible per-status Task counts', async () => {
+  await fixture()
+  expect(screen.getByLabelText('Drop task into To do').textContent).toContain('1 task')
+  expect(screen.getByLabelText('Drop task into Doing').textContent).toContain('0 tasks')
+  expect(screen.getByLabelText('Drop task into Done').textContent).toContain('0 tasks')
+})
+
+it('TDD 513: empty Board columns explain that tasks can be dropped there', async () => {
+  await fixture()
+  expect(screen.getByLabelText('Drop task into Doing').textContent).toContain('Drop a task here')
+})
+
+it('TDD 514: Board exposes each column as a named group', async () => {
+  await fixture()
+  expect(screen.getByRole('group', { name: 'To do Board column' })).toBeTruthy()
+  expect(screen.getByRole('group', { name: 'Doing Board column' })).toBeTruthy()
+  expect(screen.getByRole('group', { name: 'Done Board column' })).toBeTruthy()
+})
+
+it('TDD 515: Board heading counts update after a Task status change', async () => {
+  const { user } = await fixture()
+  await user.selectOptions(screen.getByLabelText('Status for Alpha notes'), 'doing')
+  expect(screen.getByLabelText('Drop task into To do').textContent).toContain('0 tasks')
+  expect(screen.getByLabelText('Drop task into Doing').textContent).toContain('1 task')
+})
+
+it('TDD 516: filtered Board counts represent visible tasks only', async () => {
+  const { user } = await fixture(true)
+  await user.type(screen.getByLabelText('Search tasks'), 'Alpha')
+  expect(screen.getByRole('status', { name: 'Board visible summary' }).textContent).toContain('1 of 2 tasks visible')
+})

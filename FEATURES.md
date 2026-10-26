@@ -761,3 +761,13 @@ establish full-suite, real-device drag, or complete accessibility coverage.
 Focused GitHub Actions run 40245762300 passed targeted tests, zero-warning
 lint, and production build. TDD 493 verifies pre-existing input behavior and
 is not counted as a newly demonstrated RED-to-GREEN behavior change.
+
+## Board column clarity — TDD 512–516
+
+- [x] Visible task counts for each Board status column (512).
+- [x] Empty-column drop guidance (513).
+- [x] Named accessible Board column groups (514).
+- [x] Column counts continue to update after status changes (515, regression).
+- [x] Per-Project filtered-visible versus active Task summary (516).
+
+Focused GitHub Actions run 40299218622 passed tests, lint, and production build. TDD 515 verifies existing reactive behavior and is not a new failing RED-to-GREEN change.

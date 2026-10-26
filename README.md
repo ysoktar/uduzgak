@@ -801,3 +801,7 @@ Focused GitHub Actions run 40245762300 passed the keyboard discovery and
 disclosure tests, zero-warning lint and production build. TDD 493 is a
 regression guard for existing editable-input behavior, not a newly introduced
 behavior or an independently observed failing RED test.
+
+### TDD 512–516 — Board column clarity
+
+Board headings now show visible Task counts, including empty-column guidance and named status groups. Column counts update with Task status changes, and each Project Board reports how many of its active Tasks remain visible under the selected filters. These are view-only derived presentations and do not change the Workspace storage schema. TDD 515 is a status-change regression check rather than a new implementation behavior. Focused verification: GitHub Actions run 40299218622 (tests, zero-warning lint, production build).
