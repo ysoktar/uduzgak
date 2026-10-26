@@ -821,3 +821,13 @@ Focused CI run 40301814304 passed targeted tests, zero-warning lint, and product
 - [x] Human-readable restored-status feedback (541).
 
 Undo is session-only and stores one previous-status record, not an operation history. Focused CI run 40302351475 passed tests, lint, and build.
+
+## Board Undo safety — TDD 547–551
+
+- [x] Clear pending Undo after a Task status selector change (547).
+- [x] Undo tooltip identifies the Task (548).
+- [x] Same-status drop preserves valid Undo (549, regression).
+- [x] Unknown-task drop preserves valid Undo (550, regression).
+- [x] Dismissing status message does not clear Undo (551, regression).
+
+Focused GitHub Actions run 40303993233 passed tests, lint and build.
