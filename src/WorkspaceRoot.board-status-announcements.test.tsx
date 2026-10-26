@@ -34,3 +34,9 @@ it('TDD 532: direct return to To do announces the readable column name', async (
   await user.click(screen.getByRole('button', { name: 'Move Alpha notes directly to To do' }))
   expect(screen.getByRole('status', { name: 'Board drag result' }).textContent).toContain('Moved Alpha notes to To do')
 })
+
+it('TDD 533: quick To do advancement names Doing instead of a status code', async () => {
+  const { user } = await fixture()
+  await user.click(screen.getByRole('button', { name: 'Move Alpha notes to Doing' }))
+  expect(screen.getByRole('status', { name: 'Board drag result' }).textContent).toContain('Moved Alpha notes to Doing')
+})
