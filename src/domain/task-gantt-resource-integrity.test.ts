@@ -29,3 +29,7 @@ it('TDD 594: duplicate assignee identifiers do not reserve extra time', () => {
   expect(rows.map(row=>[row.earliestStart,row.earliestFinish])).toEqual([[0,2],[2,4]])
   expect(rows[0].assigneeIds).toEqual(['p1'])
 })
+
+it('TDD 595: dependency cycles are rejected rather than silently scheduled', () => {
+  expect(()=>createTaskGanttResourcePlan([task('a',['p1']),task('b',['p2'])],[blocks('r1','a','b'),blocks('r2','b','a')])).toThrow('Gantt dependency cycle')
+})
