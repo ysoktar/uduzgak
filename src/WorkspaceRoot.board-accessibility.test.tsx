@@ -40,3 +40,8 @@ it('TDD 553: Board provides non-drag keyboard status guidance', async () => {
   await fixture()
   expect(screen.getByText('Use status buttons or the status selector to move tasks without dragging.')).toBeTruthy()
 })
+
+it('TDD 554: Board status announcements are atomic', async () => {
+  await fixture()
+  expect(screen.getByRole('status', { name: 'Board drag result' }).getAttribute('aria-atomic')).toBe('true')
+})
