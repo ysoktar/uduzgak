@@ -23,3 +23,9 @@ it('TDD 593: unscheduled tasks remain outside the derived resource plan', () => 
   const rows = createTaskGanttResourcePlan([task('a',['p1']),{...task('b',['p1']),dueDate:undefined}],[]).rows
   expect(rows.map(row=>row.taskId)).toEqual(['a'])
 })
+
+it('TDD 594: duplicate assignee identifiers do not reserve extra time', () => {
+  const rows = createTaskGanttResourcePlan([task('a',['p1','p1']),task('b',['p1'])],[]).rows
+  expect(rows.map(row=>[row.earliestStart,row.earliestFinish])).toEqual([[0,2],[2,4]])
+  expect(rows[0].assigneeIds).toEqual(['p1'])
+})
