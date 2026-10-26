@@ -781,3 +781,13 @@ Focused GitHub Actions run 40299218622 passed tests, lint, and production build.
 - [x] Verify a successful drop replaces stale warning text (521, regression).
 
 Focused CI run 40299681043 passed tests, zero-warning lint and production build. TDD 520 and 521 are regression checks of existing behavior.
+
+## Board quick status actions — TDD 522–526
+
+- [x] To do → Doing button (522).
+- [x] Doing → Done button (523).
+- [x] Hide advance action for Done (524).
+- [x] Doing → To do backward button (525); Done → Doing uses the same control.
+- [x] Confirm To do has no backward action (526, regression).
+
+Focused CI run 40300788163 passed tests, lint, and build. TDD 526 is a boundary regression test.
