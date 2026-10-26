@@ -3554,6 +3554,9 @@ export function App({
                   ) : null}
                   {taskViewMode === 'board' ? (
                     <>
+                      {searchQuery !== '' ? (
+                        <button type="button" onClick={() => updateFilterSortPreferences({ query: '' })}>Show all Board tasks</button>
+                      ) : null}
                       <p role="status" aria-label="Board visible summary">
                         {tasks.length} of {projectTasks.length} tasks visible
                       </p>
