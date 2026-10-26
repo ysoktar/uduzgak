@@ -865,3 +865,7 @@ A new pure, deterministic Gantt resource projection reserves each assigned perso
 ### TDD 592–596 — resource Gantt integrity
 
 Regression tests verify that zero-duration milestones do not reserve additional capacity, unscheduled Tasks remain excluded, repeated assignee IDs do not multiply allocation, cyclic blocking dependencies are rejected, and source Tasks and relationships are not mutated. The resource projection remains deterministic, derived, and separate from persisted Task schedules. Full-suite verification is exercised in the TDD 592–596 branch workflow.
+
+### TDD 597–601 — visible Gantt resource projection
+
+The Gantt view now reports a distinct resource-constrained logical working-day duration and per-scheduled-Task logical start/finish slots. Unscheduled Tasks do not receive invented slots, the summary does not appear outside Gantt, and the original dependency-only critical-path report remains separate. This is a derived capacity projection, not an automatic date rescheduler or optimal resource allocator. Focused GitHub Actions run 40316400117 passed tests, zero-warning lint and build.
