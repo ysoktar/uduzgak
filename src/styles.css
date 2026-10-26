@@ -514,3 +514,7 @@ textarea {
   max-width: 100%;
   min-height: 44px;
 }
+
+.task-board-heading {
+  overflow-wrap: anywhere;
+}
