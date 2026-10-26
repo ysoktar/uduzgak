@@ -53,3 +53,12 @@ it('TDD 519: dropping a Task into its current column announces no change', async
   expect(screen.getByRole('status', { name: 'Board drag result' }).textContent).toContain('already in To do')
   expect(store.getState().tasks[0].status).toBe('todo')
 })
+
+it('TDD 520: cross-project drop error identifies the attempted Task', async () => {
+  const { store, task } = await fixture()
+  const other = store.getState().projects.find(project => project.name === 'Board project')
+  expect(other).toBeDefined()
+  fireEvent.drop(screen.getByLabelText('Drop task into Doing'), { dataTransfer: transfer('other-project-task') })
+  expect(screen.getByRole('status', { name: 'Board drag result' }).textContent).toContain('Task is no longer available')
+  expect(store.getState().tasks.find(t => t.id === task.id)?.status).toBe('todo')
+})
