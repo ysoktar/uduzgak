@@ -871,3 +871,13 @@ Focused CI 40306310799 passed targeted tests, lint and build. Responsive design 
 - [x] Keyboard Undo restores Task selector focus (571).
 
 Focused CI run 40306821848 passed tests, lint and build. Device keyboard audits remain outstanding.
+
+## Reset Board filters — TDD 572–576
+
+- [x] Clear Board search while retaining Board mode (572).
+- [x] Clear status filter (573).
+- [x] Clear priority filter (574).
+- [x] Clear due-date filter (575).
+- [x] Clear custom-field filter (576, approved selector correction).
+
+Run the branch's full `npm run check` workflow before merging. Only the development clone is modified.
