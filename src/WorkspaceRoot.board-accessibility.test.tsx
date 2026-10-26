@@ -35,3 +35,8 @@ it('TDD 552: Board Undo advertises which prior status it restores', async () => 
   const undo = screen.getByRole('button', { name: 'Undo Board status change' })
   expect(undo.getAttribute('title')).toContain('To do')
 })
+
+it('TDD 553: Board provides non-drag keyboard status guidance', async () => {
+  await fixture()
+  expect(screen.getByText('Use status buttons or the status selector to move tasks without dragging.')).toBeTruthy()
+})
