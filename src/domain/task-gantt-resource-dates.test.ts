@@ -21,3 +21,8 @@ it('TDD 617: same-person tasks map to successive working-date ranges', () => {
     ['2026-10-21','2026-10-22'],
   ])
 })
+
+it('TDD 618: independent resources share projected working dates', () => {
+  const rows=createTaskGanttResourceDateProjection([task('a',['p1']),task('b',['p2'])],[],'2026-10-19').rows
+  expect(rows.map(row=>row.startDate)).toEqual(['2026-10-19','2026-10-19'])
+})
