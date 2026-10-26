@@ -60,3 +60,10 @@ it('TDD 550: a rejected unknown-task Board drop preserves Undo', async () => {
   })
   expect(screen.getByRole('button', { name: 'Undo Board status change' })).toBeTruthy()
 })
+
+it('TDD 551: dismissing transient feedback does not remove a valid Undo', async () => {
+  const { user } = await fixture()
+  await user.click(screen.getByRole('button', { name: 'Move Alpha notes to Doing' }))
+  await user.click(screen.getByRole('button', { name: 'Dismiss Board status message' }))
+  expect(screen.getByRole('button', { name: 'Undo Board status change' })).toBeTruthy()
+})
