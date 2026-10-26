@@ -52,3 +52,9 @@ it('TDD 555: Board drop targets reference the keyboard alternative help', async 
   const hint = document.getElementById(target.getAttribute('aria-describedby') ?? '')
   expect(hint?.textContent).toContain('Use status buttons')
 })
+
+it('TDD 556: Board keyboard guidance disappears when switching to List', async () => {
+  const { user } = await fixture()
+  await user.selectOptions(screen.getByLabelText('Task view'), 'list')
+  expect(screen.queryByText('Use status buttons or the status selector to move tasks without dragging.')).toBeNull()
+})
