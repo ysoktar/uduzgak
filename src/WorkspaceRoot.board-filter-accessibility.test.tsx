@@ -51,3 +51,9 @@ it('TDD 580: Board reset button is part of the tab order', async () => {
   await user.type(screen.getByLabelText('Search tasks'), 'missing')
   expect(screen.getByRole('button', { name: 'Show all Board tasks' }).tabIndex).toBe(0)
 })
+
+it('TDD 581: Board reset provides a descriptive accessibility hint', async () => {
+  const { user } = await fixture()
+  await user.type(screen.getByLabelText('Search tasks'), 'missing')
+  expect(screen.getByRole('button', { name: 'Show all Board tasks' }).getAttribute('aria-description')).toContain('current view')
+})
