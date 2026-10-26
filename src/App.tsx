@@ -926,10 +926,11 @@ export function App({
         <button type="button" onClick={() => setBoardDragResult('')}>Dismiss Board status message</button>
       ) : null}
       {taskViewMode === 'board' && lastBoardStatusChange && onChangeTaskStatus ? (
-        <button type="button" title={`Undo status change for ${lastBoardStatusChange.taskTitle} to ${lastBoardStatusChange.previousStatus === 'todo' ? 'To do' : lastBoardStatusChange.previousStatus === 'doing' ? 'Doing' : 'Done'}`} onClick={() => {
+        <button type="button" title={`Undo status change for ${lastBoardStatusChange.taskTitle} to ${lastBoardStatusChange.previousStatus === 'todo' ? 'To do' : lastBoardStatusChange.previousStatus === 'doing' ? 'Doing' : 'Done'}`} onClick={(event) => {
           onChangeTaskStatus(lastBoardStatusChange.taskId, lastBoardStatusChange.previousStatus)
           setBoardDragResult(`Restored ${lastBoardStatusChange.taskTitle} to ${lastBoardStatusChange.previousStatus === 'todo' ? 'To do' : lastBoardStatusChange.previousStatus === 'doing' ? 'Doing' : 'Done'}`)
           setLastBoardStatusChange(null)
+          if (event.detail === 0) document.getElementById(`task-status-${lastBoardStatusChange.taskId}`)?.focus()
         }}>Undo Board status change</button>
       ) : null}
 
@@ -3750,33 +3751,37 @@ export function App({
                         {taskViewMode === 'board' && onChangeTaskStatus ? (
                           <div className="task-board-actions" role="group" aria-label={`Board status actions for ${task.title}`} aria-describedby={`board-keyboard-help-${project.id}`}>
                         {task.status !== 'done' ? (
-                          <button type="button" onClick={() => {
+                          <button type="button" onClick={(event) => {
                             const nextStatus = task.status === 'todo' ? 'doing' : 'done'
                             onChangeTaskStatus(task.id, nextStatus)
                             setLastBoardStatusChange({ taskId: task.id, previousStatus: task.status, taskTitle: task.title })
                             setBoardDragResult(`Moved ${task.title} to ${nextStatus === 'doing' ? 'Doing' : 'Done'}`)
+                            if (event.detail === 0) document.getElementById(`task-status-${task.id}`)?.focus()
                           }}>Move {task.title} to {task.status === 'todo' ? 'Doing' : 'Done'}</button>
                         ) : null}
                         {task.status !== 'todo' ? (
-                          <button type="button" onClick={() => {
+                          <button type="button" onClick={(event) => {
                             const previousStatus = task.status === 'done' ? 'doing' : 'todo'
                             onChangeTaskStatus(task.id, previousStatus)
                             setLastBoardStatusChange({ taskId: task.id, previousStatus: task.status, taskTitle: task.title })
                             setBoardDragResult(`Moved ${task.title} to ${previousStatus === 'doing' ? 'Doing' : 'To do'}`)
+                            if (event.detail === 0) document.getElementById(`task-status-${task.id}`)?.focus()
                           }}>Move {task.title} to {task.status === 'done' ? 'Doing' : 'To do'}</button>
                         ) : null}
                         {task.status === 'todo' ? (
-                          <button type="button" onClick={() => {
+                          <button type="button" onClick={(event) => {
                             onChangeTaskStatus(task.id, 'done')
                             setLastBoardStatusChange({ taskId: task.id, previousStatus: task.status, taskTitle: task.title })
                             setBoardDragResult(`Moved ${task.title} to Done`)
+                            if (event.detail === 0) document.getElementById(`task-status-${task.id}`)?.focus()
                           }}>Move {task.title} directly to Done</button>
                         ) : null}
                         {task.status === 'done' ? (
-                          <button type="button" onClick={() => {
+                          <button type="button" onClick={(event) => {
                             onChangeTaskStatus(task.id, 'todo')
                             setLastBoardStatusChange({ taskId: task.id, previousStatus: task.status, taskTitle: task.title })
                             setBoardDragResult(`Moved ${task.title} to To do`)
+                            if (event.detail === 0) document.getElementById(`task-status-${task.id}`)?.focus()
                           }}>Move {task.title} directly to To do</button>
                         ) : null}
                           </div>
