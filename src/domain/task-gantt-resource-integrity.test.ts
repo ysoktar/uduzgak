@@ -18,3 +18,8 @@ it('TDD 592: milestones do not consume resource capacity', () => {
   const rows = createTaskGanttResourcePlan([task('milestone',['p1'],'2026-10-19','2026-10-19',true),task('a',['p1'])],[]).rows
   expect(rows.map(row => [row.earliestStart,row.earliestFinish])).toEqual([[0,0],[0,2]])
 })
+
+it('TDD 593: unscheduled tasks remain outside the derived resource plan', () => {
+  const rows = createTaskGanttResourcePlan([task('a',['p1']),{...task('b',['p1']),dueDate:undefined}],[]).rows
+  expect(rows.map(row=>row.taskId)).toEqual(['a'])
+})
