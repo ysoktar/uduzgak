@@ -33,3 +33,8 @@ it('TDD 610: dependency-only delays do not count as contention', () => {
   const plan=createTaskGanttResourcePlan([task('a',['p1']),task('b',['p2'])],[blocks('r1','a','b')])
   expect(plan.waitingTaskIds).toEqual([])
 })
+
+it('TDD 611: zero-duration milestones are excluded from resource-wait summary', () => {
+  const plan=createTaskGanttResourcePlan([task('m',['p1'],'2026-10-19','2026-10-19',true),task('a',['p1'])],[])
+  expect(plan.waitingTaskIds).toEqual([])
+})
