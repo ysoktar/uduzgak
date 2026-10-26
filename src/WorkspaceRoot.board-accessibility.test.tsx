@@ -45,3 +45,10 @@ it('TDD 554: Board status announcements are atomic', async () => {
   await fixture()
   expect(screen.getByRole('status', { name: 'Board drag result' }).getAttribute('aria-atomic')).toBe('true')
 })
+
+it('TDD 555: Board drop targets reference the keyboard alternative help', async () => {
+  await fixture()
+  const target = screen.getByLabelText('Drop task into Doing')
+  const hint = document.getElementById(target.getAttribute('aria-describedby') ?? '')
+  expect(hint?.textContent).toContain('Use status buttons')
+})
