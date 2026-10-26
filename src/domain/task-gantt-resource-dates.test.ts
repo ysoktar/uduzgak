@@ -26,3 +26,9 @@ it('TDD 618: independent resources share projected working dates', () => {
   const rows=createTaskGanttResourceDateProjection([task('a',['p1']),task('b',['p2'])],[],'2026-10-19').rows
   expect(rows.map(row=>row.startDate)).toEqual(['2026-10-19','2026-10-19'])
 })
+
+it('TDD 619: excluded holidays shift projected finish dates', () => {
+  const rows=createTaskGanttResourceDateProjection([task('a',['p1'])],[],'2026-10-19',['2026-10-20']).rows
+  expect(rows[0].startDate).toBe('2026-10-19')
+  expect(rows[0].finishDate).toBe('2026-10-21')
+})
