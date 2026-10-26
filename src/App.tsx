@@ -3760,12 +3760,14 @@ export function App({
                         {taskViewMode === 'board' && onChangeTaskStatus && task.status === 'todo' ? (
                           <button type="button" onClick={() => {
                             onChangeTaskStatus(task.id, 'done')
+                            setLastBoardStatusChange({ taskId: task.id, previousStatus: task.status, taskTitle: task.title })
                             setBoardDragResult(`Moved ${task.title} to Done`)
                           }}>Move {task.title} directly to Done</button>
                         ) : null}
                         {taskViewMode === 'board' && onChangeTaskStatus && task.status === 'done' ? (
                           <button type="button" onClick={() => {
                             onChangeTaskStatus(task.id, 'todo')
+                            setLastBoardStatusChange({ taskId: task.id, previousStatus: task.status, taskTitle: task.title })
                             setBoardDragResult(`Moved ${task.title} to To do`)
                           }}>Move {task.title} directly to To do</button>
                         ) : null}
