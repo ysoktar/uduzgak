@@ -1,0 +1,17 @@
+name: TDD 572-576 Board filter reset
+on:
+  push:
+    branches: [tdd/572-576-board-filter-reset]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - run: npm ci --include=dev --no-fund
+      - run: npm exec -- vitest run src/WorkspaceRoot.board-filter-reset.test.tsx src/WorkspaceRoot.task-discovery.test.tsx --maxWorkers=1 --testTimeout=30000
+      - run: npm run check
