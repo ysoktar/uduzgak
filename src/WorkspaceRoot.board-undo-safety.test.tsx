@@ -51,3 +51,12 @@ it('TDD 549: a same-status Board drop preserves a prior valid Undo', async () =>
   })
   expect(screen.getByRole('button', { name: 'Undo Board status change' })).toBeTruthy()
 })
+
+it('TDD 550: a rejected unknown-task Board drop preserves Undo', async () => {
+  const { user } = await fixture()
+  await user.click(screen.getByRole('button', { name: 'Move Alpha notes to Doing' }))
+  fireEvent.drop(screen.getByLabelText('Drop task into Done'), {
+    dataTransfer: { getData: () => 'unknown-task' },
+  })
+  expect(screen.getByRole('button', { name: 'Undo Board status change' })).toBeTruthy()
+})
