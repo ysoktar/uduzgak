@@ -50,3 +50,10 @@ it('TDD 539: undo restores To do after a Board drop', async () => {
   await user.click(screen.getByRole('button', { name: 'Undo Board status change' }))
   expect(store.getState().tasks.find(t => t.id === task.id)?.status).toBe('todo')
 })
+
+it('TDD 540: Undo is available only once for the last transition', async () => {
+  const { user } = await fixture()
+  await user.click(screen.getByRole('button', { name: 'Move Alpha notes to Doing' }))
+  await user.click(screen.getByRole('button', { name: 'Undo Board status change' }))
+  expect(screen.queryByRole('button', { name: 'Undo Board status change' })).toBeNull()
+})
