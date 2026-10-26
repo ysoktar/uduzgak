@@ -911,3 +911,13 @@ Focused CI run 40310413163 passed tests, lint and build.
 - [x] Validated holidays and workweek determine occupancy duration (591, user-approved assertion correction).
 
 This is an in-memory derived planning projection. It does not persist allocation or auto-reschedule tasks; full resource leveling and visual integration remain open. Focused CI run 40315381648 passed tests, lint and build.
+
+## Resource-aware Gantt integrity — TDD 592–596
+
+- [x] Zero-duration milestones consume no extra resource slot (592, regression).
+- [x] Unscheduled Tasks are excluded from the derived plan (593, regression).
+- [x] Duplicate assignee identifiers do not reserve capacity twice (594, regression).
+- [x] Dependency cycles are rejected (595, regression).
+- [x] No mutation of Task or relationship inputs (596, regression).
+
+All five are defensive regression tests of the existing resource projection. Full `npm run check` is the merge gate.
