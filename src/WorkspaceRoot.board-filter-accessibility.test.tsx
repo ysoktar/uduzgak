@@ -45,3 +45,9 @@ it('TDD 579: Board reset button announces its shortcut-free usage', async () => 
   await user.type(screen.getByLabelText('Search tasks'), 'missing')
   expect(screen.getByRole('button', { name: 'Show all Board tasks' }).getAttribute('aria-keyshortcuts')).toBeNull()
 })
+
+it('TDD 580: Board reset button is part of the tab order', async () => {
+  const { user } = await fixture()
+  await user.type(screen.getByLabelText('Search tasks'), 'missing')
+  expect(screen.getByRole('button', { name: 'Show all Board tasks' }).tabIndex).toBe(0)
+})
