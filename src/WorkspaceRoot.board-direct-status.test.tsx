@@ -40,3 +40,8 @@ it('TDD 528: Done Task can return directly to To do', async () => {
   await user.click(screen.getByRole('button', { name: 'Move Alpha notes directly to To do' }))
   expect(store.getState().tasks.find(t => t.id === task.id)?.status).toBe('todo')
 })
+
+it('TDD 529: Doing Tasks have no direct skip-status action', async () => {
+  await fixture('doing')
+  expect(screen.queryByRole('button', { name: /directly to/ })).toBeNull()
+})
