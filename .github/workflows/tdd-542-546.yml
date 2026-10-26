@@ -1,0 +1,17 @@
+name: TDD 542-546 Board Undo guardrails
+on:
+  push:
+    branches: [tdd/542-546-board-undo-guardrails]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - run: npm ci --include=dev --no-fund
+      - run: npm exec -- vitest run src/WorkspaceRoot.board-undo-guardrails.test.tsx src/WorkspaceRoot.board-status-undo.test.tsx --maxWorkers=1 --testTimeout=30000
+      - run: npm run check
