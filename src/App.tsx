@@ -3575,15 +3575,25 @@ export function App({
                           onDrop={event => {
                             event.preventDefault()
                             const id=event.dataTransfer.getData('application/x-uduzgak-board-task')
+                            if (!id) {
+                              setBoardDragResult('No task selected for Board drop')
+                              return
+                            }
                             const dragged=activeTasks.find(t=>t.id===id && t.projectId===project.id)
                             if (id && !dragged && activeTasks.some(t=>t.id===id)) {
                               setBoardDragResult('Cannot move tasks between project boards')
                               return
                             }
-                            if (dragged && dragged.status !== entry.key) {
-                              onChangeTaskStatus?.(dragged.id,entry.key)
-                              setBoardDragResult(`Moved ${dragged.title} into ${entry.key}`)
+                            if (!dragged) {
+                              setBoardDragResult('Task is no longer available for Board drop')
+                              return
                             }
+                            if (dragged.status === entry.key) {
+                              setBoardDragResult(`${dragged.title} is already in ${entry.label}`)
+                              return
+                            }
+                            onChangeTaskStatus?.(dragged.id,entry.key)
+                            setBoardDragResult(`Moved ${dragged.title} into ${entry.key}`)
                           }}
                         >
                           <div role="group" aria-label={`${entry.label} Board column`}>

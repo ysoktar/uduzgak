@@ -805,3 +805,7 @@ behavior or an independently observed failing RED test.
 ### TDD 512–516 — Board column clarity
 
 Board headings now show visible Task counts, including empty-column guidance and named status groups. Column counts update with Task status changes, and each Project Board reports how many of its active Tasks remain visible under the selected filters. These are view-only derived presentations and do not change the Workspace storage schema. TDD 515 is a status-change regression check rather than a new implementation behavior. Focused verification: GitHub Actions run 40299218622 (tests, zero-warning lint, production build).
+
+### TDD 517–521 — Board drop feedback
+
+Board drop targets now announce empty payloads, unknown/stale Task identifiers, and attempts to drop a Task into the column it already occupies. Existing cross-Project rejection and successful-move feedback remain intact. Tests 520–521 are regression coverage for no mutation after an unknown ID and clearing obsolete status on a later valid drop; they do not represent new RED-to-GREEN behavior. Focused verification: GitHub Actions run 40299681043 (tests, zero-warning lint, production build).

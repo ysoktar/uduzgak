@@ -771,3 +771,13 @@ is not counted as a newly demonstrated RED-to-GREEN behavior change.
 - [x] Per-Project filtered-visible versus active Task summary (516).
 
 Focused GitHub Actions run 40299218622 passed tests, lint, and production build. TDD 515 verifies existing reactive behavior and is not a new failing RED-to-GREEN change.
+
+## Board drop feedback — TDD 517–521
+
+- [x] Announce an empty Board drop payload (517).
+- [x] Announce unknown Task identifiers (518).
+- [x] Announce same-status no-op drops (519).
+- [x] Verify unknown drops leave Task status unchanged (520, regression).
+- [x] Verify a successful drop replaces stale warning text (521, regression).
+
+Focused CI run 40299681043 passed tests, zero-warning lint and production build. TDD 520 and 521 are regression checks of existing behavior.

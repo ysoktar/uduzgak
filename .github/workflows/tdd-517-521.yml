@@ -1,0 +1,18 @@
+name: TDD 517-521 Board drop feedback
+on:
+  push:
+    branches: [tdd/517-521-board-drop-feedback]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - run: npm ci --include=dev --no-fund
+      - run: npm exec -- vitest run src/WorkspaceRoot.board-drop-feedback.test.tsx src/WorkspaceRoot.board-drag.test.tsx src/WorkspaceRoot.board-clarity.test.tsx --maxWorkers=1 --testTimeout=30000
+      - run: npm run lint
+      - run: npm run build
