@@ -925,7 +925,7 @@ export function App({
       {boardDragResult ? (
         <button type="button" onClick={() => setBoardDragResult('')}>Dismiss Board status message</button>
       ) : null}
-      {lastBoardStatusChange && onChangeTaskStatus ? (
+      {taskViewMode === 'board' && lastBoardStatusChange && onChangeTaskStatus ? (
         <button type="button" onClick={() => {
           onChangeTaskStatus(lastBoardStatusChange.taskId, lastBoardStatusChange.previousStatus)
           setBoardDragResult(`Restored ${lastBoardStatusChange.taskTitle} to ${lastBoardStatusChange.previousStatus === 'todo' ? 'To do' : lastBoardStatusChange.previousStatus === 'doing' ? 'Doing' : 'Done'}`)
