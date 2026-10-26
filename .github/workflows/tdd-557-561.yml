@@ -1,0 +1,18 @@
+name: TDD 557-561 Board responsive controls
+on:
+  push:
+    branches: [tdd/557-561-board-responsive]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - run: npm ci --include=dev --no-fund
+      - run: npm exec -- vitest run src/board-responsive-controls.test.ts src/board-drag-styles.test.ts --maxWorkers=1
+      - run: npm run lint
+      - run: npm run build

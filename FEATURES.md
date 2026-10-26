@@ -841,3 +841,13 @@ Focused GitHub Actions run 40303993233 passed tests, lint and build.
 - [x] Board-only help visibility (556, regression).
 
 Focused GitHub Actions run 40304503056 passed tests, lint and build. Complete accessibility evaluation remains pending.
+
+## Responsive Board controls — TDD 557–561
+
+- [x] Board drop cursor signals move rather than copy (557, approved existing-test update).
+- [x] Long Board card text wraps (558).
+- [x] Board card buttons have at least 44px touch height (559).
+- [x] Board card buttons fit their parent width (560).
+- [x] Board headings wrap long text (561).
+
+CI run 40305468753 passed focused CSS checks, lint and production build. Real-device testing is still needed.
