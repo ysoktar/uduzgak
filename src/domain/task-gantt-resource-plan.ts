@@ -12,6 +12,7 @@ export interface TaskGanttResourceRow {
   earliestStart: number
   earliestFinish: number
   durationDays: number
+  resourceWaitDays: number
   assigneeIds: string[]
 }
 
@@ -53,7 +54,7 @@ export function createTaskGanttResourcePlan(
     )
     const durationDays = durations.get(taskId)!
     const earliestFinish = nextFree + durationDays
-    rows.push({ taskId, earliestStart: nextFree, earliestFinish, durationDays, assigneeIds })
+    rows.push({ taskId, earliestStart: nextFree, earliestFinish, durationDays, resourceWaitDays: nextFree - precedingFinish, assigneeIds })
     endByTask.set(taskId, earliestFinish)
     for (const id of assigneeIds) availableByPerson.set(id, earliestFinish)
   }

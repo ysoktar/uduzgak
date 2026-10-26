@@ -931,3 +931,13 @@ All five are defensive regression tests of the existing resource projection. Ful
 - [x] Existing critical-path summary remains distinct (601, regression).
 
 Focused CI run 40316400117 passed tests, lint and build. No persisted Task dates are changed.
+
+## Gantt resource wait — TDD 602–606
+
+- [x] Expose per-Task logical resource wait (602).
+- [x] Independent assignees have zero wait (603, regression).
+- [x] Dependency delays are distinct from resource waits (604, regression).
+- [x] Multi-assignee work respects the latest available person (605, regression).
+- [x] Zero-duration milestones do not create capacity delay (606, regression).
+
+Focused CI run 40316750025 passed tests, lint and build. Resource waits are logical offsets, not calendar-date forecasts.

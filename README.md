@@ -869,3 +869,7 @@ Regression tests verify that zero-duration milestones do not reserve additional 
 ### TDD 597–601 — visible Gantt resource projection
 
 The Gantt view now reports a distinct resource-constrained logical working-day duration and per-scheduled-Task logical start/finish slots. Unscheduled Tasks do not receive invented slots, the summary does not appear outside Gantt, and the original dependency-only critical-path report remains separate. This is a derived capacity projection, not an automatic date rescheduler or optimal resource allocator. Focused GitHub Actions run 40316400117 passed tests, zero-warning lint and build.
+
+### TDD 602–606 — distinguish Gantt resource wait
+
+Derived resource Gantt rows now expose `resourceWaitDays` separately from the dependency-ready start. It counts additional logical working-day slots caused by a reserved person, and does not relabel mandatory predecessor waits as resource conflicts. Independent assignees incur no resource wait; multi-person Tasks wait for the latest available assignee. Milestones remain zero-duration. Focused CI run 40316750025 passed tests, lint and build. This remains non-persistent and is not a resource-optimal calendar schedule.
