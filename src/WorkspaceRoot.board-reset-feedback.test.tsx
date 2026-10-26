@@ -42,3 +42,12 @@ it('TDD 583: resetting Board filters returns focus to search', async () => {
   await user.click(screen.getByRole('button', { name: 'Show all Board tasks' }))
   expect(document.activeElement).toBe(search)
 })
+
+it('TDD 584: Board reset does not change the selected sort order', async () => {
+  const { user } = await fixture()
+  const sort = screen.getByLabelText('Sort tasks') as HTMLSelectElement
+  await user.selectOptions(sort, 'title')
+  await user.type(screen.getByLabelText('Search tasks'), 'unmatched')
+  await user.click(screen.getByRole('button', { name: 'Show all Board tasks' }))
+  expect(sort.value).toBe('title')
+})
