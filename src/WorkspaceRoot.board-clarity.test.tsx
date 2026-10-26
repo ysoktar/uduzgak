@@ -40,3 +40,10 @@ it('TDD 513: empty Board columns explain that tasks can be dropped there', async
   await fixture()
   expect(screen.getByLabelText('Drop task into Doing').textContent).toContain('Drop a task here')
 })
+
+it('TDD 514: Board exposes each column as a named group', async () => {
+  await fixture()
+  expect(screen.getByRole('group', { name: 'To do Board column' })).toBeTruthy()
+  expect(screen.getByRole('group', { name: 'Doing Board column' })).toBeTruthy()
+  expect(screen.getByRole('group', { name: 'Done Board column' })).toBeTruthy()
+})
