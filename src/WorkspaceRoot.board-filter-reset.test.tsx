@@ -1,5 +1,5 @@
 /** @vitest-environment jsdom */
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { expect, it } from 'vitest'
 import { createWorkspaceCommands } from './application/workspace-commands'
@@ -64,7 +64,7 @@ it('TDD 575: Board reset clears due-date filtering', async () => {
 it('TDD 576: Board reset also clears an active custom-field filter', async () => {
   const { user } = await fixture(true)
   const fieldFilter = screen.getByLabelText('Custom field filter') as HTMLSelectElement
-  await user.selectOptions(fieldFilter, screen.getByRole('option', { name: 'Reviewed' }) as HTMLOptionElement)
+  await user.selectOptions(fieldFilter, within(fieldFilter).getByRole('option', { name: 'Reviewed' }) as HTMLOptionElement)
   await user.click(screen.getByRole('button', { name: 'Show all Board tasks' }))
   expect(fieldFilter.value).toBe('')
   expect(screen.queryByRole('button', { name: 'Show all Board tasks' })).toBeNull()
