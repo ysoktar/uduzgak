@@ -34,3 +34,9 @@ it('TDD 527: To do Task can skip Doing and move straight to Done', async () => {
   await user.click(screen.getByRole('button', { name: 'Move Alpha notes directly to Done' }))
   expect(store.getState().tasks.find(t => t.id === task.id)?.status).toBe('done')
 })
+
+it('TDD 528: Done Task can return directly to To do', async () => {
+  const { user, store, task } = await fixture('done')
+  await user.click(screen.getByRole('button', { name: 'Move Alpha notes directly to To do' }))
+  expect(store.getState().tasks.find(t => t.id === task.id)?.status).toBe('todo')
+})
