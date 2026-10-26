@@ -3575,6 +3575,10 @@ export function App({
                           onDrop={event => {
                             event.preventDefault()
                             const id=event.dataTransfer.getData('application/x-uduzgak-board-task')
+                            if (!id) {
+                              setBoardDragResult('No task selected for Board drop')
+                              return
+                            }
                             const dragged=activeTasks.find(t=>t.id===id && t.projectId===project.id)
                             if (id && !dragged && activeTasks.some(t=>t.id===id)) {
                               setBoardDragResult('Cannot move tasks between project boards')
