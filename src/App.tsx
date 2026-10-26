@@ -3768,10 +3768,11 @@ export function App({
                           }}>Move {task.title} to {task.status === 'done' ? 'Doing' : 'To do'}</button>
                         ) : null}
                         {task.status === 'todo' ? (
-                          <button type="button" onClick={() => {
+                          <button type="button" onClick={(event) => {
                             onChangeTaskStatus(task.id, 'done')
                             setLastBoardStatusChange({ taskId: task.id, previousStatus: task.status, taskTitle: task.title })
                             setBoardDragResult(`Moved ${task.title} to Done`)
+                            if (event.detail === 0) document.getElementById(`task-status-${task.id}`)?.focus()
                           }}>Move {task.title} directly to Done</button>
                         ) : null}
                         {task.status === 'done' ? (
