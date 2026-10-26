@@ -3367,6 +3367,11 @@ export function App({
                             }
                           >
                             <span>{item.task.title}</span>
+                            {ganttResourceRows.has(item.task.id) ? (
+                              <span aria-label={`Gantt resource slot for ${item.task.title}`}>
+                                {ganttResourceRows.get(item.task.id)!.earliestStart}–{ganttResourceRows.get(item.task.id)!.earliestFinish} logical working-day slots
+                              </span>
+                            ) : null}
                             {criticalRow ? (
                               <span aria-label={`Critical path status for ${item.task.title}`}>
                                 {criticalRow.isCritical
