@@ -41,3 +41,8 @@ it('TDD 523: Board Doing task advances to Done', async () => {
   await user.click(screen.getByRole('button', { name: 'Move Alpha notes to Done' }))
   expect(store.getState().tasks.find(t => t.id === task.id)?.status).toBe('done')
 })
+
+it('TDD 524: Done tasks do not show an advance button', async () => {
+  await fixture('done')
+  expect(screen.queryByRole('button', { name: 'Move Alpha notes to Done' })).toBeNull()
+})
