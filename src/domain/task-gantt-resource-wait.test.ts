@@ -23,3 +23,9 @@ it('TDD 603: independent assignees have no resource wait', () => {
   const rows=createTaskGanttResourcePlan([task('a',['p1']),task('b',['p2'])],[]).rows
   expect(rows.map(row=>row.resourceWaitDays)).toEqual([0,0])
 })
+
+it('TDD 604: dependency wait is not double-counted as resource wait', () => {
+  const rows=createTaskGanttResourcePlan([task('a',['p1']),task('b',['p2'])],[blocks('edge','a','b')]).rows
+  expect(rows[1].earliestStart).toBe(2)
+  expect(rows[1].resourceWaitDays).toBe(0)
+})
