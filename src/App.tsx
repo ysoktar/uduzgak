@@ -3747,6 +3747,8 @@ export function App({
                           Select task {task.title}
                         </label>
                         <span>{task.title}</span>
+                        {taskViewMode === 'board' && onChangeTaskStatus ? (
+                          <div className="task-board-actions" role="group" aria-label={`Board status actions for ${task.title}`}>
                         {taskViewMode === 'board' && onChangeTaskStatus && task.status !== 'done' ? (
                           <button type="button" onClick={() => {
                             const nextStatus = task.status === 'todo' ? 'doing' : 'done'
@@ -3776,6 +3778,8 @@ export function App({
                             setLastBoardStatusChange({ taskId: task.id, previousStatus: task.status, taskTitle: task.title })
                             setBoardDragResult(`Moved ${task.title} to To do`)
                           }}>Move {task.title} directly to To do</button>
+                        ) : null}
+                          </div>
                         ) : null}
                         <span
                           aria-label={`Subtask count for ${task.title}`}
