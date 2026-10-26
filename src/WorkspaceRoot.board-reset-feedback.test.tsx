@@ -51,3 +51,8 @@ it('TDD 584: Board reset does not change the selected sort order', async () => {
   await user.click(screen.getByRole('button', { name: 'Show all Board tasks' }))
   expect(sort.value).toBe('title')
 })
+
+it('TDD 585: the Board reset button disappears when there are no active filters', async () => {
+  await fixture()
+  expect(screen.queryByRole('button', { name: 'Show all Board tasks' })).toBeNull()
+})
