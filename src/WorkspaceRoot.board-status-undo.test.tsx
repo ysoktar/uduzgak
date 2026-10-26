@@ -35,3 +35,10 @@ it('TDD 537: undo restores To do after quick advance', async () => {
   await user.click(screen.getByRole('button', { name: 'Undo Board status change' }))
   expect(store.getState().tasks.find(t => t.id === task.id)?.status).toBe('todo')
 })
+
+it('TDD 538: undo restores To do after direct Done transition', async () => {
+  const { user, store, task } = await fixture()
+  await user.click(screen.getByRole('button', { name: 'Move Alpha notes directly to Done' }))
+  await user.click(screen.getByRole('button', { name: 'Undo Board status change' }))
+  expect(store.getState().tasks.find(t => t.id === task.id)?.status).toBe('todo')
+})
