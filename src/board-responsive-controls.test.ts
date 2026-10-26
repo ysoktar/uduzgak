@@ -13,3 +13,7 @@ it('TDD 558: Board Task cards wrap long text without overflow', () => {
 it('TDD 559: Board status controls meet touch target height', () => {
   expect(css()).toMatch(/\.task-board-card button\s*\{[^}]*min-height:\s*44px/)
 })
+
+it('TDD 560: Board status controls wrap on narrow widths', () => {
+  expect(css()).toMatch(/\.task-board-card button\s*\{[^}]*max-width:\s*100%/)
+})
