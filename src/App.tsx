@@ -921,7 +921,7 @@ export function App({
 
       {error ? <p role="alert">{error}</p> : null}
       <p role="status" aria-label="Task reorder result" aria-live="polite">{taskReorderResult}</p>
-      <p role="status" aria-label="Board drag result" aria-live="polite">{boardDragResult}</p>
+      <p role="status" aria-label="Board drag result" aria-live="polite" aria-atomic="true">{boardDragResult}</p>
       {boardDragResult ? (
         <button type="button" onClick={() => setBoardDragResult('')}>Dismiss Board status message</button>
       ) : null}
