@@ -1,5 +1,5 @@
 /** @vitest-environment jsdom */
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { expect, it } from 'vitest'
 import { createWorkspaceCommands } from './application/workspace-commands'
@@ -39,6 +39,14 @@ it('TDD 537: undo restores To do after quick advance', async () => {
 it('TDD 538: undo restores To do after direct Done transition', async () => {
   const { user, store, task } = await fixture()
   await user.click(screen.getByRole('button', { name: 'Move Alpha notes directly to Done' }))
+  await user.click(screen.getByRole('button', { name: 'Undo Board status change' }))
+  expect(store.getState().tasks.find(t => t.id === task.id)?.status).toBe('todo')
+})
+
+it('TDD 539: undo restores To do after a Board drop', async () => {
+  const { user, store, task } = await fixture()
+  const transfer = { getData: (_kind: string) => task.id, setData: (_kind: string, _id: string) => {} }
+  fireEvent.drop(screen.getByLabelText('Drop task into Done'), { dataTransfer: transfer })
   await user.click(screen.getByRole('button', { name: 'Undo Board status change' }))
   expect(store.getState().tasks.find(t => t.id === task.id)?.status).toBe('todo')
 })
