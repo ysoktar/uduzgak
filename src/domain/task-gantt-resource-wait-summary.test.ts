@@ -28,3 +28,8 @@ it('TDD 609: resource-wait identifiers preserve the source Task order', () => {
   const plan=createTaskGanttResourcePlan([task('a',['p1']),task('b',['p1']),task('c',['p1'])],[])
   expect(plan.waitingTaskIds).toEqual(['b','c'])
 })
+
+it('TDD 610: dependency-only delays do not count as contention', () => {
+  const plan=createTaskGanttResourcePlan([task('a',['p1']),task('b',['p2'])],[blocks('r1','a','b')])
+  expect(plan.waitingTaskIds).toEqual([])
+})
