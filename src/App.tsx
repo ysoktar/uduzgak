@@ -3555,7 +3555,7 @@ export function App({
                   {taskViewMode === 'board' ? (
                     <>
                       {searchQuery !== '' || statusFilter !== 'all' || priorityFilter !== 'all' || dueDateFilter !== 'all' || effectiveCustomFieldFilter !== undefined ? (
-                        <button type="button" onClick={() => {
+                        <button type="button" title="Clear active Board task filters" onClick={() => {
                           setCustomFieldFilterFieldId('')
                           updateFilterSortPreferences({ query: '', status: 'all', priority: 'all', dueDate: 'all', customFieldFilter: undefined })
                         }}>Show all Board tasks</button>
