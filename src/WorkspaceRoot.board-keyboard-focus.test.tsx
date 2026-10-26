@@ -52,3 +52,10 @@ it('TDD 570: keyboard direct return to To do focuses selector', async () => {
   fireEvent.click(screen.getByRole('button', { name: 'Move Alpha notes directly to To do' }), { detail: 0 })
   expect(document.activeElement).toBe(screen.getByLabelText('Status for Alpha notes'))
 })
+
+it('TDD 571: keyboard Undo focuses the restored Task status selector', async () => {
+  const { user } = await fixture()
+  await user.click(screen.getByRole('button', { name: 'Move Alpha notes to Doing' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Undo Board status change' }), { detail: 0 })
+  expect(document.activeElement).toBe(screen.getByLabelText('Status for Alpha notes'))
+})
