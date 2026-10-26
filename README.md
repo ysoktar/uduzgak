@@ -853,3 +853,7 @@ The Board view offers a single `Show all Board tasks` control when search, statu
 ### TDD 577–581 — Board filter reset accessibility
 
 The Board's contextual reset control has descriptive title and ARIA text, a stable test identifier, and remains a native tab-reachable button without an invented keyboard shortcut. The target tests validate these properties alongside the prior filter-reset behavior. Focused GitHub Actions run 40310011714 passed tests, zero-warning lint, and production build after the user-approved removal of an unused test import; assertions remain unchanged.
+
+### TDD 582–586 — Board reset feedback
+
+Clearing active Board filters now announces `Board filters cleared` in the existing live status region and returns focus to Task search when the reset button disappears. Regression coverage confirms the reset retains task sort order, the reset button is absent with no active filters, and combined search/status/priority filtering resets while retaining Board mode. Focused CI run 40310413163 passed tests, zero-warning lint and production build; this is not a full regression-suite result.
