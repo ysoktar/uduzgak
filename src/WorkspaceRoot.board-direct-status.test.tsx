@@ -51,3 +51,9 @@ it('TDD 530: direct Done feedback uses the readable column label', async () => {
   await user.click(screen.getByRole('button', { name: 'Move Alpha notes directly to Done' }))
   expect(screen.getByRole('status', { name: 'Board drag result' }).textContent).toContain('Moved Alpha notes to Done')
 })
+
+it('TDD 531: direct status shortcuts remain hidden outside Board', async () => {
+  const { user } = await fixture()
+  await user.selectOptions(screen.getByLabelText('Task view'), 'list')
+  expect(screen.queryByRole('button', { name: /directly to/ })).toBeNull()
+})
