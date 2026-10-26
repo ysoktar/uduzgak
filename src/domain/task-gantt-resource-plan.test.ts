@@ -26,3 +26,8 @@ it('TDD 588: independent assignees may be scheduled concurrently', () => {
   const rows = createTaskGanttResourcePlan([task('a', ['p1']), task('b', ['p2'])], []).rows
   expect(rows.map(row => row.earliestStart)).toEqual([0, 0])
 })
+
+it('TDD 589: dependency successors wait for predecessor completion', () => {
+  const rows = createTaskGanttResourcePlan([task('a', ['p1']), task('b', ['p2'])], [blocks('r1', 'a', 'b')]).rows
+  expect(rows.map(row => row.earliestStart)).toEqual([0, 2])
+})
