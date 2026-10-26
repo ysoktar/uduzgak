@@ -18,3 +18,8 @@ it('TDD 602: shared-assignee task records resource wait separately', () => {
   const rows=createTaskGanttResourcePlan([task('a',['p1']),task('b',['p1'])],[]).rows
   expect(rows.map(row=>row.resourceWaitDays)).toEqual([0,2])
 })
+
+it('TDD 603: independent assignees have no resource wait', () => {
+  const rows=createTaskGanttResourcePlan([task('a',['p1']),task('b',['p2'])],[]).rows
+  expect(rows.map(row=>row.resourceWaitDays)).toEqual([0,0])
+})
