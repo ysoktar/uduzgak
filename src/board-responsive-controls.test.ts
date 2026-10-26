@@ -9,3 +9,7 @@ it('TDD 557: Board drop headings signal movement, not copying', () => {
 it('TDD 558: Board Task cards wrap long text without overflow', () => {
   expect(css()).toMatch(/\.task-board-card\s*\{[^}]*overflow-wrap:\s*anywhere/)
 })
+
+it('TDD 559: Board status controls meet touch target height', () => {
+  expect(css()).toMatch(/\.task-board-card button\s*\{[^}]*min-height:\s*44px/)
+})
