@@ -44,3 +44,8 @@ it('TDD 613: waiting Task shows its resource delay', () => {
   fixture()
   expect(screen.getByLabelText('Gantt resource wait for Beta').textContent).toContain('2 working days')
 })
+
+it('TDD 614: first Task never reports a resource wait', () => {
+  fixture()
+  expect(screen.queryByLabelText('Gantt resource wait for Alpha')).toBeNull()
+})
