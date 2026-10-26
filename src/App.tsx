@@ -917,6 +917,9 @@ export function App({
       {error ? <p role="alert">{error}</p> : null}
       <p role="status" aria-label="Task reorder result" aria-live="polite">{taskReorderResult}</p>
       <p role="status" aria-label="Board drag result" aria-live="polite">{boardDragResult}</p>
+      {boardDragResult ? (
+        <button type="button" onClick={() => setBoardDragResult('')}>Dismiss Board status message</button>
+      ) : null}
 
       <label htmlFor="task-search">Search tasks</label>
       <small className="task-search-shortcut-hint">Press / to search tasks</small>
@@ -3731,14 +3734,14 @@ export function App({
                           <button type="button" onClick={() => {
                             const nextStatus = task.status === 'todo' ? 'doing' : 'done'
                             onChangeTaskStatus(task.id, nextStatus)
-                            setBoardDragResult(`Moved ${task.title} into ${nextStatus}`)
+                            setBoardDragResult(`Moved ${task.title} to ${nextStatus === 'doing' ? 'Doing' : 'Done'}`)
                           }}>Move {task.title} to {task.status === 'todo' ? 'Doing' : 'Done'}</button>
                         ) : null}
                         {taskViewMode === 'board' && onChangeTaskStatus && task.status !== 'todo' ? (
                           <button type="button" onClick={() => {
                             const previousStatus = task.status === 'done' ? 'doing' : 'todo'
                             onChangeTaskStatus(task.id, previousStatus)
-                            setBoardDragResult(`Moved ${task.title} into ${previousStatus}`)
+                            setBoardDragResult(`Moved ${task.title} to ${previousStatus === 'doing' ? 'Doing' : 'To do'}`)
                           }}>Move {task.title} to {task.status === 'done' ? 'Doing' : 'To do'}</button>
                         ) : null}
                         {taskViewMode === 'board' && onChangeTaskStatus && task.status === 'todo' ? (
@@ -3750,7 +3753,7 @@ export function App({
                         {taskViewMode === 'board' && onChangeTaskStatus && task.status === 'done' ? (
                           <button type="button" onClick={() => {
                             onChangeTaskStatus(task.id, 'todo')
-                            setBoardDragResult(`Moved ${task.title} into todo`)
+                            setBoardDragResult(`Moved ${task.title} to To do`)
                           }}>Move {task.title} directly to To do</button>
                         ) : null}
                         <span

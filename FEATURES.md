@@ -801,3 +801,13 @@ Focused CI run 40300788163 passed tests, lint, and build. TDD 526 is a boundary 
 - [x] Direct controls do not leak to List view (531, regression).
 
 Targeted GitHub Actions run 40301218449 passed tests, zero-warning lint and production build.
+
+## Board status announcements — TDD 532–536
+
+- [x] Readable direct To do message (532).
+- [x] Readable quick Doing message (533).
+- [x] Quick Done message stays readable (534, regression).
+- [x] Readable backward To do message (535).
+- [x] Dismiss transient Board status feedback (536).
+
+Focused CI run 40301814304 passed targeted tests, zero-warning lint, and production build.
