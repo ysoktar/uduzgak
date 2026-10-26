@@ -39,3 +39,10 @@ it('TDD 517: an empty Board drop announces that no task was selected', async () 
   expect(screen.getByRole('status', { name: 'Board drag result' }).textContent).toContain('No task selected')
   expect(store.getState().tasks[0].status).toBe('todo')
 })
+
+it('TDD 518: an unknown Task drop reports a stale Task', async () => {
+  const { store } = await fixture()
+  fireEvent.drop(screen.getByLabelText('Drop task into Doing'), { dataTransfer: transfer('missing-task') })
+  expect(screen.getByRole('status', { name: 'Board drag result' }).textContent).toContain('Task is no longer available')
+  expect(store.getState().tasks[0].status).toBe('todo')
+})
