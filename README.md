@@ -849,3 +849,7 @@ When a Board status button is activated through a keyboard-style click, focus mo
 ### TDD 572–576 — reset Board filters in place
 
 The Board view offers a single `Show all Board tasks` control when search, status, priority, due-date or custom-field filters are active. It resets those filters without changing the selected Board view. The TDD 576 custom-field option query was scoped to its select after explicit approval; test assertions remain unchanged. Targeted CI checks passed; full `npm run check` must succeed before this feature is merged.
+
+### TDD 577–581 — Board filter reset accessibility
+
+The Board's contextual reset control has descriptive title and ARIA text, a stable test identifier, and remains a native tab-reachable button without an invented keyboard shortcut. The target tests validate these properties alongside the prior filter-reset behavior. Focused GitHub Actions run 40310011714 passed tests, zero-warning lint, and production build after the user-approved removal of an unused test import; assertions remain unchanged.
