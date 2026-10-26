@@ -35,3 +35,8 @@ it('TDD 512: Board headings show visible per-status Task counts', async () => {
   expect(screen.getByLabelText('Drop task into Doing').textContent).toContain('0 tasks')
   expect(screen.getByLabelText('Drop task into Done').textContent).toContain('0 tasks')
 })
+
+it('TDD 513: empty Board columns explain that tasks can be dropped there', async () => {
+  await fixture()
+  expect(screen.getByLabelText('Drop task into Doing').textContent).toContain('Drop a task here')
+})
