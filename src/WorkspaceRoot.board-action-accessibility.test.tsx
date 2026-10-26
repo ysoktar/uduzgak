@@ -50,3 +50,10 @@ it('TDD 565: Board action group buttons fit container width', () => {
   const css = readFileSync('src/styles.css', 'utf8')
   expect(css).toMatch(/\.task-board-actions button\s*\{[^}]*max-width:\s*100%/)
 })
+
+it('TDD 566: grouped Board controls reference keyboard movement guidance', async () => {
+  await fixture()
+  const group = screen.getByRole('group', { name: 'Board status actions for Alpha notes' })
+  const help = document.getElementById(group.getAttribute('aria-describedby') ?? '')
+  expect(help?.textContent).toContain('Use status buttons')
+})
