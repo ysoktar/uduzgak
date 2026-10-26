@@ -3729,9 +3729,10 @@ export function App({
                         <span>{task.title}</span>
                         {taskViewMode === 'board' && onChangeTaskStatus ? (
                           <button type="button" onClick={() => {
-                            onChangeTaskStatus(task.id, 'doing')
-                            setBoardDragResult(`Moved ${task.title} into doing`)
-                          }}>Move {task.title} to Doing</button>
+                            const nextStatus = task.status === 'todo' ? 'doing' : 'done'
+                            onChangeTaskStatus(task.id, nextStatus)
+                            setBoardDragResult(`Moved ${task.title} into ${nextStatus}`)
+                          }}>Move {task.title} to {task.status === 'todo' ? 'Doing' : 'Done'}</button>
                         ) : null}
                         <span
                           aria-label={`Subtask count for ${task.title}`}
