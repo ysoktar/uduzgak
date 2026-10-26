@@ -1,5 +1,6 @@
 /** @vitest-environment jsdom */
 import { render, screen } from '@testing-library/react'
+import { readFileSync } from 'node:fs'
 import userEvent from '@testing-library/user-event'
 import { expect, it } from 'vitest'
 import { createWorkspaceCommands } from './application/workspace-commands'
@@ -33,4 +34,9 @@ it('TDD 562: Board status controls form a labelled action group', async () => {
   await fixture()
   const group = screen.getByRole('group', { name: 'Board status actions for Alpha notes' })
   expect(group.querySelectorAll('button').length).toBe(2)
+})
+
+it('TDD 563: grouped Board action buttons meet touch target height', () => {
+  const css = readFileSync('src/styles.css', 'utf8')
+  expect(css).toMatch(/\.task-board-actions button\s*\{[^}]*min-height:\s*44px/)
 })
