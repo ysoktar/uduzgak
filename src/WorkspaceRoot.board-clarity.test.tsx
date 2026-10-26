@@ -47,3 +47,10 @@ it('TDD 514: Board exposes each column as a named group', async () => {
   expect(screen.getByRole('group', { name: 'Doing Board column' })).toBeTruthy()
   expect(screen.getByRole('group', { name: 'Done Board column' })).toBeTruthy()
 })
+
+it('TDD 515: Board heading counts update after a Task status change', async () => {
+  const { user } = await fixture()
+  await user.selectOptions(screen.getByLabelText('Status for Alpha notes'), 'doing')
+  expect(screen.getByLabelText('Drop task into To do').textContent).toContain('0 tasks')
+  expect(screen.getByLabelText('Drop task into Doing').textContent).toContain('1 task')
+})
