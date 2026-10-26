@@ -505,3 +505,7 @@ textarea {
 .task-board-card {
   overflow-wrap: anywhere;
 }
+
+.task-board-card button {
+  min-height: 44px;
+}
