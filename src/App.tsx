@@ -3759,11 +3759,12 @@ export function App({
                           }}>Move {task.title} to {task.status === 'todo' ? 'Doing' : 'Done'}</button>
                         ) : null}
                         {task.status !== 'todo' ? (
-                          <button type="button" onClick={() => {
+                          <button type="button" onClick={(event) => {
                             const previousStatus = task.status === 'done' ? 'doing' : 'todo'
                             onChangeTaskStatus(task.id, previousStatus)
                             setLastBoardStatusChange({ taskId: task.id, previousStatus: task.status, taskTitle: task.title })
                             setBoardDragResult(`Moved ${task.title} to ${previousStatus === 'doing' ? 'Doing' : 'To do'}`)
+                            if (event.detail === 0) document.getElementById(`task-status-${task.id}`)?.focus()
                           }}>Move {task.title} to {task.status === 'done' ? 'Doing' : 'To do'}</button>
                         ) : null}
                         {task.status === 'todo' ? (
