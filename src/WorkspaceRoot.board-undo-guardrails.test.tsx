@@ -59,3 +59,10 @@ it('TDD 545: the latest Board status transition replaces older Undo history', as
   await user.click(screen.getByRole('button', { name: 'Undo Board status change' }))
   expect(store.getState().tasks.find(t => t.id === task.id)?.status).toBe('doing')
 })
+
+it('TDD 546: Undo of a backward transition announces the restored Doing state', async () => {
+  const { user } = await fixture('doing')
+  await user.click(screen.getByRole('button', { name: 'Move Alpha notes to To do' }))
+  await user.click(screen.getByRole('button', { name: 'Undo Board status change' }))
+  expect(screen.getByRole('status', { name: 'Board drag result' }).textContent).toContain('Restored Alpha notes to Doing')
+})
