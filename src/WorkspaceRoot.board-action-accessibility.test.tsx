@@ -40,3 +40,8 @@ it('TDD 563: grouped Board action buttons meet touch target height', () => {
   const css = readFileSync('src/styles.css', 'utf8')
   expect(css).toMatch(/\.task-board-actions button\s*\{[^}]*min-height:\s*44px/)
 })
+
+it('TDD 564: Board action groups wrap on narrow layouts', () => {
+  const css = readFileSync('src/styles.css', 'utf8')
+  expect(css).toMatch(/\.task-board-actions\s*\{[^}]*flex-wrap:\s*wrap/)
+})
