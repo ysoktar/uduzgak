@@ -497,7 +497,7 @@ textarea {
 /* Board status headings are visible native drop zones. */
 .task-board-heading[aria-label] {
   min-height: 44px;
-  cursor: copy;
+  cursor: move;
   outline-offset: 3px;
   border: 2px dashed #8da6bf;
 }
