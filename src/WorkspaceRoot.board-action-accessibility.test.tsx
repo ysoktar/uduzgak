@@ -45,3 +45,8 @@ it('TDD 564: Board action groups wrap on narrow layouts', () => {
   const css = readFileSync('src/styles.css', 'utf8')
   expect(css).toMatch(/\.task-board-actions\s*\{[^}]*flex-wrap:\s*wrap/)
 })
+
+it('TDD 565: Board action group buttons fit container width', () => {
+  const css = readFileSync('src/styles.css', 'utf8')
+  expect(css).toMatch(/\.task-board-actions button\s*\{[^}]*max-width:\s*100%/)
+})
