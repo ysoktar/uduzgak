@@ -3583,6 +3583,7 @@ export function App({
                         >
                           <h3>{entry.label}</h3>
                           <span>{entry.count} {entry.count === 1 ? 'task' : 'tasks'}</span>
+                          {entry.count === 0 ? <small>Drop a task here</small> : null}
                         </li>
                       )
                     }
