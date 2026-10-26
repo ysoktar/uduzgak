@@ -21,3 +21,8 @@ it('TDD 587: two scheduled tasks sharing one person occupy successive slots', ()
   expect(rows.map(row => [row.taskId, row.earliestStart, row.earliestFinish]))
     .toEqual([['a', 0, 2], ['b', 2, 4]])
 })
+
+it('TDD 588: independent assignees may be scheduled concurrently', () => {
+  const rows = createTaskGanttResourcePlan([task('a', ['p1']), task('b', ['p2'])], []).rows
+  expect(rows.map(row => row.earliestStart)).toEqual([0, 0])
+})
