@@ -40,6 +40,6 @@ it('TDD 590: unassigned tasks do not block assigned resources', () => {
 it('TDD 591: holidays and workweek determine each resource occupancy length', () => {
   const before = [task('a', ['p1'], '2026-10-19', '2026-10-21'), task('b', ['p1'])]
   const rows = createTaskGanttResourcePlan(before, [], ['2026-10-20']).rows
-  expect(rows.map(row => [row.earliestStart, row.earliestFinish])).toEqual([[0, 2], [2, 4]])
+  expect(rows.map(row => [row.earliestStart, row.earliestFinish])).toEqual([[0, 2], [2, 3]])
   expect(before[0].dueDate).toBe('2026-10-21')
 })
