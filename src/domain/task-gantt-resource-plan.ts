@@ -1,7 +1,6 @@
 import type { Task } from './task'
 import type { TaskRelationship } from './task-relationship'
 import {
-  createTaskGanttCriticalGraph,
   createTaskGanttCriticalOrder,
   createTaskGanttWorkingGraph,
   normalizeTaskGanttNonWorkingDates,
