@@ -37,3 +37,7 @@ it('TDD 620: zero-day milestones project to a single working date', () => {
   const rows=createTaskGanttResourceDateProjection([task('m',['p1'],'2026-10-19','2026-10-19',true)],[],'2026-10-19').rows
   expect(rows[0]).toEqual({taskId:'m',startDate:'2026-10-19',finishDate:'2026-10-19',isMilestone:true})
 })
+
+it('TDD 621: invalid projection anchors are rejected', () => {
+  expect(()=>createTaskGanttResourceDateProjection([task('a',['p1'])],[],'2026-02-30')).toThrow('Invalid Gantt anchor date')
+})
