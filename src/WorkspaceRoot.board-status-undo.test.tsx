@@ -57,3 +57,10 @@ it('TDD 540: Undo is available only once for the last transition', async () => {
   await user.click(screen.getByRole('button', { name: 'Undo Board status change' }))
   expect(screen.queryByRole('button', { name: 'Undo Board status change' })).toBeNull()
 })
+
+it('TDD 541: Undo announces the restored To do status', async () => {
+  const { user } = await fixture()
+  await user.click(screen.getByRole('button', { name: 'Move Alpha notes to Doing' }))
+  await user.click(screen.getByRole('button', { name: 'Undo Board status change' }))
+  expect(screen.getByRole('status', { name: 'Board drag result' }).textContent).toContain('Restored Alpha notes to To do')
+})
