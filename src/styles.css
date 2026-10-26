@@ -509,3 +509,8 @@ textarea {
 .task-board-card button {
   min-height: 44px;
 }
+
+.task-board-card button {
+  max-width: 100%;
+  min-height: 44px;
+}
