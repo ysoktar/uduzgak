@@ -3608,6 +3608,7 @@ export function App({
                               return
                             }
                             onChangeTaskStatus?.(dragged.id,entry.key)
+                            setLastBoardStatusChange({ taskId: dragged.id, previousStatus: dragged.status, taskTitle: dragged.title })
                             setBoardDragResult(`Moved ${dragged.title} into ${entry.key}`)
                           }}
                         >
