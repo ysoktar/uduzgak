@@ -41,3 +41,8 @@ it('TDD 598: each scheduled Gantt task shows its logical resource slot', () => {
   fixture()
   expect(screen.getByLabelText('Gantt resource slot for Alpha notes').textContent).toContain('0–2')
 })
+
+it('TDD 599: unscheduled Gantt tasks have no invented resource slots', () => {
+  fixture(false)
+  expect(screen.queryByLabelText('Gantt resource slot for Alpha notes')).toBeNull()
+})
