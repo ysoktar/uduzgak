@@ -35,3 +35,8 @@ it('TDD 605: multi-person task waits for its latest available assignee', () => {
   expect(rows[2].resourceWaitDays).toBe(2)
   expect(rows[2].earliestStart).toBe(2)
 })
+
+it('TDD 606: milestones use zero duration without manufacturing a resource wait', () => {
+  const rows=createTaskGanttResourcePlan([task('m',['p1'],'2026-10-19','2026-10-19',true),task('a',['p1'])],[]).rows
+  expect(rows.map(row=>row.resourceWaitDays)).toEqual([0,0])
+})
