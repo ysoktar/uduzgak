@@ -845,3 +845,7 @@ Board status transition buttons are now grouped by Task with an accessible group
 ### TDD 567–571 — Board keyboard focus recovery
 
 When a Board status button is activated through a keyboard-style click, focus moves to that Task's persistent status selector instead of being lost if the action button disappears on rerender. Covers forward, backward and direct status actions plus Undo. Pointer clicks retain their ordinary focus behavior. Focused GitHub Actions run 40306821848 passed tests, zero-warning lint and production build; this remains narrower than full browser/device accessibility testing.
+
+### TDD 572–576 — reset Board filters in place
+
+The Board view offers a single `Show all Board tasks` control when search, status, priority, due-date or custom-field filters are active. It resets those filters without changing the selected Board view. The TDD 576 custom-field option query was scoped to its select after explicit approval; test assertions remain unchanged. Targeted CI checks passed; full `npm run check` must succeed before this feature is merged.

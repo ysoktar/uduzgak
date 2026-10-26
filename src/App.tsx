@@ -3554,6 +3554,12 @@ export function App({
                   ) : null}
                   {taskViewMode === 'board' ? (
                     <>
+                      {searchQuery !== '' || statusFilter !== 'all' || priorityFilter !== 'all' || dueDateFilter !== 'all' || effectiveCustomFieldFilter !== undefined ? (
+                        <button type="button" onClick={() => {
+                          setCustomFieldFilterFieldId('')
+                          updateFilterSortPreferences({ query: '', status: 'all', priority: 'all', dueDate: 'all', customFieldFilter: undefined })
+                        }}>Show all Board tasks</button>
+                      ) : null}
                       <p role="status" aria-label="Board visible summary">
                         {tasks.length} of {projectTasks.length} tasks visible
                       </p>
