@@ -5,6 +5,7 @@ import {
   createTaskGanttWorkingGraph,
   normalizeTaskGanttNonWorkingDates,
   normalizeTaskGanttWorkingWeekdays,
+  shiftTaskGanttWorkingDate,
 } from './task-gantt'
 
 export interface TaskGanttResourceRow {
@@ -63,5 +64,38 @@ export function createTaskGanttResourcePlan(
     rows,
     waitingTaskIds: rows.filter(row => row.resourceWaitDays > 0).map(row => row.taskId),
     durationDays: rows.reduce((latest, row) => Math.max(latest, row.earliestFinish), 0),
+  }
+}
+
+export interface TaskGanttResourceDateRow {
+  taskId: string
+  startDate: string
+  finishDate: string
+  isMilestone: boolean
+}
+
+/** Non-persistent forecast: convert logical resource slots to working-date labels. */
+export function createTaskGanttResourceDateProjection(
+  tasks: readonly Task[],
+  relationships: readonly TaskRelationship[],
+  anchor: string,
+  nonWorkingDates: readonly string[] = [],
+  workingWeekdays: readonly number[] = [1, 2, 3, 4, 5],
+): { rows: TaskGanttResourceDateRow[] } {
+  const plan = createTaskGanttResourcePlan(tasks, relationships, nonWorkingDates, workingWeekdays)
+  const byId = new Map(tasks.map(task => [task.id, task] as const))
+  return {
+    rows: plan.rows.map(row => {
+      const startDate = shiftTaskGanttWorkingDate(anchor, row.earliestStart, nonWorkingDates, workingWeekdays)
+      const finishDate = row.durationDays === 0
+        ? startDate
+        : shiftTaskGanttWorkingDate(anchor, row.earliestFinish - 1, nonWorkingDates, workingWeekdays)
+      return {
+        taskId: row.taskId,
+        startDate,
+        finishDate,
+        isMilestone: byId.get(row.taskId)!.isMilestone === true,
+      }
+    }),
   }
 }
