@@ -3536,6 +3536,11 @@ export function App({
                       </tbody>
                     </table>
                   ) : null}
+                  {taskViewMode === 'board' ? (
+                    <p role="status" aria-label="Board visible summary">
+                      {tasks.length} of {projectTasks.length} tasks visible
+                    </p>
+                  ) : null}
                   <ul
                     className={
                       taskViewMode === 'board'
