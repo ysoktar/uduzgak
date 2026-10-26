@@ -851,3 +851,13 @@ Focused GitHub Actions run 40304503056 passed tests, lint and build. Complete ac
 - [x] Board headings wrap long text (561).
 
 CI run 40305468753 passed focused CSS checks, lint and production build. Real-device testing is still needed.
+
+## Board action grouping — TDD 562–566
+
+- [x] Task-specific labelled Board status action groups (562).
+- [x] Board status button minimum touch height (563).
+- [x] Board action groups wrap on narrow layouts (564).
+- [x] Board status buttons respect available width (565).
+- [x] Board groups reference keyboard movement guidance (566).
+
+Focused CI 40306310799 passed targeted tests, lint and build. Responsive design still requires real-device QA.

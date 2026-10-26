@@ -837,3 +837,7 @@ Board Undo tooltips identify both the Task and previous status. Board guidance e
 ### TDD 557–561 — responsive Board controls
 
 Board drop headings now use a move cursor rather than a copy cursor; the existing test was updated only after explicit approval. Board task cards wrap long text, Board buttons have touch-sized minimum heights and constrained widths, and Board headings safely wrap labels. Focused GitHub Actions run 40305468753 passed the new and existing CSS tests, zero-warning lint and production build. These are style assertions; manual device testing remains outstanding.
+
+### TDD 562–566 — Board action grouping
+
+Board status transition buttons are now grouped by Task with an accessible group label and a reference to the Board keyboard-movement guidance. CSS ensures touch-sized button targets, wrapping control rows and constrained button width. Targeted GitHub Actions run 40306310799 passed relevant tests, zero-warning lint and production build. Manual keyboard and real-device review remains separate.

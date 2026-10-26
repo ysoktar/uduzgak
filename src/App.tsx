@@ -3747,7 +3747,9 @@ export function App({
                           Select task {task.title}
                         </label>
                         <span>{task.title}</span>
-                        {taskViewMode === 'board' && onChangeTaskStatus && task.status !== 'done' ? (
+                        {taskViewMode === 'board' && onChangeTaskStatus ? (
+                          <div className="task-board-actions" role="group" aria-label={`Board status actions for ${task.title}`} aria-describedby={`board-keyboard-help-${project.id}`}>
+                        {task.status !== 'done' ? (
                           <button type="button" onClick={() => {
                             const nextStatus = task.status === 'todo' ? 'doing' : 'done'
                             onChangeTaskStatus(task.id, nextStatus)
@@ -3755,7 +3757,7 @@ export function App({
                             setBoardDragResult(`Moved ${task.title} to ${nextStatus === 'doing' ? 'Doing' : 'Done'}`)
                           }}>Move {task.title} to {task.status === 'todo' ? 'Doing' : 'Done'}</button>
                         ) : null}
-                        {taskViewMode === 'board' && onChangeTaskStatus && task.status !== 'todo' ? (
+                        {task.status !== 'todo' ? (
                           <button type="button" onClick={() => {
                             const previousStatus = task.status === 'done' ? 'doing' : 'todo'
                             onChangeTaskStatus(task.id, previousStatus)
@@ -3763,19 +3765,21 @@ export function App({
                             setBoardDragResult(`Moved ${task.title} to ${previousStatus === 'doing' ? 'Doing' : 'To do'}`)
                           }}>Move {task.title} to {task.status === 'done' ? 'Doing' : 'To do'}</button>
                         ) : null}
-                        {taskViewMode === 'board' && onChangeTaskStatus && task.status === 'todo' ? (
+                        {task.status === 'todo' ? (
                           <button type="button" onClick={() => {
                             onChangeTaskStatus(task.id, 'done')
                             setLastBoardStatusChange({ taskId: task.id, previousStatus: task.status, taskTitle: task.title })
                             setBoardDragResult(`Moved ${task.title} to Done`)
                           }}>Move {task.title} directly to Done</button>
                         ) : null}
-                        {taskViewMode === 'board' && onChangeTaskStatus && task.status === 'done' ? (
+                        {task.status === 'done' ? (
                           <button type="button" onClick={() => {
                             onChangeTaskStatus(task.id, 'todo')
                             setLastBoardStatusChange({ taskId: task.id, previousStatus: task.status, taskTitle: task.title })
                             setBoardDragResult(`Moved ${task.title} to To do`)
                           }}>Move {task.title} directly to To do</button>
+                        ) : null}
+                          </div>
                         ) : null}
                         <span
                           aria-label={`Subtask count for ${task.title}`}
