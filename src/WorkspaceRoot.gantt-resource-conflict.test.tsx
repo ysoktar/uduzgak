@@ -55,3 +55,8 @@ it('TDD 615: independent people have zero wait and no Task delay labels', () => 
   expect(screen.getByLabelText('Gantt resource waiting summary for Resource Demo').textContent).toContain('0 tasks waiting')
   expect(screen.queryByLabelText('Gantt resource wait for Beta')).toBeNull()
 })
+
+it('TDD 616: resource wait summary is absent outside Gantt', () => {
+  fixture(true,'list')
+  expect(screen.queryByLabelText('Gantt resource waiting summary for Resource Demo')).toBeNull()
+})
