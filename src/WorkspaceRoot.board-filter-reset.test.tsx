@@ -12,7 +12,7 @@ class MemoryStore implements KeyValueStore {
   getItem(key: string) { return this.data.get(key) ?? null }
   setItem(key: string, value: string) { this.data.set(key, value) }
 }
-async function fixture() {
+async function fixture(withCustomField = false) {
   const user = userEvent.setup()
   const store = createWorkspaceStore(new MemoryStore())
   let sequence = 0
@@ -22,6 +22,7 @@ async function fixture() {
   })
   const project = commands.addProject('Filter Board')
   const task = commands.addTask(project.id, 'Alpha notes')
+  if (withCustomField) commands.addCustomField('Reviewed', 'checkbox')
   render(<WorkspaceRoot store={store} commands={commands} />)
   await user.selectOptions(screen.getByLabelText('Task view'), 'board')
   return { user, store, task }
@@ -58,4 +59,13 @@ it('TDD 575: Board reset clears due-date filtering', async () => {
   await user.selectOptions(due, 'withDueDate')
   await user.click(screen.getByRole('button', { name: 'Show all Board tasks' }))
   expect(due.value).toBe('all')
+})
+
+it('TDD 576: Board reset also clears an active custom-field filter', async () => {
+  const { user } = await fixture(true)
+  const fieldFilter = screen.getByLabelText('Custom field filter') as HTMLSelectElement
+  await user.selectOptions(fieldFilter, screen.getByRole('option', { name: 'Reviewed' }) as HTMLOptionElement)
+  await user.click(screen.getByRole('button', { name: 'Show all Board tasks' }))
+  expect(fieldFilter.value).toBe('')
+  expect(screen.queryByRole('button', { name: 'Show all Board tasks' })).toBeNull()
 })
