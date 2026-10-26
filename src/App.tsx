@@ -3559,6 +3559,7 @@ export function App({
                           setCustomFieldFilterFieldId('')
                           updateFilterSortPreferences({ query: '', status: 'all', priority: 'all', dueDate: 'all', customFieldFilter: undefined })
                           setBoardDragResult('Board filters cleared')
+                          taskSearchRef.current?.focus()
                         }}>Show all Board tasks</button>
                       ) : null}
                       <p role="status" aria-label="Board visible summary">
