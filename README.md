@@ -817,3 +817,7 @@ Board Task cards expose pointer/keyboard-accessible buttons for advancing a To d
 ### TDD 527–531 — direct Board status actions
 
 Board Task cards now have direct skip-column status buttons for To do → Done and Done → To do, supplementing the existing single-step buttons, dropdown and drag/drop. Doing Tasks do not show skip buttons; these controls are scoped to Board mode. Successful direct Done action feedback uses the human-readable column name. TDD 529 and 531 are regression checks; focused GitHub Actions run 40301218449 passed tests, lint and build.
+
+### TDD 532–536 — Board status announcements
+
+Direct return to To do and single-step Board actions now announce human-readable status labels; a dismissal button clears an obsolete Board status message without changing Task state. Tests 534 is a regression guard for Done labels. Feature CI run 40301814304 passed focused tests, lint and build after correcting a JSX closing-brace syntax error without changing tests.
