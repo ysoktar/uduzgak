@@ -34,3 +34,9 @@ it('TDD 567: keyboard activating quick advance focuses status selector', async (
   fireEvent.click(screen.getByRole('button', { name: 'Move Alpha notes to Doing' }), { detail: 0 })
   expect(document.activeElement).toBe(screen.getByLabelText('Status for Alpha notes'))
 })
+
+it('TDD 568: keyboard activating backward status focuses selector', async () => {
+  await fixture('doing')
+  fireEvent.click(screen.getByRole('button', { name: 'Move Alpha notes to To do' }), { detail: 0 })
+  expect(document.activeElement).toBe(screen.getByLabelText('Status for Alpha notes'))
+})
