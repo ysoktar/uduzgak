@@ -825,3 +825,7 @@ Direct return to To do and single-step Board actions now announce human-readable
 ### TDD 537–541 — undo last Board status change
 
 The Board offers a one-step, session-only Undo control after the most recent quick button, direct button, or drag/drop status transition. Undo restores the previous Task status, announces the restored human-readable status, and disappears after use. It does not introduce a persisted undo history or change the storage schema. TDD 540 is a single-use regression guard. Focused GitHub Actions run 40302351475 passed tests, zero-warning lint, and production build.
+
+### TDD 547–551 — Board Undo safety
+
+Manual status changes through the Task status selector invalidate a pending Board Undo, preventing accidental reversal of a newer status choice. Undo identifies the affected Task in its tooltip. Regression tests confirm same-status drops, rejected unknown-task drops and dismissing transient feedback do not discard the last valid Undo. Focused GitHub Actions run 40303993233 passed tests, zero-warning lint and production build; no persistence change was made.
