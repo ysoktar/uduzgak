@@ -941,3 +941,13 @@ Focused CI run 40316400117 passed tests, lint and build. No persisted Task dates
 - [x] Zero-duration milestones do not create capacity delay (606, regression).
 
 Focused CI run 40316750025 passed tests, lint and build. Resource waits are logical offsets, not calendar-date forecasts.
+
+## Gantt resource contention summary — TDD 607–611
+
+- [x] Identify Tasks with positive resource wait (607).
+- [x] Empty summary without contention (608, regression).
+- [x] Stable source-order listing of blocked Tasks (609, regression).
+- [x] Dependency-only waiting excluded (610, regression).
+- [x] Zero-duration milestone behavior verified (611, regression).
+
+CI run 40317083761 passed focused tests, lint and build. Visual summary integration remains separate.

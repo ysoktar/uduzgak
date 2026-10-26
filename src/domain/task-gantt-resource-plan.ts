@@ -19,6 +19,7 @@ export interface TaskGanttResourceRow {
 export interface TaskGanttResourcePlan {
   rows: TaskGanttResourceRow[]
   durationDays: number
+  waitingTaskIds: string[]
 }
 
 /**
@@ -60,6 +61,7 @@ export function createTaskGanttResourcePlan(
   }
   return {
     rows,
+    waitingTaskIds: rows.filter(row => row.resourceWaitDays > 0).map(row => row.taskId),
     durationDays: rows.reduce((latest, row) => Math.max(latest, row.earliestFinish), 0),
   }
 }

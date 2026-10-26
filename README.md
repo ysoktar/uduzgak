@@ -873,3 +873,7 @@ The Gantt view now reports a distinct resource-constrained logical working-day d
 ### TDD 602–606 — distinguish Gantt resource wait
 
 Derived resource Gantt rows now expose `resourceWaitDays` separately from the dependency-ready start. It counts additional logical working-day slots caused by a reserved person, and does not relabel mandatory predecessor waits as resource conflicts. Independent assignees incur no resource wait; multi-person Tasks wait for the latest available assignee. Milestones remain zero-duration. Focused CI run 40316750025 passed tests, lint and build. This remains non-persistent and is not a resource-optimal calendar schedule.
+
+### TDD 607–611 — resource contention summary
+
+The pure Gantt resource projection now exposes ordered `waitingTaskIds` for Tasks whose logical start is delayed by shared-person capacity, not merely by predecessor dependencies. No-wait schedules yield an empty summary; milestone and dependency-only cases remain excluded. This is derived, non-persistent information. Focused CI run 40317083761 passed tests, lint and build.
