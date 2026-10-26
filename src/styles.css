@@ -518,3 +518,7 @@ textarea {
 .task-board-heading {
   overflow-wrap: anywhere;
 }
+
+.task-board-actions button {
+  min-height: 44px;
+}
