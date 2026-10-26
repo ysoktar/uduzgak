@@ -926,7 +926,7 @@ export function App({
         <button type="button" onClick={() => setBoardDragResult('')}>Dismiss Board status message</button>
       ) : null}
       {taskViewMode === 'board' && lastBoardStatusChange && onChangeTaskStatus ? (
-        <button type="button" onClick={() => {
+        <button type="button" title={`Undo status change for ${lastBoardStatusChange.taskTitle}`} onClick={() => {
           onChangeTaskStatus(lastBoardStatusChange.taskId, lastBoardStatusChange.previousStatus)
           setBoardDragResult(`Restored ${lastBoardStatusChange.taskTitle} to ${lastBoardStatusChange.previousStatus === 'todo' ? 'To do' : lastBoardStatusChange.previousStatus === 'doing' ? 'Doing' : 'Done'}`)
           setLastBoardStatusChange(null)
@@ -4511,12 +4511,13 @@ export function App({
                             <select
                               id={`task-status-${task.id}`}
                               value={task.status}
-                              onChange={(event) =>
+                              onChange={(event) => {
                                 onChangeTaskStatus(
                                   task.id,
                                   event.target.value as TaskStatus,
                                 )
-                              }
+                                setLastBoardStatusChange(null)
+                              }}
                             >
                               <option value="todo">To do</option>
                               <option value="doing">Doing</option>
