@@ -791,3 +791,13 @@ Focused CI run 40299681043 passed tests, zero-warning lint and production build.
 - [x] Confirm To do has no backward action (526, regression).
 
 Focused CI run 40300788163 passed tests, lint, and build. TDD 526 is a boundary regression test.
+
+## Direct Board status actions — TDD 527–531
+
+- [x] To do Task → Done direct action (527).
+- [x] Done Task → To do direct action (528).
+- [x] No redundant direct action for Doing (529, regression).
+- [x] Human-readable Done move feedback (530).
+- [x] Direct controls do not leak to List view (531, regression).
+
+Targeted GitHub Actions run 40301218449 passed tests, zero-warning lint and production build.
