@@ -49,3 +49,9 @@ it('TDD 614: first Task never reports a resource wait', () => {
   fixture()
   expect(screen.queryByLabelText('Gantt resource wait for Alpha')).toBeNull()
 })
+
+it('TDD 615: independent people have zero wait and no Task delay labels', () => {
+  fixture(false)
+  expect(screen.getByLabelText('Gantt resource waiting summary for Resource Demo').textContent).toContain('0 tasks waiting')
+  expect(screen.queryByLabelText('Gantt resource wait for Beta')).toBeNull()
+})
