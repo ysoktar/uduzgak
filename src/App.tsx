@@ -3588,10 +3588,12 @@ export function App({
                               setBoardDragResult('Task is no longer available for Board drop')
                               return
                             }
-                            if (dragged && dragged.status !== entry.key) {
-                              onChangeTaskStatus?.(dragged.id,entry.key)
-                              setBoardDragResult(`Moved ${dragged.title} into ${entry.key}`)
+                            if (dragged.status === entry.key) {
+                              setBoardDragResult(`${dragged.title} is already in ${entry.label}`)
+                              return
                             }
+                            onChangeTaskStatus?.(dragged.id,entry.key)
+                            setBoardDragResult(`Moved ${dragged.title} into ${entry.key}`)
                           }}
                         >
                           <div role="group" aria-label={`${entry.label} Board column`}>
