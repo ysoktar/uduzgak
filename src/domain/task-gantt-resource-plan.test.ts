@@ -31,3 +31,8 @@ it('TDD 589: dependency successors wait for predecessor completion', () => {
   const rows = createTaskGanttResourcePlan([task('a', ['p1']), task('b', ['p2'])], [blocks('r1', 'a', 'b')]).rows
   expect(rows.map(row => row.earliestStart)).toEqual([0, 2])
 })
+
+it('TDD 590: unassigned tasks do not block assigned resources', () => {
+  const rows = createTaskGanttResourcePlan([task('a', []), task('b', ['p1']), task('c', ['p1'])], []).rows
+  expect(rows.map(row => row.earliestStart)).toEqual([0, 0, 2])
+})
