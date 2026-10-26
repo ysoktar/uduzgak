@@ -928,7 +928,7 @@ export function App({
       {lastBoardStatusChange && onChangeTaskStatus ? (
         <button type="button" onClick={() => {
           onChangeTaskStatus(lastBoardStatusChange.taskId, lastBoardStatusChange.previousStatus)
-          setBoardDragResult(`Restored ${lastBoardStatusChange.taskTitle} to ${lastBoardStatusChange.previousStatus}`)
+          setBoardDragResult(`Restored ${lastBoardStatusChange.taskTitle} to ${lastBoardStatusChange.previousStatus === 'todo' ? 'To do' : lastBoardStatusChange.previousStatus === 'doing' ? 'Doing' : 'Done'}`)
           setLastBoardStatusChange(null)
         }}>Undo Board status change</button>
       ) : null}
