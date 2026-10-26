@@ -1,0 +1,17 @@
+name: TDD 592-596 Gantt resource integrity
+on:
+  push:
+    branches: [tdd/592-596-gantt-resource-integrity]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - run: npm ci --include=dev --no-fund
+      - run: npm exec -- vitest run src/domain/task-gantt-resource-integrity.test.ts src/domain/task-gantt-resource-plan.test.ts --maxWorkers=1
+      - run: npm run check
