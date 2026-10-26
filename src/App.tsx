@@ -3750,11 +3750,12 @@ export function App({
                         {taskViewMode === 'board' && onChangeTaskStatus ? (
                           <div className="task-board-actions" role="group" aria-label={`Board status actions for ${task.title}`} aria-describedby={`board-keyboard-help-${project.id}`}>
                         {task.status !== 'done' ? (
-                          <button type="button" onClick={() => {
+                          <button type="button" onClick={(event) => {
                             const nextStatus = task.status === 'todo' ? 'doing' : 'done'
                             onChangeTaskStatus(task.id, nextStatus)
                             setLastBoardStatusChange({ taskId: task.id, previousStatus: task.status, taskTitle: task.title })
                             setBoardDragResult(`Moved ${task.title} to ${nextStatus === 'doing' ? 'Doing' : 'Done'}`)
+                            if (event.detail === 0) document.getElementById(`task-status-${task.id}`)?.focus()
                           }}>Move {task.title} to {task.status === 'todo' ? 'Doing' : 'Done'}</button>
                         ) : null}
                         {task.status !== 'todo' ? (
