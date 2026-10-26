@@ -919,7 +919,7 @@ export function App({
       <p role="status" aria-label="Board drag result" aria-live="polite">{boardDragResult}</p>
       {boardDragResult ? (
         <button type="button" onClick={() => setBoardDragResult('')}>Dismiss Board status message</button>
-      ) : null
+      ) : null}
 
       <label htmlFor="task-search">Search tasks</label>
       <small className="task-search-shortcut-hint">Press / to search tasks</small>
