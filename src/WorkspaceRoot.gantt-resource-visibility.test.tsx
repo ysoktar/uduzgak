@@ -36,3 +36,8 @@ it('TDD 597: Gantt shows derived resource-plan duration', () => {
   fixture()
   expect(screen.getByLabelText('Gantt resource plan for Resource Demo').textContent).toContain('2 working days')
 })
+
+it('TDD 598: each scheduled Gantt task shows its logical resource slot', () => {
+  fixture()
+  expect(screen.getByLabelText('Gantt resource slot for Alpha notes').textContent).toContain('0–2')
+})
