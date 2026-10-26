@@ -35,3 +35,11 @@ it('TDD 572: Board reset clears the search query without leaving Board view', as
   expect(search.value).toBe('')
   expect((screen.getByLabelText('Task view') as HTMLSelectElement).value).toBe('board')
 })
+
+it('TDD 573: Board reset clears active status filter', async () => {
+  const { user } = await fixture()
+  const status = screen.getByLabelText('Filter by status') as HTMLSelectElement
+  await user.selectOptions(status, 'done')
+  await user.click(screen.getByRole('button', { name: 'Show all Board tasks' }))
+  expect(status.value).toBe('all')
+})
