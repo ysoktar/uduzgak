@@ -52,3 +52,10 @@ it('TDD 535: quick backward transition names To do', async () => {
   await user.click(screen.getByRole('button', { name: 'Move Alpha notes to To do' }))
   expect(screen.getByRole('status', { name: 'Board drag result' }).textContent).toContain('Moved Alpha notes to To do')
 })
+
+it('TDD 536: a Board status message can be dismissed', async () => {
+  const { user } = await fixture()
+  await user.click(screen.getByRole('button', { name: 'Move Alpha notes directly to Done' }))
+  await user.click(screen.getByRole('button', { name: 'Dismiss Board status message' }))
+  expect(screen.getByRole('status', { name: 'Board drag result' }).textContent).toBe('')
+})
