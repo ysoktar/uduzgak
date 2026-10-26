@@ -3556,7 +3556,7 @@ export function App({
                       <p role="status" aria-label="Board visible summary">
                         {tasks.length} of {projectTasks.length} tasks visible
                       </p>
-                      <p>Use status buttons or the status selector to move tasks without dragging.</p>
+                      <p id={`board-keyboard-help-${project.id}`}>Use status buttons or the status selector to move tasks without dragging.</p>
                     </>
                   ) : null}
                   <ul
@@ -3588,6 +3588,7 @@ export function App({
                         <li
                           key={`board-column-${entry.key}`}
                           className={`task-board-heading task-board-heading-${entry.key}`}
+                          aria-describedby={`board-keyboard-help-${project.id}`}
                           aria-label={entry.key === 'todo' ? 'Drop task into To do' : entry.key === 'doing' ? 'Drop task into Doing' : 'Drop task into Done'}
                           onDragOver={event => event.preventDefault()}
                           onDrop={event => {
