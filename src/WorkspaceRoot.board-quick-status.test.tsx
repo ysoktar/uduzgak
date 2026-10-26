@@ -52,3 +52,8 @@ it('TDD 525: Doing tasks can move back to To do', async () => {
   await user.click(screen.getByRole('button', { name: 'Move Alpha notes to To do' }))
   expect(store.getState().tasks.find(t => t.id === task.id)?.status).toBe('todo')
 })
+
+it('TDD 526: To do tasks do not show a backward Board action', async () => {
+  await fixture()
+  expect(screen.queryByRole('button', { name: 'Move Alpha notes to To do' })).toBeNull()
+})
