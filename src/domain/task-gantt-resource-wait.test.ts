@@ -29,3 +29,9 @@ it('TDD 604: dependency wait is not double-counted as resource wait', () => {
   expect(rows[1].earliestStart).toBe(2)
   expect(rows[1].resourceWaitDays).toBe(0)
 })
+
+it('TDD 605: multi-person task waits for its latest available assignee', () => {
+  const rows=createTaskGanttResourcePlan([task('a',['p1']),task('b',['p2']),task('c',['p1','p2'])],[]).rows
+  expect(rows[2].resourceWaitDays).toBe(2)
+  expect(rows[2].earliestStart).toBe(2)
+})
