@@ -54,3 +54,9 @@ it('TDD 515: Board heading counts update after a Task status change', async () =
   expect(screen.getByLabelText('Drop task into To do').textContent).toContain('0 tasks')
   expect(screen.getByLabelText('Drop task into Doing').textContent).toContain('1 task')
 })
+
+it('TDD 516: filtered Board counts represent visible tasks only', async () => {
+  const { user } = await fixture(true)
+  await user.type(screen.getByLabelText('Search tasks'), 'Alpha')
+  expect(screen.getByRole('status', { name: 'Board visible summary' }).textContent).toContain('1 of 2 tasks visible')
+})
