@@ -42,3 +42,12 @@ it('TDD 548: Undo identifies which Task will be restored', async () => {
   const undo = screen.getByRole('button', { name: 'Undo Board status change' })
   expect(undo.getAttribute('title')).toContain('Alpha notes')
 })
+
+it('TDD 549: a same-status Board drop preserves a prior valid Undo', async () => {
+  const { user, task } = await fixture()
+  await user.click(screen.getByRole('button', { name: 'Move Alpha notes to Doing' }))
+  fireEvent.drop(screen.getByLabelText('Drop task into Doing'), {
+    dataTransfer: { getData: () => task.id },
+  })
+  expect(screen.getByRole('button', { name: 'Undo Board status change' })).toBeTruthy()
+})
