@@ -917,6 +917,9 @@ export function App({
       {error ? <p role="alert">{error}</p> : null}
       <p role="status" aria-label="Task reorder result" aria-live="polite">{taskReorderResult}</p>
       <p role="status" aria-label="Board drag result" aria-live="polite">{boardDragResult}</p>
+      {boardDragResult ? (
+        <button type="button" onClick={() => setBoardDragResult('')}>Dismiss Board status message</button>
+      ) : null
 
       <label htmlFor="task-search">Search tasks</label>
       <small className="task-search-shortcut-hint">Press / to search tasks</small>
