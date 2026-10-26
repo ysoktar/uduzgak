@@ -33,3 +33,11 @@ it('TDD 594: duplicate assignee identifiers do not reserve extra time', () => {
 it('TDD 595: dependency cycles are rejected rather than silently scheduled', () => {
   expect(()=>createTaskGanttResourcePlan([task('a',['p1']),task('b',['p2'])],[blocks('r1','a','b'),blocks('r2','b','a')])).toThrow('Gantt dependency cycle')
 })
+
+it('TDD 596: resource projection does not mutate its inputs', () => {
+  const tasks=[task('a',['p1']),task('b',['p1'])]
+  const relationships=[blocks('r1','a','b')]
+  const before=JSON.stringify({tasks,relationships})
+  createTaskGanttResourcePlan(tasks,relationships)
+  expect(JSON.stringify({tasks,relationships})).toBe(before)
+})
