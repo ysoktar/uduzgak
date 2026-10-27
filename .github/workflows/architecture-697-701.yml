@@ -1,0 +1,18 @@
+name: Architecture TDD 697-701 Gantt controls
+on:
+  push:
+    branches: [architecture/697-701-gantt-controls]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - run: npm ci --include=dev --no-fund
+      - run: npm exec -- vitest run src/GanttViewControls.test.tsx src/WorkspaceRoot.gantt-view.test.tsx --maxWorkers=1 --testTimeout=30000
+      - run: npm run lint
+      - run: npm run build
