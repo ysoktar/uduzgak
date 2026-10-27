@@ -3,6 +3,31 @@ import { createServer } from 'node:http'
 const hex64 = /^[a-f0-9]{64}$/
 const hex32 = /^[a-f0-9]{32}$/
 const same = (a, b) => a.length === b.length && a.every((value, index) => value === b[index])
+/** Fixed-window, bounded in-memory request quotas for room-scoped relay traffic. */
+export function createRelayRateLimiter({
+  now = Date.now, windowMs = 60_000, maxRequests = 120, maxBuckets = 10_000,
+} = {}) {
+  if (![windowMs, maxRequests, maxBuckets].every(value => Number.isSafeInteger(value) && value > 0))
+    throw new Error('Invalid relay rate limits')
+  const buckets = new Map()
+  function allow(identity) {
+    const time = now()
+    for (const [key, bucket] of buckets) {
+      if (bucket.until <= time) buckets.delete(key)
+    }
+    const current = buckets.get(identity)
+    if (current) {
+      if (current.count >= maxRequests) return false
+      current.count++
+      return true
+    }
+    if (buckets.size >= maxBuckets) return false
+    buckets.set(identity, { count: 1, until: time + windowMs })
+    return true
+  }
+  return { allow, stats: () => ({ buckets: buckets.size }) }
+}
+
 export function createEphemeralMailboxStore({
   now = Date.now, ttlMs = 3600_000, maxMessageBytes = 64 * 1024,
   maxRoomBytes = 2 * 1024 * 1024, maxTotalBytes = 32 * 1024 * 1024,
@@ -60,7 +85,7 @@ export function createEphemeralMailboxStore({
   return { put, list, stats, purge, limits: { maxMessageBytes } }
 }
 
-export function createRelayHttpServer({ store = createEphemeralMailboxStore(), allowedOrigins = [], roomAuthorizer } = {}) {
+export function createRelayHttpServer({ store = createEphemeralMailboxStore(), allowedOrigins = [], roomAuthorizer, rateLimiter = createRelayRateLimiter() } = {}) {
   const server = createServer(async (req, res) => {
     res.setHeader('Cache-Control', 'no-store')
     res.setHeader('X-Content-Type-Options', 'nosniff')
@@ -88,6 +113,7 @@ export function createRelayHttpServer({ store = createEphemeralMailboxStore(), a
           : false
       if (!permitted) { res.writeHead(403).end(); return }
     }
+    if (!rateLimiter.allow(room)) { res.writeHead(429).end(); return }
     try {
       if (req.method === 'GET' && !id) {
         const messages = store.list(room).map(record => ({
