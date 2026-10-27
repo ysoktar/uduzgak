@@ -15,6 +15,6 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci --include=dev --no-fund
-      - run: npm exec -- vitest run src/p2p/relay-crypto.test.ts server/ephemeral-relay.test.mjs server/ephemeral-relay-http.test.mjs server/ephemeral-relay-auth.test.mjs --maxWorkers=1 --testTimeout=30000
+      - run: npm exec -- vitest run src/p2p/relay-crypto.test.ts server/ephemeral-relay.test.mjs server/ephemeral-relay-http.test.mjs server/ephemeral-relay-auth.test.mjs server/ephemeral-relay-rate-limit.test.mjs --maxWorkers=1 --testTimeout=30000
       - run: npm run lint
       - run: npm run build
