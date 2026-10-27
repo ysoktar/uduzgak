@@ -594,3 +594,7 @@ The resource-plan duration, forecast calendar window, and waiting count are rend
 ## TDD 662-666: critical-path summary extraction
 
 Five isolated display tests cover dependency-only duration, empty schedules, the dependency caveat, accessible project labels, and separation from resource constraints. The UI component moves out of App while retaining the existing view's wording.
+
+## TDD 682-686: visible Task selection
+
+Move search, typed filters, and Task sorting composition behind one pure selector. Tests cover title search, status, due-date presence, title ordering, and source immutability. The App view uses this shared selection interface.
