@@ -22,6 +22,7 @@ import { selectVisibleTasks } from './domain/visible-task-selection'
 
 import {
   createCustomFieldTaskFilter,
+  filterTasks,
   type CustomFieldTaskFilter,
   type TaskDueDateFilter,
 } from './domain/task-filter'
