@@ -21,15 +21,14 @@ import { groupTasks, type TaskGroup } from './domain/task-group'
 
 import {
   createCustomFieldTaskFilter,
-  filterTasks,
   type CustomFieldTaskFilter,
   type TaskDueDateFilter,
 } from './domain/task-filter'
 import {
   createCustomFieldTaskSort,
-  sortTasks,
   type TaskSort,
 } from './domain/task-sort'
+import { selectVisibleTasks } from './domain/visible-task-selection'
 import { summarizeTasks } from './domain/task-summary'
 import type { MoveDirection } from './domain/manual-order'
 import type { TaskRelationshipType } from './domain/task-relationship'
@@ -2762,18 +2761,15 @@ export function App({
           const projectTasks = activeTasks.filter(
             (task) => task.projectId === project.id,
           )
-          const tasks = sortTasks(
-            filterTasks(
-              projectTasks,
-              {
-                query: searchQuery,
-                status: statusFilter,
-                priority: priorityFilter,
-                dueDate: dueDateFilter,
-                customField: effectiveCustomFieldFilter,
-              },
-              customFields,
-            ),
+          const tasks = selectVisibleTasks(
+            projectTasks,
+            {
+              query: searchQuery,
+              status: statusFilter,
+              priority: priorityFilter,
+              dueDate: dueDateFilter,
+              customField: effectiveCustomFieldFilter,
+            },
             taskSort,
             customFields,
             effectiveCustomFieldSort,
