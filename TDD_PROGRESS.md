@@ -594,3 +594,7 @@ The resource-plan duration, forecast calendar window, and waiting count are rend
 ## TDD 662-666: critical-path summary extraction
 
 Five isolated display tests cover dependency-only duration, empty schedules, the dependency caveat, accessible project labels, and separation from resource constraints. The UI component moves out of App while retaining the existing view's wording.
+
+## TDD 667-676: integrated Gantt architecture follow-up
+
+TDD 667-671 isolates the working-day summary, while TDD 672-676 isolates Task visibility and matching dependency edges. Their tested modules were reapplied together after later main changes to avoid overlapping App edits. The original source tests and assertions were retained.
