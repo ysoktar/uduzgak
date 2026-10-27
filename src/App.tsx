@@ -26,6 +26,7 @@ import {
 } from './domain/task-filter'
 import {
   createCustomFieldTaskSort,
+  sortTasks,
   type TaskSort,
 } from './domain/task-sort'
 import { selectVisibleTasks } from './domain/visible-task-selection'
