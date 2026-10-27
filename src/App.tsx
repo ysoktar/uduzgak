@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { GanttResourceSummary } from './GanttResourceSummary'
+import { GanttWorkingSummary } from './GanttWorkingSummary'
 
 import { createTaskBoardColumns } from './domain/task-board'
 import { createTaskCalendarSections } from './domain/task-calendar'
@@ -3339,11 +3340,13 @@ export function App({
                     />
                   ) : null}
                   {taskViewMode === 'gantt' && ganttWorkingPath ? (
-                    <p aria-label={`Gantt working-day critical path for ${project.name}`}>
-                      {ganttWorkingPath.rows.length === 0
-                        ? 'No scheduled tasks for working-day analysis'
-                        : `Working-day critical path: ${ganttWorkingPath.durationDays} working days (${ganttSundayThursdayWeek ? 'Sunday-Thursday' : 'Monday-Friday'}; ${ganttNonWorkingDates.length === 0 ? 'holidays not configured' : `${ganttNonWorkingDates.length} excluded date${ganttNonWorkingDates.length === 1 ? '' : 's'}`})`}
-                    </p>
+                    <GanttWorkingSummary
+                      projectName={project.name}
+                      durationDays={ganttWorkingPath.durationDays}
+                      scheduledCount={ganttWorkingPath.rows.length}
+                      sundayThursday={ganttSundayThursdayWeek}
+                      excludedDateCount={ganttNonWorkingDates.length}
+                    />
                   ) : null}
                   {taskViewMode === 'gantt' ? (
                     <ol
