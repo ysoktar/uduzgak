@@ -3,7 +3,7 @@ import { createSelfHostedServer } from './self-hosted-api.mjs'
 const servers = []
 const room = 'a'.repeat(64)
 const id = 'b'.repeat(32)
-const encoded = Buffer.from([1, ...new Array(28).fill(0)])
+const encoded = Buffer.from([1, ...Array(28).fill(0)])
 async function start(adapter) {
   const server = createSelfHostedServer({ token: 'test-token', adapter })
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve))
