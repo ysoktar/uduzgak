@@ -17,4 +17,6 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci --include=dev --no-fund
-      - run: npm run check
+      - run: npm run lint
+      - run: npm exec -- vitest run --maxWorkers=1 --testTimeout=30000
+      - run: npm run build
