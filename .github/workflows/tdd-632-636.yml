@@ -2,8 +2,6 @@ name: TDD 632-636 Gantt forecast calendar window
 on:
   push:
     branches: [tdd/632-636-gantt-resource-forecast-window]
-  pull_request:
-    branches: [main]
 permissions:
   contents: read
 jobs:
