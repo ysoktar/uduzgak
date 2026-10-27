@@ -413,3 +413,18 @@ CI run 40317083761 passed focused tests, lint and build. Visual summary integrat
 - [x] Resource-wait display is Gantt-only (616, regression).
 
 Focused CI run 40317479184 passed tests, lint and build. These are logical offsets, not automated date changes.
+
+## TDD 617–626 — resource-date forecasting and anchor validation
+
+- Resource-constrained logical working-day slots convert to forecast calendar dates without updating stored Task dates.
+- Regressions cover independent/serial assignees, excluded holidays, milestones, invalid and non-working anchors, and empty-plan validation.
+- Approved lint-only removal of an unused test helper did not change assertions.
+- PR #37: https://github.com/ysoktar/uduzgak/pull/37; squash merge: `1078b57`.
+- CI: 15 focused tests, zero-warning lint, production build passed. This is not a full-suite sign-off.
+
+## TDD 627–631 — resource forecast completion date
+
+- Nullable `completionDate` aggregates the latest projected Task finish, remaining null for empty plans.
+- Five tests cover empty plans, independent and serialized work, holidays, and milestone-only forecasts.
+- PR #38: https://github.com/ysoktar/uduzgak/pull/38; squash merge: `44022c2`.
+- Focused tests, zero-warning lint, and production build passed. This is not a full-suite sign-off.
