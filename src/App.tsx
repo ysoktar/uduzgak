@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { GanttResourceSummary } from './GanttResourceSummary'
 
 import { createTaskBoardColumns } from './domain/task-board'
 import { createTaskCalendarSections } from './domain/task-calendar'
@@ -3331,19 +3332,11 @@ export function App({
                     </p>
                   ) : null}
                   {taskViewMode === 'gantt' && ganttResourcePlan ? (
-                    <p aria-label={`Gantt resource plan for ${project.name}`}>
-                      Resource-constrained logical plan: ${ganttResourcePlan.durationDays} working days
-                    </p>
-                  ) : null}
-                  {taskViewMode === 'gantt' && ganttResourceForecast?.calendarWindow ? (
-                    <p aria-label={`Gantt resource forecast for ${project.name}`}>
-                      Resource forecast: ${ganttResourceForecast.calendarWindow.startDate} to ${ganttResourceForecast.calendarWindow.finishDate} (${ganttResourceForecast.calendarWindow.calendarDays} calendar days; non-persistent estimate)
-                    </p>
-                  ) : null}
-                  {taskViewMode === 'gantt' && ganttResourcePlan ? (
-                    <p aria-label={`Gantt resource waiting summary for ${project.name}`}>
-                      {ganttResourcePlan.waitingTaskIds.length} {ganttResourcePlan.waitingTaskIds.length === 1 ? 'task' : 'tasks'} waiting for a person
-                    </p>
+                    <GanttResourceSummary
+                      projectName={project.name}
+                      plan={ganttResourcePlan}
+                      forecast={ganttResourceForecast}
+                    />
                   ) : null}
                   {taskViewMode === 'gantt' && ganttWorkingPath ? (
                     <p aria-label={`Gantt working-day critical path for ${project.name}`}>

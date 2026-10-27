@@ -586,3 +586,7 @@ Five view tests cover derived completion date for serialized and parallel assign
 ## TDD 647–651 — Gantt resource overview composition
 
 Introduce a pure cohesive domain composition entry point for the resource plan and its forecast. This removes duplicated resource orchestration from the large React App component. Five behavior tests cover waiting assignments, no scheduled tasks, holidays, input immutability, and alternative working weekdays. Merge only after CI tests, zero-warning lint and build pass.
+
+## TDD 652–656 — resource summary presentation module
+
+The resource-plan duration, forecast calendar window, and waiting count are rendered via a single read-only GanttResourceSummary module. Five isolated UI tests verify duration, forecast caveat, singular/plural count and null forecast. Existing WorkspaceRoot regression tests remain the integration gate.
