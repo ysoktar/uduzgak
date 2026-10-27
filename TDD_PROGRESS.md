@@ -582,3 +582,7 @@ Five focused regressions validate nullable empty forecast windows, inclusive cal
 ## TDD 637–641 — Gantt resource forecast display
 
 Five view tests cover derived completion date for serialized and parallel assignees, inclusive calendar length, hiding unscheduled projections, and Gantt-only presentation. The display is explicitly non-persistent; final CI results are authoritative.
+
+## TDD 642–646 — resource-aware Task date display
+
+Five focused view tests cover sequential and parallel resource projections, absence for unscheduled Tasks, and Gantt-only presentation. Derived dates never overwrite Task schedules. CI remains authoritative.
