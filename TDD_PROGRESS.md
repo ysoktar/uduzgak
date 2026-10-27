@@ -590,3 +590,7 @@ Introduce a pure cohesive domain composition entry point for the resource plan a
 ## TDD 652–656 — resource summary presentation module
 
 The resource-plan duration, forecast calendar window, and waiting count are rendered via a single read-only GanttResourceSummary module. Five isolated UI tests verify duration, forecast caveat, singular/plural count and null forecast. Existing WorkspaceRoot regression tests remain the integration gate.
+
+## TDD 672-676: Gantt overview selection
+
+Create a single pure seam for critical Task visibility and filtered dependency edges. Tests cover unfiltered ordering, dependency-critical and working-critical views, endpoint integrity, and immutable inputs. The UI delegates selection rather than duplicating filtering rules.
