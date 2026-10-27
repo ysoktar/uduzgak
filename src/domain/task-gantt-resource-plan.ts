@@ -83,7 +83,8 @@ export function createTaskGanttResourceDateProjection(
   workingWeekdays: readonly number[] = [1, 2, 3, 4, 5],
 ): { rows: TaskGanttResourceDateRow[] } {
   const firstWorkingDate = shiftTaskGanttWorkingDate(anchor, 0, nonWorkingDates, workingWeekdays)
-  const plan = createTaskGanttResourcePlan(tasks, relationships, nonWorkingDates, workingWeekdays)
+  // Preserve Task working-day effort; excluded calendar dates shift the forecast rather than erase effort.
+  const plan = createTaskGanttResourcePlan(tasks, relationships, [], workingWeekdays)
   const byId = new Map(tasks.map(task => [task.id, task] as const))
   return {
     rows: plan.rows.map(row => {
