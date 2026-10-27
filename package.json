@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "server:self-hosted": "node server/run-self-hosted.mjs",
+    "relay": "node server/run-relay.mjs",
     "build": "tsc -b && vite build",
     "lint": "oxlint . --deny-warnings",
     "test": "vitest run",
