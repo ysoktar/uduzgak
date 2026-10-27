@@ -428,3 +428,149 @@ Focused CI run 40317479184 passed tests, lint and build. These are logical offse
 - Five tests cover empty plans, independent and serialized work, holidays, and milestone-only forecasts.
 - PR #38: https://github.com/ysoktar/uduzgak/pull/38; squash merge: `44022c2`.
 - Focused tests, zero-warning lint, and production build passed. This is not a full-suite sign-off.
+
+## README implementation history (archived)
+
+### TDD 366-370 bulk lifecycle
+
+uduzgak supports one-dispatch bulk restore for archived Task roots and explicitly confirmed bulk deletion for selected active Tasks. Both operations keep subtree semantics and append deterministic Task Activity entries.
+
+### TDD 371-375 bulk movement
+
+uduzgak supports atomic bulk Project movement for selected Task subtrees and bulk List assignment/clearing. Project moves clear incompatible List references, while List assignment validates the entire selection before accepting any change.
+
+### TDD 376-380 bulk dates
+
+uduzgak supports atomic bulk start-date and due-date changes for selected active Tasks. The reducer validates every selected Task with the existing single-Task schedule rules before accepting the new date, so an invalid range rejects the whole operation. Clearing a due date also clears recurrence exactly as the single-Task command does. Bulk date commands use one persisted dispatch and ordered Task Activity.
+
+### TDD 381-385 bulk Tags and People
+
+uduzgak supports bulk Tag assignment/removal and bulk Person assignment/removal for the current visible Task selection. The reducer deduplicates repeated Task IDs, rejects assignment to missing Tag/Person references, and keeps removal idempotent after a reference has already been deleted. Each bulk operation uses one persisted Workspace dispatch.
+
+### TDD 386-390 bulk Custom Field values
+
+uduzgak supports bulk set/clear for Text, Number, Checkbox, Date, and Select Custom Fields on the current visible Task selection. Bulk writes reuse the same domain normalization as single-Task edits, reject missing fields, invalid Select options, and type-incompatible values before Task mutation, and keep Formula fields read-only. Each bulk value change uses one persisted Workspace dispatch.
+
+### TDD 411 — Gantt critical-path display
+
+Gantt now displays the logical dependency-path duration for each Project and marks scheduled Tasks as critical or non-critical with the computed slack in days. This is a derived, read-only projection over currently visible Tasks and their `blocks` relationships; unscheduled Tasks receive no critical-path label. The calculation represents dependency durations, **not** the actual elapsed calendar schedule, working days, resource contention, or holiday delays. List, Board, Table, and other modes do not calculate or display this summary.
+
+### TDD 412-416 — Gantt critical-path controls and schedule diagnostics
+
+The Gantt overview can hide noncritical rows without hiding Task detail controls, and filters displayed dependency lines to the overview endpoints. An optional logical-offset breakdown displays earliest and latest start/finish offsets rather than actual calendar dates. The critical-Task selection action uses the existing visible Task bulk-selection controls without changing or persisting task state. The schedule conflict analyzer checks in-scope scheduled `blocks` links for a source end date that does not precede its target start date; zero-day milestones can hand off on the same date. Conflicts appear in the Gantt view and disappear after a valid schedule correction. These are derived UI/analysis features, not persisted data changes, and they do not add resource or holiday awareness.
+
+### TDD 417–421 — Gantt working-day analysis
+
+The existing calendar-day logical critical path is preserved. Gantt can optionally show a separate Monday–Friday working-day critical path and per-Task slack using the same visible scheduled Task dependency graph. Domain helpers support validated, unique excluded dates (for holidays), but the UI does not yet configure holiday exceptions. Both projections are logical dependency-duration metrics, not elapsed-date forecasts or resource scheduling. No workspace storage schema changed.
+
+
+### TDD 422–426 — Gantt holiday controls
+
+In Gantt, enable the separate working-day analysis to add or remove `YYYY-MM-DD` non-working dates. The Monday–Friday working-day critical-path summary updates without editing Workspace Tasks. Choose working-day critical-only overview to hide noncritical Gantt summary rows and unrelated dependency lines; calendar-day critical-only mode remains separate. Select visible working-day critical Tasks through existing bulk controls. Dates are per-session UI state, not persisted, and the calculations remain logical, not resource-allocated schedules.
+
+
+Gantt work calendars (TDD 427–431): Working-day critical-path analysis supports a custom set of UTC weekdays (Sunday=0, Saturday=6), alongside non-working date exceptions. In the Gantt view, users can switch between Monday–Friday (default) and Sunday–Thursday workweeks. These controls are session-only and never rewrite saved Task schedules. Calendar-day critical-path analysis remains independent.
+
+
+Gantt work-calendar preferences (TDD 432–436): The Monday–Friday / Sunday–Thursday selection and excluded-date list persist in the existing local view-preference document. Reloading restores both without modifying Task schedules, Workspace data, or calendar-day critical-path calculations. Invalid or noncanonical saved Gantt calendar values fall back to default view preferences.
+
+### TDD 487–491 — native Board status drag targets
+
+Board Tasks can be dragged into the `To do`, `Doing`, and `Done` column
+headings to update status without duplicating the Task. Cross-Project Board
+drops are rejected with an accessible status message. Responsive Board drop
+targets are highlighted; status dropdowns remain available without drag.
+The feature-branch GitHub Actions check passed 64 focused/regression tests,
+zero-warning lint, and production build (run 40243584572). Full-suite and
+real-device interaction audits have not been established by this run.
+
+### TDD 492–496 — keyboard Task search
+
+A `/` shortcut from the Workspace surface focuses Task search. It preserves
+ordinary slash input in editable controls and remains usable from the app header.
+If Task filters are collapsed, the shortcut opens them before focusing search.
+An accessible shortcut annotation and visible hint explain the interaction.
+Focused GitHub Actions run 40245762300 passed the keyboard discovery and
+disclosure tests, zero-warning lint and production build. TDD 493 is a
+regression guard for existing editable-input behavior, not a newly introduced
+behavior or an independently observed failing RED test.
+
+### TDD 512–516 — Board column clarity
+
+Board headings now show visible Task counts, including empty-column guidance and named status groups. Column counts update with Task status changes, and each Project Board reports how many of its active Tasks remain visible under the selected filters. These are view-only derived presentations and do not change the Workspace storage schema. TDD 515 is a status-change regression check rather than a new implementation behavior. Focused verification: GitHub Actions run 40299218622 (tests, zero-warning lint, production build).
+
+### TDD 517–521 — Board drop feedback
+
+Board drop targets now announce empty payloads, unknown/stale Task identifiers, and attempts to drop a Task into the column it already occupies. Existing cross-Project rejection and successful-move feedback remain intact. Tests 520–521 are regression coverage for no mutation after an unknown ID and clearing obsolete status on a later valid drop; they do not represent new RED-to-GREEN behavior. Focused verification: GitHub Actions run 40299681043 (tests, zero-warning lint, production build).
+
+### TDD 522–526 — Board quick status actions
+
+Board Task cards expose pointer/keyboard-accessible buttons for advancing a To do Task to Doing, then a Doing Task to Done, or reversing one column. Controls are absent at status boundaries, and the existing status selector and drag/drop path remain. TDD 526 is a boundary regression check. GitHub Actions feature run 40300788163 passed focused tests, lint and production build; real-device usability audits remain separate.
+
+### TDD 527–531 — direct Board status actions
+
+Board Task cards now have direct skip-column status buttons for To do → Done and Done → To do, supplementing the existing single-step buttons, dropdown and drag/drop. Doing Tasks do not show skip buttons; these controls are scoped to Board mode. Successful direct Done action feedback uses the human-readable column name. TDD 529 and 531 are regression checks; focused GitHub Actions run 40301218449 passed tests, lint and build.
+
+### TDD 532–536 — Board status announcements
+
+Direct return to To do and single-step Board actions now announce human-readable status labels; a dismissal button clears an obsolete Board status message without changing Task state. Tests 534 is a regression guard for Done labels. Feature CI run 40301814304 passed focused tests, lint and build after correcting a JSX closing-brace syntax error without changing tests.
+
+### TDD 537–541 — undo last Board status change
+
+The Board offers a one-step, session-only Undo control after the most recent quick button, direct button, or drag/drop status transition. Undo restores the previous Task status, announces the restored human-readable status, and disappears after use. It does not introduce a persisted undo history or change the storage schema. TDD 540 is a single-use regression guard. Focused GitHub Actions run 40302351475 passed tests, zero-warning lint, and production build.
+
+### TDD 547–551 — Board Undo safety
+
+Manual status changes through the Task status selector invalidate a pending Board Undo, preventing accidental reversal of a newer status choice. Undo identifies the affected Task in its tooltip. Regression tests confirm same-status drops, rejected unknown-task drops and dismissing transient feedback do not discard the last valid Undo. Focused GitHub Actions run 40303993233 passed tests, zero-warning lint and production build; no persistence change was made.
+
+### TDD 552–556 — accessible Board controls
+
+Board Undo tooltips identify both the Task and previous status. Board guidance explains button/select alternatives to dragging, drop targets refer to that help through project-scoped `aria-describedby`, and the status live region announces full messages atomically. Help is limited to Board mode. Focused CI run 40304503056 passed tests, lint and production build; this is not a full accessibility audit.
+
+### TDD 557–561 — responsive Board controls
+
+Board drop headings now use a move cursor rather than a copy cursor; the existing test was updated only after explicit approval. Board task cards wrap long text, Board buttons have touch-sized minimum heights and constrained widths, and Board headings safely wrap labels. Focused GitHub Actions run 40305468753 passed the new and existing CSS tests, zero-warning lint and production build. These are style assertions; manual device testing remains outstanding.
+
+### TDD 562–566 — Board action grouping
+
+Board status transition buttons are now grouped by Task with an accessible group label and a reference to the Board keyboard-movement guidance. CSS ensures touch-sized button targets, wrapping control rows and constrained button width. Targeted GitHub Actions run 40306310799 passed relevant tests, zero-warning lint and production build. Manual keyboard and real-device review remains separate.
+
+### TDD 567–571 — Board keyboard focus recovery
+
+When a Board status button is activated through a keyboard-style click, focus moves to that Task's persistent status selector instead of being lost if the action button disappears on rerender. Covers forward, backward and direct status actions plus Undo. Pointer clicks retain their ordinary focus behavior. Focused GitHub Actions run 40306821848 passed tests, zero-warning lint and production build; this remains narrower than full browser/device accessibility testing.
+
+### TDD 572–576 — reset Board filters in place
+
+The Board view offers a single `Show all Board tasks` control when search, status, priority, due-date or custom-field filters are active. It resets those filters without changing the selected Board view. The TDD 576 custom-field option query was scoped to its select after explicit approval; test assertions remain unchanged. Targeted CI checks passed; full `npm run check` must succeed before this feature is merged.
+
+### TDD 577–581 — Board filter reset accessibility
+
+The Board's contextual reset control has descriptive title and ARIA text, a stable test identifier, and remains a native tab-reachable button without an invented keyboard shortcut. The target tests validate these properties alongside the prior filter-reset behavior. Focused GitHub Actions run 40310011714 passed tests, zero-warning lint, and production build after the user-approved removal of an unused test import; assertions remain unchanged.
+
+### TDD 582–586 — Board reset feedback
+
+Clearing active Board filters now announces `Board filters cleared` in the existing live status region and returns focus to Task search when the reset button disappears. Regression coverage confirms the reset retains task sort order, the reset button is absent with no active filters, and combined search/status/priority filtering resets while retaining Board mode. Focused CI run 40310413163 passed tests, zero-warning lint and production build; this is not a full regression-suite result.
+
+### TDD 587–591 — logical Gantt resource plan
+
+A new pure, deterministic Gantt resource projection reserves each assigned person for one scheduled Task at a time, permits independent people to work concurrently, respects blocking dependencies, and uses configured working weekdays and excluded dates to derive durations. Unassigned Tasks do not consume a person. The calculation is non-persistent and not an optimal resource-leveling engine or actual calendar-date forecast. The TDD 591 test expected duration was corrected from four to three working-day slots after explicit approval. GitHub Actions run 40315381648 passed focused/regression tests, lint and build.
+
+### TDD 592–596 — resource Gantt integrity
+
+Regression tests verify that zero-duration milestones do not reserve additional capacity, unscheduled Tasks remain excluded, repeated assignee IDs do not multiply allocation, cyclic blocking dependencies are rejected, and source Tasks and relationships are not mutated. The resource projection remains deterministic, derived, and separate from persisted Task schedules. Full-suite verification is exercised in the TDD 592–596 branch workflow.
+
+### TDD 597–601 — visible Gantt resource projection
+
+The Gantt view now reports a distinct resource-constrained logical working-day duration and per-scheduled-Task logical start/finish slots. Unscheduled Tasks do not receive invented slots, the summary does not appear outside Gantt, and the original dependency-only critical-path report remains separate. This is a derived capacity projection, not an automatic date rescheduler or optimal resource allocator. Focused GitHub Actions run 40316400117 passed tests, zero-warning lint and build.
+
+### TDD 602–606 — distinguish Gantt resource wait
+
+Derived resource Gantt rows now expose `resourceWaitDays` separately from the dependency-ready start. It counts additional logical working-day slots caused by a reserved person, and does not relabel mandatory predecessor waits as resource conflicts. Independent assignees incur no resource wait; multi-person Tasks wait for the latest available assignee. Milestones remain zero-duration. Focused CI run 40316750025 passed tests, lint and build. This remains non-persistent and is not a resource-optimal calendar schedule.
+
+### TDD 607–611 — resource contention summary
+
+The pure Gantt resource projection now exposes ordered `waitingTaskIds` for Tasks whose logical start is delayed by shared-person capacity, not merely by predecessor dependencies. No-wait schedules yield an empty summary; milestone and dependency-only cases remain excluded. This is derived, non-persistent information. Focused CI run 40317083761 passed tests, lint and build.
+
+### TDD 612–616 — Gantt resource wait visibility
+
+The Gantt view now presents an accessible count of Tasks delayed by assignment capacity and a per-Task resource-wait label in logical working-day slots. Tasks not delayed by a shared person have no wait marker, independent people yield zero contention, and List view is unaffected. These derived offsets are not actual rescheduled start dates. Focused GitHub Actions run 40317479184 passed tests, lint and build.
