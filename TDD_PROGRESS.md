@@ -602,3 +602,7 @@ TDD 667-671 isolates the working-day summary, while TDD 672-676 isolates Task vi
 ## TDD 657-661: resource dates reconciled
 
 The five original per-Task resource date presentation tests and component were included in the integrated branch without modifying their assertions. Forecast indexing occurs after creation to avoid the temporal-dead-zone error found by full CI in the original PR.
+
+## TDD 677-686: Task projection and selector integration
+
+Task view projections for Group, Board, Calendar, Table, and Timeline share one small interface, while visible Task filtering and sorting use another. Original TDD 677-681 and 682-686 tests are carried unchanged into the reconciled integration branch. Full CI must verify the combined App composition before merge.
