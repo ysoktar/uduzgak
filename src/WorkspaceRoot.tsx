@@ -5,6 +5,7 @@ import { AutomationPanel } from './AutomationPanel'
 import { DashboardPanel } from './DashboardPanel'
 import { GoalPanel } from './GoalPanel'
 import { KnowledgePanel } from './KnowledgePanel'
+import { WorkspaceSectionNavigation } from './WorkspaceSectionNavigation'
 import type { WorkspaceCommands } from './application/workspace-commands'
 import type { WorkspaceStore } from './application/workspace-store'
 import { deriveDashboardViewModel } from './domain/dashboard'
@@ -74,12 +75,7 @@ export function WorkspaceRoot({
   return (
     <>
       {commandError ? <p role="alert">{commandError}</p> : null}
-      <nav aria-label="Workspace sections" className="workspace-section-nav">
-        <a href="#workspace-dashboard">Dashboard</a>
-        <a href="#workspace-knowledge">Knowledge</a>
-        <a href="#workspace-goals">Goals</a>
-        <a href="#workspace-automations">Automations</a>
-      </nav>
+      <WorkspaceSectionNavigation />
       <DashboardPanel dashboard={dashboard} />
       <KnowledgePanel
         state={state}
