@@ -17,6 +17,6 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci --include=dev --no-fund
-      - run: npm exec -- vitest run src/persistence/self-hosted-connection.test.ts src/StorageConnectionPanel.test.tsx --maxWorkers=1 --testTimeout=30000
+      - run: npm exec -- vitest run src/persistence/self-hosted-connection.test.ts src/StorageConnectionPanel.test.tsx server/self-hosted-api.test.mjs --maxWorkers=1 --testTimeout=30000
       - run: npm run lint
       - run: npm run build
