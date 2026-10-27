@@ -598,3 +598,43 @@ Five isolated display tests cover dependency-only duration, empty schedules, the
 ## TDD 687-691: guarded Workspace command boundary
 
 The command error-recovery wrapper is extracted from WorkspaceRoot and tested through five focused cases for success, failure, fallback errors, argument forwarding, and non-function properties. Existing UI error messages and return behavior remain intact.
+
+## Archived README checkpoint
+
+## Current local-first status (October 2026)
+
+Local-first Workspace records and view preferences remain in browser storage.
+The working clone's `main` includes verified test-first accessibility,
+navigation, Task discovery, scoped manual reordering, native Project/List drag
+controls, and Workspace panel disclosures through TDD 486. TDD 487–491 adds
+native Board Task status drops (To do, Doing, Done), rejects cross-Project
+Board drops, and provides visible drop targets. On the feature branch,
+[GitHub Actions run 40243584572](https://github.com/ysoktar/uduzgak/actions/runs/40243584572)
+passed 64 focused/regression tests across three files, zero-warning lint,
+and the production build. These are focused checks, not a full-suite,
+real-device, or accessibility sign-off. Backend identity, synchronization,
+and collaboration remain separate future phases.
+
+The older verification checkpoints below are historical milestones rather than the latest repository commit.
+
+## Historical verified behavior checkpoint (legacy Yönlek checkout)
+
+The confirmed starting checkpoint for TDD 261–265 was TDD 260. The old
+`yonlek` working path and remote recorded below are historical; they are not
+the current development target.
+
+- branch: `main`
+- behavior commit: `f24f767` (`TDD 256-260: add Task time tracking`)
+- local repository: `C:\Users\yavuz\git\yonlek`
+- remote: `https://github.com/ROGOYATO/yonlek.git`
+- tests: 482 passed across 140 files
+- lint: 0 warnings, 0 errors with `oxlint . --deny-warnings`
+- production build: passed
+- working tree after the feature commit: clean
+- push: `origin/main` updated successfully
+
+This checkpoint includes the core Project/Task model, archive/restore, templates,
+all current Task layouts, per-view filters/sorts, saved filter sets/views, bulk
+actions, current Custom Fields, recurring Tasks, time estimates, and Task time
+tracking.
+
