@@ -54,3 +54,8 @@ it('TDD 639: forecast reports inclusive calendar length', () => {
   fixture()
   expect(screen.getByLabelText('Gantt resource forecast for Forecast Demo').textContent).toContain('4 calendar days')
 })
+
+it('TDD 640: unscheduled tasks do not show an invented forecast', () => {
+  fixture({ scheduled: false })
+  expect(screen.queryByLabelText('Gantt resource forecast for Forecast Demo')).toBeNull()
+})
