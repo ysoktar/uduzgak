@@ -650,3 +650,7 @@ The five accessible navigation tests and WorkspaceSectionNavigation component ar
 ## TDD 697-701: Gantt control panel extraction
 
 Extract the controls for critical Task filters, workweek analysis, date projections, and non-working date editing into GanttViewControls. Five focused tests specify visible primary controls, hidden advanced controls, pressed-state forwarding, duplicate-date safeguards, and removal callbacks. State and persistence transitions remain in App.
+
+## TDD 707-711: Workspace data toolbar
+
+Extract backup import/export UI into an accessible, responsive component. Five tests cover the named region, export delegation, JSON-only input, File forwarding, and error announcement. BrowserApp owns persistence and backup operations.
