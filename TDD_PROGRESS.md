@@ -578,3 +578,7 @@ The Gantt view now presents an accessible count of Tasks delayed by assignment c
 ## TDD 632–636 — derived Gantt calendar forecast window
 
 Five focused regressions validate nullable empty forecast windows, inclusive calendar span for ordinary tasks, holiday gaps, serialized resource usage across weekends, and milestone-only windows. The calculation is derived and does not change stored Task dates. Merge only after focused tests, lint, and build pass.
+
+## TDD 637–641 — Gantt resource forecast display
+
+Five view tests cover derived completion date for serialized and parallel assignees, inclusive calendar length, hiding unscheduled projections, and Gantt-only presentation. The display is explicitly non-persistent; final CI results are authoritative.
