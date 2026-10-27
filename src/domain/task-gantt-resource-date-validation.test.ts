@@ -20,3 +20,8 @@ it('TDD 623: weekend anchor starts at the first working Monday', () => {
   const rows = createTaskGanttResourceDateProjection([task('a')], [], '2026-10-17').rows
   expect(rows[0]).toMatchObject({ startDate: '2026-10-19', finishDate: '2026-10-20' })
 })
+
+it('TDD 624: excluded anchor holiday advances the entire date range', () => {
+  const rows = createTaskGanttResourceDateProjection([task('a')], [], '2026-10-19', ['2026-10-19']).rows
+  expect(rows[0]).toMatchObject({ startDate: '2026-10-20', finishDate: '2026-10-21' })
+})
