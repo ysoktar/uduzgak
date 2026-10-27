@@ -662,3 +662,7 @@ The five backup toolbar tests and five responsive CSS tests were replayed unmodi
 ## TDD 717-726: local-first replica seed and IndexedDB storage
 
 Five seed tests verify that existing Workspace entities and view preferences are copied into a versioned document without modifying original storage, including failed writes. Five additional tests verify an optional browser IndexedDB replica adapter for read, write, replacement, missing data and unavailable storage. No P2P networking is enabled yet.
+
+## TDD 727-731: local replica change transport
+
+An isolated message interface can use browser BroadcastChannel to deliver versioned workspace-scoped change envelopes between tabs. Five tests cover publication, receipt, duplicate filtering, malformed or wrong-workspace events, and teardown. This is not encrypted by the transport itself, not connected to Workspace mutations and not cross-device P2P.
