@@ -51,3 +51,20 @@ currently grants access to all rooms on that server. Per-workspace roles,
 revocation, conflict merging, rate limits, database retention policies,
 and snapshot compaction must be implemented before public deployment.
 The browser remains local-first; this does not activate automatic uploads.
+
+## Room-scoped API permissions (TDD 762-771)
+
+The self-hosted launcher now requires `UDUZGAK_ROOM_CAPABILITIES_JSON`, a JSON object keyed by 64-character hex room IDs. Each room defines separate `readers` and `writers` arrays of bearer tokens. A writer can read and upload; a reader can read but cannot upload. A token reused across different rooms is rejected during configuration. The server-wide token is still for the `/v1/session` handshake and cannot access change routes when room capabilities are configured.
+
+Example structure, with placeholder values only:
+
+```json
+{
+  "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa": {
+    "readers": ["random-reader-secret"],
+    "writers": ["random-writer-secret"]
+  }
+}
+```
+
+Use cryptographically random secrets and transfer them through a secure invitation channel. Do not commit secrets to Git. Public deployment additionally requires rate limiting, token rotation and revocation, auditing, HTTPS, and capacity controls. The adapter does not yet synchronize or merge CRDT changes, and local-only storage remains unchanged.
