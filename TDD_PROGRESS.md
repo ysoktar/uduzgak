@@ -590,3 +590,7 @@ Introduce a pure cohesive domain composition entry point for the resource plan a
 ## TDD 652–656 — resource summary presentation module
 
 The resource-plan duration, forecast calendar window, and waiting count are rendered via a single read-only GanttResourceSummary module. Five isolated UI tests verify duration, forecast caveat, singular/plural count and null forecast. Existing WorkspaceRoot regression tests remain the integration gate.
+
+## TDD 667-671: working-day summary extraction
+
+Five new tests cover working-day duration, no scheduled Tasks, alternative working weeks, excluded date count and unconfigured holidays. The read-only summary is isolated from App and retains existing accessible labeling.
