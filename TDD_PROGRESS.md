@@ -582,3 +582,7 @@ Five focused regressions validate nullable empty forecast windows, inclusive cal
 ## TDD 637–641 — Gantt resource forecast display
 
 Five view tests cover derived completion date for serialized and parallel assignees, inclusive calendar length, hiding unscheduled projections, and Gantt-only presentation. The display is explicitly non-persistent; final CI results are authoritative.
+
+## TDD 647–651 — Gantt resource overview composition
+
+Introduce a pure cohesive domain composition entry point for the resource plan and its forecast. This removes duplicated resource orchestration from the large React App component. Five behavior tests cover waiting assignments, no scheduled tasks, holidays, input immutability, and alternative working weekdays. Merge only after CI tests, zero-warning lint and build pass.
