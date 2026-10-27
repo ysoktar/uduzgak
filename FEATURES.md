@@ -394,12 +394,12 @@ attached to the current local Person model.
 
 Feature behavior currently takes priority over a final design system.
 
-Verified keyboard navigation and local-first shell foundations (TDD 442–446):
-- [x] Skip link to the named workspace main landmark (442).
-- [x] Named navigation and stable filter/project section targets (443).
-- [x] First-project empty workspace guidance (444).
-- [x] Visible `:focus-visible` outline and keyboard-reachable skip link (445).
-- [x] Narrow-screen overflow controls and reduced-motion CSS rules (446).
+Implemented keyboard navigation and local-first shell foundations:
+- [x] Skip link to the named workspace main landmark.
+- [x] Named navigation and stable filter/project section targets.
+- [x] First-project empty workspace guidance.
+- [x] Visible `:focus-visible` outline and keyboard-reachable skip link.
+- [x] Narrow-screen overflow controls and reduced-motion CSS rules.
 
 These are foundations, not sign-off for the final application shell, cross-device responsive QA, full keyboard audit, full accessibility review, original visual design, or touch/drag interactions. They do not require a backend.
 
@@ -471,7 +471,7 @@ See `BRAND_NAME_RESEARCH.md` for the canonical naming and brand-research record.
 - 0-100 percentage clamp with explicit zero-target behavior
 - pure Goal progress summary helper
 
-Storage validation, browser reload, linked-Task summary rendering, and Goals UI remain TDD 326-330.
+Storage validation, browser reload, linked-Task summary rendering, and Goals UI are implemented.
 
 ## Goals — persistence and UI
 
@@ -483,7 +483,7 @@ Storage validation, browser reload, linked-Task summary rendering, and Goals UI 
 - [x] derived progress rendering
 - [x] BrowserApp reload persistence
 
-The Goals block TDD 311-330 is complete. TDD 331-335 adds pure reporting primitives; dashboard composition and browser UI remain for TDD 336-345.
+Goals, reporting primitives, dashboard composition, and browser UI are implemented.
 
 
 ## Dashboard composition
@@ -500,9 +500,9 @@ The Goals block TDD 311-330 is complete. TDD 331-335 adds pure reporting primiti
 - [x] explicit report-date integration with local-date production fallback
 - [x] reactive Dashboard updates from accepted Workspace Store changes
 
-Dashboard output remains derived and is not persisted. Storage version remains 1. The reporting/dashboard block TDD 331-345 is complete; Notes/Docs/Wiki begin at TDD 346.
+Dashboard output remains derived and is not persisted. Storage version remains 1.
 
-TDD 346-350 adds the pure Knowledge document model and optional Workspace collection. Documents support `note`/`doc` kind, exact string content, optional Project linkage, and a source-of-truth marker. Project deletion unlinks documents instead of deleting them. Persistence validation, Workspace commands, reload behavior, and browser editing remain TDD 351-360. Storage version remains 1.
+Knowledge documents support `note`/`doc` kind, exact string content, optional Project linkage, and a source-of-truth marker. Project deletion unlinks documents instead of deleting them. Workspace storage version remains 1.
 
 
 ## Knowledge documents — persistence and command surface
@@ -512,7 +512,7 @@ TDD 346-350 adds the pure Knowledge document model and optional Workspace collec
 - [x] create Knowledge documents through the persisted Workspace command path
 - [x] edit title, content, kind, and source-of-truth through commands
 - [x] link/unlink Project context and delete documents through commands
-- [x] render and edit Notes/Docs/Wiki in the browser (TDD 356-360)
+- [x] render and edit Notes/Docs/Wiki in the browser
 
 
 ## Knowledge documents — browser UI
@@ -525,7 +525,7 @@ TDD 346-350 adds the pure Knowledge document model and optional Workspace collec
 - [x] delete Knowledge documents through the persisted command path
 - [x] reload Project-linked Wiki documents from storage version 1
 
-Knowledge section membership is derived UI state and is not persisted separately. The Knowledge roadmap block TDD 346-360 is complete.
+Knowledge section membership is derived UI state and is not persisted separately.
 ## Additional Task relationships
 
 - [x] runtime registry for supported relationship types
@@ -538,9 +538,7 @@ Knowledge section membership is derived UI state and is not persisted separately
 - [x] existing `blocks` dependency-cycle semantics preserved
 - [x] existing symmetric `related` canonicalization preserved
 
-The Task relationship roadmap block TDD 361-365 is complete. Relationship
-summaries remain derived UI state; only Workspace relationship edge records are
-persisted. Storage version remains 1.
+Relationship summaries remain derived UI state; only Workspace relationship edge records are persisted. Storage version remains 1.
 
 ## Recent implemented capabilities
 
