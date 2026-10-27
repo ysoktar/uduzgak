@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { GanttResourceSummary } from './GanttResourceSummary'
 
-import { createTaskBoardColumns } from './domain/task-board'
-import { createTaskCalendarSections } from './domain/task-calendar'
 import {
   createTaskGanttDependencyEdges,
   createTaskGanttItems,
@@ -14,9 +12,8 @@ import {
   createTaskGanttWorkingDateProjection,
 } from './domain/task-gantt'
 import { createTaskGanttResourceOverview } from './domain/task-gantt-resource-overview'
-import { createTaskTableRows } from './domain/task-table'
-import { createTaskTimelineItems } from './domain/task-timeline'
-import { groupTasks, type TaskGroup } from './domain/task-group'
+import type { TaskGroup } from './domain/task-group'
+import { createTaskViewProjections } from './domain/task-view-projections'
 
 import {
   createCustomFieldTaskFilter,
@@ -2777,11 +2774,13 @@ export function App({
             customFields,
             effectiveCustomFieldSort,
           )
-          const taskGroups = groupTasks(tasks, taskGroup, projectLists)
-          const boardColumns = createTaskBoardColumns(tasks)
-          const calendarSections = createTaskCalendarSections(tasks)
-          const tableRows = createTaskTableRows(tasks, projectLists)
-          const timelineItems = createTaskTimelineItems(tasks)
+          const {
+            groups: taskGroups,
+            board: boardColumns,
+            calendar: calendarSections,
+            table: tableRows,
+            timeline: timelineItems,
+          } = createTaskViewProjections(tasks, projectLists, taskGroup)
           const ganttItems = createTaskGanttItems(tasks)
           const ganttDependencyEdges = createTaskGanttDependencyEdges(
             tasks,
