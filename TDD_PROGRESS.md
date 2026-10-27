@@ -680,3 +680,7 @@ Ten test-first cases cover immutable ciphertext writes, replay idempotence, conf
 ## TDD 762-771: per-workspace room authorization
 
 Ten test-first cases cover scoped reader and writer credentials, cross-room isolation, malformed credentials, reused secrets, authenticated reads and writes, and rejection of the global session token on protected change routes. The self-hosted launcher now requires explicit room grants. This remains a pre-production authorization layer without rotation, revocation or complete CRDT synchronization.
+
+## TDD 772-776: browser encrypted change transport
+
+Preserved five original test-first cases for authenticated binary uploads, local validation, conflict rejection, scoped ciphertext downloads, and room authorization errors. The transport does not encrypt plaintext itself, persist tokens, or automatically synchronize Workspace data. This branch replays the unchanged tests and implementation on current main after a documentation-only merge conflict.
