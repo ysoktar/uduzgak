@@ -667,6 +667,8 @@ Five seed tests verify that existing Workspace entities and view preferences are
 
 An isolated message interface can use browser BroadcastChannel to deliver versioned workspace-scoped change envelopes between tabs. Five tests cover publication, receipt, duplicate filtering, malformed or wrong-workspace events, and teardown. This is not encrypted by the transport itself, not connected to Workspace mutations and not cross-device P2P.
 
-## TDD 737-746: optional self-hosted NoSQL connection
+## TDD 737-751: optional self-hosted NoSQL connection
 
 User-selectable local-only and self-hosted modes. A strict HTTPS or loopback URL validator and authenticated handshake are covered by five domain and five UI tests. Access tokens are never persisted, and test connection does not imply that sync is working. See docs/SELF_HOSTED_NOSQL.md.
+
+Five additional tests cover a real authenticated server handshake, rejected access tokens, database outage, CORS allowlisting, and a server-only CouchDB credential adapter. The server is read-only and does not yet implement remote storage or synchronization.
