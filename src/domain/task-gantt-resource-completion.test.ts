@@ -27,3 +27,7 @@ it('TDD 629: serial assignments finish on the later resource date', () => {
 it('TDD 630: excluded holidays move the projected completion date', () => {
   expect(createTaskGanttResourceDateProjection([task('a','p1')], [], '2026-10-19', ['2026-10-20']).completionDate).toBe('2026-10-21')
 })
+
+it('TDD 631: milestone-only forecast completes on the milestone date', () => {
+  expect(createTaskGanttResourceDateProjection([task('m','p1',true)], [], '2026-10-17').completionDate).toBe('2026-10-19')
+})
