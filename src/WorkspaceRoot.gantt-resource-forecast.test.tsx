@@ -49,3 +49,8 @@ it('TDD 638: parallel resources finish sooner', () => {
   fixture({ shared: false })
   expect(screen.getByLabelText('Gantt resource forecast for Forecast Demo').textContent).toContain('2026-10-20')
 })
+
+it('TDD 639: forecast reports inclusive calendar length', () => {
+  fixture()
+  expect(screen.getByLabelText('Gantt resource forecast for Forecast Demo').textContent).toContain('4 calendar days')
+})
