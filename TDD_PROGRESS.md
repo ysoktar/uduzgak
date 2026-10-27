@@ -676,3 +676,7 @@ Five additional tests cover a real authenticated server handshake, rejected acce
 ## TDD 752-761: durable encrypted CouchDB change API
 
 Ten test-first cases cover immutable ciphertext writes, replay idempotence, conflicting IDs, malformed envelopes, room-scoped reads, authenticated upload/download, unauthorized writes, size limits, and malformed room paths. The Node self-hosted server integrates a CouchDB adapter. This is a storage transport layer, not CRDT conflict resolution or a public-safe multi-tenant service. Production integration remains subject to full CI and per-workspace authorization.
+
+## TDD 762-771: per-workspace room authorization
+
+Ten test-first cases cover scoped reader and writer credentials, cross-room isolation, malformed credentials, reused secrets, authenticated reads and writes, and rejection of the global session token on protected change routes. The self-hosted launcher now requires explicit room grants. This remains a pre-production authorization layer without rotation, revocation or complete CRDT synchronization.

@@ -31,7 +31,7 @@ function authorized(header, token) {
   return candidate.length === expected.length && timingSafeEqual(candidate, expected)
 }
 
-export function createSelfHostedServer({ token, adapter, allowedOrigins = [] }) {
+export function createSelfHostedServer({ token, adapter, allowedOrigins = [], roomAuthorizer }) {
   if (typeof token !== 'string' || token.length < 8 || !adapter ||
     typeof adapter.kind !== 'string' || typeof adapter.health !== 'function') throw new Error('Invalid server configuration')
   return createServer(async (request, response) => {
@@ -57,7 +57,15 @@ export function createSelfHostedServer({ token, adapter, allowedOrigins = [] }) 
       response.writeHead(404).end()
       return
     }
-    if (!authorized(request.headers.authorization, token)) {
+    if (changes && roomAuthorizer) {
+      const [ , room, id ] = changes
+      const permitted = request.method === 'GET' && !id
+        ? roomAuthorizer.canRead(room, request.headers.authorization)
+        : request.method === 'PUT' && id
+          ? roomAuthorizer.canWrite(room, request.headers.authorization)
+          : false
+      if (!permitted) { response.writeHead(403).end(); return }
+    } else if (!authorized(request.headers.authorization, token)) {
       response.writeHead(401).end()
       return
     }
