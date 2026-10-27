@@ -33,3 +33,8 @@ it('TDD 625: serialized work after a weekend anchor retains two full working-day
     ['2026-10-21','2026-10-22'],
   ])
 })
+
+it('TDD 626: an empty plan still rejects an invalid working-week configuration', () => {
+  expect(() => createTaskGanttResourceDateProjection([], [], '2026-10-19', [], []))
+    .toThrow('Invalid Gantt working weekdays')
+})
