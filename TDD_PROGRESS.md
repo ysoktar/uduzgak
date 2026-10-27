@@ -594,3 +594,7 @@ The resource-plan duration, forecast calendar window, and waiting count are rend
 ## TDD 662-666: critical-path summary extraction
 
 Five isolated display tests cover dependency-only duration, empty schedules, the dependency caveat, accessible project labels, and separation from resource constraints. The UI component moves out of App while retaining the existing view's wording.
+
+## TDD 687-691: guarded Workspace command boundary
+
+The command error-recovery wrapper is extracted from WorkspaceRoot and tested through five focused cases for success, failure, fallback errors, argument forwarding, and non-function properties. Existing UI error messages and return behavior remain intact.
