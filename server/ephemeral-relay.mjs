@@ -60,7 +60,7 @@ export function createEphemeralMailboxStore({
   return { put, list, stats, purge, limits: { maxMessageBytes } }
 }
 
-export function createRelayHttpServer({ store = createEphemeralMailboxStore(), allowedOrigins = [] } = {}) {
+export function createRelayHttpServer({ store = createEphemeralMailboxStore(), allowedOrigins = [], roomAuthorizer } = {}) {
   const server = createServer(async (req, res) => {
     res.setHeader('Cache-Control', 'no-store')
     res.setHeader('X-Content-Type-Options', 'nosniff')
@@ -73,13 +73,21 @@ export function createRelayHttpServer({ store = createEphemeralMailboxStore(), a
       res.setHeader('Access-Control-Allow-Origin', origin)
       res.setHeader('Vary', 'Origin')
       res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, OPTIONS')
-      res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+      res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type')
     }
     if (req.method === 'OPTIONS') { res.writeHead(204).end(); return }
     const path = new URL(req.url ?? '/', 'http://relay.invalid').pathname
     const match = /^\/v1\/rooms\/([a-f0-9]{64})\/messages(?:\/([a-f0-9]{32}))?$/.exec(path)
     if (!match) { res.writeHead(404).end(); return }
     const [, room, id] = match
+    if (roomAuthorizer) {
+      const permitted = req.method === 'GET' && !id
+        ? roomAuthorizer.canRead(room, req.headers.authorization)
+        : req.method === 'PUT' && id
+          ? roomAuthorizer.canWrite(room, req.headers.authorization)
+          : false
+      if (!permitted) { res.writeHead(403).end(); return }
+    }
     try {
       if (req.method === 'GET' && !id) {
         const messages = store.list(room).map(record => ({
