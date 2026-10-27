@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "server:self-hosted": "node server/run-self-hosted.mjs",
+    "server:generate-room": "node server/generate-room.mjs",
     "build": "tsc -b && vite build",
     "lint": "oxlint . --deny-warnings",
     "test": "vitest run",

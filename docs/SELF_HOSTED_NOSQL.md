@@ -68,3 +68,7 @@ Example structure, with placeholder values only:
 ```
 
 Use cryptographically random secrets and transfer them through a secure invitation channel. Do not commit secrets to Git. Public deployment additionally requires rate limiting, token rotation and revocation, auditing, HTTPS, and capacity controls. The adapter does not yet synchronize or merge CRDT changes, and local-only storage remains unchanged.
+
+## Generating room credentials
+
+Run `npm run server:generate-room` on a trusted device to create a cryptographically random 256-bit room ID, read token and write token. Insert the generated `serverConfig` entry into `UDUZGAK_ROOM_CAPABILITIES_JSON`. Share tokens through a trusted channel. Do not commit or publicly log them. Reader tokens cannot upload; writer tokens can upload and read. Revocation and secure invitations are not yet implemented.
