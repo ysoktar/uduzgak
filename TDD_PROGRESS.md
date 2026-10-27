@@ -574,3 +574,7 @@ The pure Gantt resource projection now exposes ordered `waitingTaskIds` for Task
 ### TDD 612–616 — Gantt resource wait visibility
 
 The Gantt view now presents an accessible count of Tasks delayed by assignment capacity and a per-Task resource-wait label in logical working-day slots. Tasks not delayed by a shared person have no wait marker, independent people yield zero contention, and List view is unaffected. These derived offsets are not actual rescheduled start dates. Focused GitHub Actions run 40317479184 passed tests, lint and build.
+
+## TDD 632–636 — derived Gantt calendar forecast window
+
+Five focused regressions validate nullable empty forecast windows, inclusive calendar span for ordinary tasks, holiday gaps, serialized resource usage across weekends, and milestone-only windows. The calculation is derived and does not change stored Task dates. Merge only after focused tests, lint, and build pass.
