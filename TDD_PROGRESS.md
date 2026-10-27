@@ -638,3 +638,11 @@ all current Task layouts, per-view filters/sorts, saved filter sets/views, bulk
 actions, current Custom Fields, recurring Tasks, time estimates, and Task time
 tracking.
 
+
+## TDD 657-686: reconciled architecture change
+
+Verified test-first modules for Gantt resource date labels, working-day summary, critical Task selection, Task view projections, and visible Task filtering were replayed from the successful integrated branch onto current main. All original test assertions are retained. Full suite, lint, and build must pass on the rebased integration branch before merge.
+
+## TDD 692-696: rebased navigation integrated
+
+The five accessible navigation tests and WorkspaceSectionNavigation component are included in the same architecture integration branch. WorkspaceRoot retains the previously merged guarded command boundary and delegates local section links to the navigation component.

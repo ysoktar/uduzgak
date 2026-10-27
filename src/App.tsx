@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { GanttResourceSummary } from './GanttResourceSummary'
+import { GanttResourceDates } from './GanttResourceDates'
 import { GanttCriticalSummary } from './GanttCriticalSummary'
+import { GanttWorkingSummary } from './GanttWorkingSummary'
 
-import { createTaskBoardColumns } from './domain/task-board'
-import { createTaskCalendarSections } from './domain/task-calendar'
 import {
   createTaskGanttDependencyEdges,
   createTaskGanttItems,
@@ -15,9 +15,10 @@ import {
   createTaskGanttWorkingDateProjection,
 } from './domain/task-gantt'
 import { createTaskGanttResourceOverview } from './domain/task-gantt-resource-overview'
-import { createTaskTableRows } from './domain/task-table'
-import { createTaskTimelineItems } from './domain/task-timeline'
-import { groupTasks, type TaskGroup } from './domain/task-group'
+import { createTaskGanttOverviewSelection } from './domain/task-gantt-overview-selection'
+import type { TaskGroup } from './domain/task-group'
+import { createTaskViewProjections } from './domain/task-view-projections'
+import { selectVisibleTasks } from './domain/visible-task-selection'
 
 import {
   createCustomFieldTaskFilter,
@@ -2762,27 +2763,26 @@ export function App({
           const projectTasks = activeTasks.filter(
             (task) => task.projectId === project.id,
           )
-          const tasks = sortTasks(
-            filterTasks(
-              projectTasks,
-              {
-                query: searchQuery,
-                status: statusFilter,
-                priority: priorityFilter,
-                dueDate: dueDateFilter,
-                customField: effectiveCustomFieldFilter,
-              },
-              customFields,
-            ),
+          const tasks = selectVisibleTasks(
+            projectTasks,
+            {
+              query: searchQuery,
+              status: statusFilter,
+              priority: priorityFilter,
+              dueDate: dueDateFilter,
+              customField: effectiveCustomFieldFilter,
+            },
             taskSort,
             customFields,
             effectiveCustomFieldSort,
           )
-          const taskGroups = groupTasks(tasks, taskGroup, projectLists)
-          const boardColumns = createTaskBoardColumns(tasks)
-          const calendarSections = createTaskCalendarSections(tasks)
-          const tableRows = createTaskTableRows(tasks, projectLists)
-          const timelineItems = createTaskTimelineItems(tasks)
+          const {
+            groups: taskGroups,
+            board: boardColumns,
+            calendar: calendarSections,
+            table: tableRows,
+            timeline: timelineItems,
+          } = createTaskViewProjections(tasks, projectLists, taskGroup)
           const ganttItems = createTaskGanttItems(tasks)
           const ganttDependencyEdges = createTaskGanttDependencyEdges(
             tasks,
@@ -2810,6 +2810,7 @@ export function App({
             .map((task) => task.startDate!)
             .sort()[0]
           const ganttResourceForecast = ganttResourceOverview?.forecast ?? null
+          const ganttResourceDatesByTask = new Map((ganttResourceForecast?.rows ?? []).map(row => [row.taskId, row] as const))
           const ganttProjectedWorkingDates = ganttShowWorkingDays && ganttShowProjectedWorkingDates && ganttAnchorDate
             ? createTaskGanttWorkingDateProjection(
                 tasks, relationships, ganttAnchorDate, ganttNonWorkingDates, ganttWorkingWeekdays,
@@ -2818,17 +2819,14 @@ export function App({
           const ganttProjectedWorkingRows = new Map(
             (ganttProjectedWorkingDates?.rows ?? []).map((row) => [row.taskId, row] as const),
           )
-          const ganttOverviewItems = ganttOverviewWorkingCriticalOnly
-            ? ganttItems.filter((item) => ganttWorkingRows.get(item.task.id)?.isCritical)
-            : ganttOverviewCriticalOnly
-              ? ganttItems.filter((item) => ganttCriticalRows.get(item.task.id)?.isCritical)
-              : ganttItems
-          const ganttOverviewIds = new Set(ganttOverviewItems.map((item) => item.task.id))
-          const ganttOverviewEdges = ganttOverviewCriticalOnly || ganttOverviewWorkingCriticalOnly
-            ? ganttDependencyEdges.filter(
-                (edge) => ganttOverviewIds.has(edge.sourceTaskId) && ganttOverviewIds.has(edge.targetTaskId),
-              )
-            : ganttDependencyEdges
+          const { items: ganttOverviewItems, edges: ganttOverviewEdges } = createTaskGanttOverviewSelection(
+            ganttItems,
+            ganttDependencyEdges,
+            new Set([...ganttCriticalRows.values()].filter(row => row.isCritical).map(row => row.taskId)),
+            new Set([...ganttWorkingRows.values()].filter(row => row.isCritical).map(row => row.taskId)),
+            ganttOverviewCriticalOnly,
+            ganttOverviewWorkingCriticalOnly,
+          )
           const ganttScheduleConflicts = taskViewMode === 'gantt'
             ? createTaskGanttScheduleConflicts(tasks, relationships)
             : []
@@ -3340,11 +3338,13 @@ export function App({
                     />
                   ) : null}
                   {taskViewMode === 'gantt' && ganttWorkingPath ? (
-                    <p aria-label={`Gantt working-day critical path for ${project.name}`}>
-                      {ganttWorkingPath.rows.length === 0
-                        ? 'No scheduled tasks for working-day analysis'
-                        : `Working-day critical path: ${ganttWorkingPath.durationDays} working days (${ganttSundayThursdayWeek ? 'Sunday-Thursday' : 'Monday-Friday'}; ${ganttNonWorkingDates.length === 0 ? 'holidays not configured' : `${ganttNonWorkingDates.length} excluded date${ganttNonWorkingDates.length === 1 ? '' : 's'}`})`}
-                    </p>
+                    <GanttWorkingSummary
+                      projectName={project.name}
+                      durationDays={ganttWorkingPath.durationDays}
+                      scheduledCount={ganttWorkingPath.rows.length}
+                      sundayThursday={ganttSundayThursdayWeek}
+                      excludedDateCount={ganttNonWorkingDates.length}
+                    />
                   ) : null}
                   {taskViewMode === 'gantt' ? (
                     <ol
@@ -3373,6 +3373,7 @@ export function App({
                             }
                           >
                             <span>{item.task.title}</span>
+                            <GanttResourceDates taskTitle={item.task.title} dates={ganttResourceDatesByTask.get(item.task.id)} />
                             {(ganttResourceRows.get(item.task.id)?.resourceWaitDays ?? 0) > 0 ? (
                               <span aria-label={`Gantt resource wait for ${item.task.title}`}>
                                 {ganttResourceRows.get(item.task.id)!.resourceWaitDays} working days waiting for an assigned person
