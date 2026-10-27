@@ -533,3 +533,25 @@ textarea {
   max-width: 100%;
   overflow-wrap: anywhere;
 }
+
+.workspace-data-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 1120px;
+  margin: 16px auto;
+  padding: 14px 18px;
+  border: 1px solid #dbe0e7;
+  border-radius: 12px;
+  background: #fff;
+}
+.workspace-data-toolbar-title { font-weight: 750; }
+.workspace-data-toolbar-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.workspace-data-toolbar-actions input[type='file'] { width: min(100%, 280px); }
+.workspace-data-toolbar [role='alert'] { width: 100%; }
+@media (max-width: 720px) {
+  .workspace-data-toolbar { margin: 12px 10px; padding: 12px; }
+  .workspace-data-toolbar-actions { width: 100%; }
+}
