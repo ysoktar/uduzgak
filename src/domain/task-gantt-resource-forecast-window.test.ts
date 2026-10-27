@@ -11,3 +11,7 @@ function task(id: string, person: string, milestone = false): Task {
 it('TDD 632: empty forecast has no calendar window', () => {
   expect(createTaskGanttResourceDateProjection([], [], '2026-10-19').calendarWindow).toBeNull()
 })
+
+it('TDD 633: one ordinary two-day task produces two calendar days', () => {
+  expect(createTaskGanttResourceDateProjection([task('a','p1')], [], '2026-10-19').calendarWindow).toEqual({ startDate: '2026-10-19', finishDate: '2026-10-20', calendarDays: 2 })
+})
