@@ -15,3 +15,8 @@ it('TDD 622: invalid anchor is rejected even without scheduled Tasks', () => {
   expect(() => createTaskGanttResourceDateProjection([], [], '2026-02-30'))
     .toThrow('Invalid Gantt anchor date')
 })
+
+it('TDD 623: weekend anchor starts at the first working Monday', () => {
+  const rows = createTaskGanttResourceDateProjection([task('a')], [], '2026-10-17').rows
+  expect(rows[0]).toMatchObject({ startDate: '2026-10-19', finishDate: '2026-10-20' })
+})
