@@ -1,0 +1,20 @@
+name: TDD 642-646 Gantt resource Task dates
+on:
+  push:
+    branches: [tdd/642-646-gantt-resource-task-dates]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - run: npm ci --include=dev --no-fund
+      - run: npm exec -- vitest run src/WorkspaceRoot.gantt-resource-task-dates.test.tsx src/WorkspaceRoot.gantt-resource-forecast.test.tsx --maxWorkers=1 --testTimeout=30000
+      - run: npm run lint
+      - run: npm run build
