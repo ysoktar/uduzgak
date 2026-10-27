@@ -1,11 +1,8 @@
 import { useState, useSyncExternalStore } from 'react'
 
 import { App } from './App'
-import { AutomationPanel } from './AutomationPanel'
-import { DashboardPanel } from './DashboardPanel'
-import { GoalPanel } from './GoalPanel'
-import { KnowledgePanel } from './KnowledgePanel'
 import { WorkspaceSectionNavigation } from './WorkspaceSectionNavigation'
+import { WorkspaceSupplementalPanels } from './WorkspaceSupplementalPanels'
 import type { WorkspaceCommands } from './application/workspace-commands'
 import { guardWorkspaceCommands } from './application/guarded-workspace-commands'
 import type { WorkspaceStore } from './application/workspace-store'
@@ -54,70 +51,7 @@ export function WorkspaceRoot({
     <>
       {commandError ? <p role="alert">{commandError}</p> : null}
       <WorkspaceSectionNavigation />
-      <DashboardPanel dashboard={dashboard} />
-      <KnowledgePanel
-        state={state}
-        onAddKnowledgeDocument={(title, input) =>
-          guardedCommands.addKnowledgeDocument(title, input)
-        }
-        onRenameKnowledgeDocument={(documentId, title) =>
-          guardedCommands.renameKnowledgeDocument(documentId, title)
-        }
-        onChangeKnowledgeDocumentContent={(documentId, content) =>
-          guardedCommands.changeKnowledgeDocumentContent(documentId, content)
-        }
-        onChangeKnowledgeDocumentKind={(documentId, kind) =>
-          guardedCommands.changeKnowledgeDocumentKind(documentId, kind)
-        }
-        onChangeKnowledgeDocumentProject={(documentId, projectId) =>
-          guardedCommands.changeKnowledgeDocumentProject(documentId, projectId)
-        }
-        onChangeKnowledgeDocumentSourceOfTruth={(documentId, sourceOfTruth) =>
-          guardedCommands.changeKnowledgeDocumentSourceOfTruth(documentId, sourceOfTruth)
-        }
-        onDeleteKnowledgeDocument={(documentId) =>
-          guardedCommands.deleteKnowledgeDocument(documentId)
-        }
-      />
-      <GoalPanel
-        state={state}
-        onAddGoal={(name, input) => guardedCommands.addGoal(name, input)}
-        onRenameGoal={(goalId, name) => guardedCommands.renameGoal(goalId, name)}
-        onChangeGoalDescription={(goalId, description) =>
-          guardedCommands.changeGoalDescription(goalId, description)
-        }
-        onChangeGoalTargetType={(goalId, targetType) =>
-          guardedCommands.changeGoalTargetType(goalId, targetType)
-        }
-        onChangeGoalValues={(goalId, targetValue, currentValue) =>
-          guardedCommands.changeGoalValues(goalId, targetValue, currentValue)
-        }
-        onLinkGoalTask={(goalId, taskId) => guardedCommands.linkGoalTask(goalId, taskId)}
-        onUnlinkGoalTask={(goalId, taskId) =>
-          guardedCommands.unlinkGoalTask(goalId, taskId)
-        }
-        onDeleteGoal={(goalId) => guardedCommands.deleteGoal(goalId)}
-      />
-      <AutomationPanel
-        state={state}
-        onAddAutomation={(name, input) => guardedCommands.addAutomation(name, input)}
-        onRenameAutomation={(automationId, name) =>
-          guardedCommands.renameAutomation(automationId, name)
-        }
-        onSetAutomationEnabled={(automationId, enabled) =>
-          guardedCommands.setAutomationEnabled(automationId, enabled)
-        }
-        onChangeAutomationTrigger={(automationId, trigger) =>
-          guardedCommands.changeAutomationTrigger(automationId, trigger)
-        }
-        onChangeAutomationConditions={(automationId, conditions) =>
-          guardedCommands.changeAutomationConditions(automationId, conditions)
-        }
-        onChangeAutomationActions={(automationId, actions) =>
-          guardedCommands.changeAutomationActions(automationId, actions)
-        }
-        onDeleteAutomation={(automationId) => guardedCommands.deleteAutomation(automationId)}
-      />
+      <WorkspaceSupplementalPanels state={state} dashboard={dashboard} commands={guardedCommands} />
       <App
       state={state}
       initialViewPreferences={initialViewPreferences}
