@@ -59,3 +59,8 @@ it('TDD 640: unscheduled tasks do not show an invented forecast', () => {
   fixture({ scheduled: false })
   expect(screen.queryByLabelText('Gantt resource forecast for Forecast Demo')).toBeNull()
 })
+
+it('TDD 641: forecast summary is Gantt only', () => {
+  fixture({ mode: 'list' })
+  expect(screen.queryByLabelText('Gantt resource forecast for Forecast Demo')).toBeNull()
+})
