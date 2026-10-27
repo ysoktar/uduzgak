@@ -32,6 +32,8 @@ import {
 import { emptyWorkspace } from './domain/workspace'
 import { WorkspaceRoot } from './WorkspaceRoot'
 import { WorkspaceDataToolbar } from './WorkspaceDataToolbar'
+import { StorageConnectionPanel } from './StorageConnectionPanel'
+import { checkSelfHostedServer } from './persistence/self-hosted-connection'
 
 export interface BrowserAppProps {
   storage?: KeyValueStore
@@ -168,6 +170,8 @@ export function BrowserApp({
           }
         }}
       />
+
+      <StorageConnectionPanel onCheck={checkSelfHostedServer} />
 
       <WorkspaceRoot
         key={applicationRevision}
