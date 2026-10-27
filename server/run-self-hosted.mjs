@@ -1,5 +1,6 @@
 import { createCouchDbHealthAdapter, createSelfHostedServer } from './self-hosted-api.mjs'
 import { createCouchDbChangeAdapter } from './couchdb-changes.mjs'
+import { createRoomCapabilityAuthorizer } from './room-capabilities.mjs'
 
 const token = process.env.UDUZGAK_SERVER_TOKEN
 const dbUrl = process.env.COUCHDB_URL
@@ -19,7 +20,10 @@ const changes = createCouchDbChangeAdapter({
   password,
 })
 const adapter = { kind: 'couchdb', health: health.health, put: changes.put, list: changes.list }
-const server = createSelfHostedServer({ token, adapter, allowedOrigins })
+const rawGrants = process.env.UDUZGAK_ROOM_CAPABILITIES_JSON
+if (!rawGrants) throw new Error('UDUZGAK_ROOM_CAPABILITIES_JSON must define per-room credentials')
+const roomAuthorizer = createRoomCapabilityAuthorizer(JSON.parse(rawGrants))
+const server = createSelfHostedServer({ token, adapter, allowedOrigins, roomAuthorizer })
 server.listen(port, host, () => {
   process.stdout.write(`Uduzgak self-hosted API ready on ${host}:${port}\n`)
 })
