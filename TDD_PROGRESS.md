@@ -598,3 +598,7 @@ Five isolated display tests cover dependency-only duration, empty schedules, the
 ## TDD 667-676: integrated Gantt architecture follow-up
 
 TDD 667-671 isolates the working-day summary, while TDD 672-676 isolates Task visibility and matching dependency edges. Their tested modules were reapplied together after later main changes to avoid overlapping App edits. The original source tests and assertions were retained.
+
+## TDD 657-661: resource dates reconciled
+
+The five original per-Task resource date presentation tests and component were included in the integrated branch without modifying their assertions. Forecast indexing occurs after creation to avoid the temporal-dead-zone error found by full CI in the original PR.
