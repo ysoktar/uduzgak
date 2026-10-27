@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { GanttResourceSummary } from './GanttResourceSummary'
+import { GanttViewControls } from './GanttViewControls'
 import { GanttResourceDates } from './GanttResourceDates'
 import { GanttCriticalSummary } from './GanttCriticalSummary'
 import { GanttWorkingSummary } from './GanttWorkingSummary'
@@ -2648,109 +2649,54 @@ export function App({
       ) : null}
 
       {taskViewMode === 'gantt' && activeProjects.length > 0 ? (
-        <button
-          type="button"
-          aria-pressed={ganttOverviewCriticalOnly}
-          onClick={() => {
-            setGanttOverviewCriticalOnly((current) => !current)
+        <GanttViewControls
+          criticalOnly={ganttOverviewCriticalOnly}
+          showLogicalOffsets={ganttShowLogicalOffsets}
+          showWorkingDays={ganttShowWorkingDays}
+          showProjectedDates={ganttShowProjectedWorkingDates}
+          sundayThursday={ganttSundayThursdayWeek}
+          workingCriticalOnly={ganttOverviewWorkingCriticalOnly}
+          nonWorkingDateDraft={ganttNonWorkingDateDraft}
+          nonWorkingDates={ganttNonWorkingDates}
+          onToggleCritical={() => {
+            setGanttOverviewCriticalOnly(current => !current)
             setGanttOverviewWorkingCriticalOnly(false)
           }}
-        >
-          Critical tasks only in Gantt overview
-        </button>
-      ) : null}
-      {taskViewMode === 'gantt' && activeProjects.length > 0 ? (
-        <button
-          type="button"
-          aria-pressed={ganttShowLogicalOffsets}
-          onClick={() => setGanttShowLogicalOffsets((current) => !current)}
-        >
-          Show Gantt logical offsets
-        </button>
-      ) : null}
-      {taskViewMode === 'gantt' && activeProjects.length > 0 ? (
-        <button type="button" aria-pressed={ganttShowWorkingDays}
-          onClick={() => {
-            setGanttShowWorkingDays((current) => !current)
+          onToggleLogicalOffsets={() => setGanttShowLogicalOffsets(current => !current)}
+          onToggleWorkingDays={() => {
+            setGanttShowWorkingDays(current => !current)
             setGanttOverviewWorkingCriticalOnly(false)
-          }}>
-          Show Gantt working-day analysis
-        </button>
-      ) : null}
-      {taskViewMode === 'gantt' && activeProjects.length > 0 && ganttShowWorkingDays ? (
-        <button type="button" aria-pressed={ganttShowProjectedWorkingDates}
-          onClick={() => setGanttShowProjectedWorkingDates((current) => !current)}>
-          Show Gantt projected working dates
-        </button>
-      ) : null}
-      {taskViewMode === 'gantt' && activeProjects.length > 0 && ganttShowWorkingDays ? (
-        <button type="button" aria-pressed={ganttSundayThursdayWeek}
-          onClick={() => {
+          }}
+          onToggleProjectedDates={() => setGanttShowProjectedWorkingDates(current => !current)}
+          onToggleWorkweek={() => {
             const next = !ganttSundayThursdayWeek
             setGanttSundayThursdayWeek(next)
             updatePreferences({ ganttWorkingWeek: next ? 'sun-thu' : 'mon-fri' })
-          }}>
-          Use Sunday-Thursday Gantt workweek
-        </button>
-      ) : null}
-      {taskViewMode === 'gantt' && activeProjects.length > 0 && ganttShowWorkingDays ? (
-        <div>
-          <label>
-            Gantt non-working date
-            <input type="date" value={ganttNonWorkingDateDraft}
-              onChange={(event) => setGanttNonWorkingDateDraft(event.target.value)} />
-          </label>
-          <button type="button"
-            disabled={!ganttNonWorkingDateDraft || ganttNonWorkingDates.includes(ganttNonWorkingDateDraft)}
-            onClick={() => {
-              try {
-                const next = normalizeTaskGanttNonWorkingDates([...ganttNonWorkingDates, ganttNonWorkingDateDraft])
-                setGanttNonWorkingDates(next)
-                updatePreferences({ ganttNonWorkingDates: next })
-                setGanttNonWorkingDateDraft('')
-                setError(null)
-              } catch (caught) {
-                setError(errorMessage(caught))
-              }
-            }}>
-            Add Gantt non-working date
-          </button>
-          {ganttNonWorkingDates.length > 0 ? (
-            <ul aria-label="Gantt non-working dates">
-              {ganttNonWorkingDates.map((date) => (
-                <li key={date}>
-                  {date}
-                  <button type="button" onClick={() => {
-                    const next = ganttNonWorkingDates.filter((candidate) => candidate !== date)
-                    setGanttNonWorkingDates(next)
-                    updatePreferences({ ganttNonWorkingDates: next })
-                  }}>
-                    Remove Gantt non-working date {date}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : null}
-        </div>
-      ) : null}
-      {taskViewMode === 'gantt' && activeProjects.length > 0 && ganttShowWorkingDays ? (
-        <button type="button" aria-pressed={ganttOverviewWorkingCriticalOnly}
-          onClick={() => {
-            setGanttOverviewWorkingCriticalOnly((current) => !current)
+          }}
+          onDraftChange={setGanttNonWorkingDateDraft}
+          onAddNonWorkingDate={() => {
+            try {
+              const next = normalizeTaskGanttNonWorkingDates([...ganttNonWorkingDates, ganttNonWorkingDateDraft])
+              setGanttNonWorkingDates(next)
+              updatePreferences({ ganttNonWorkingDates: next })
+              setGanttNonWorkingDateDraft('')
+              setError(null)
+            } catch (caught) {
+              setError(errorMessage(caught))
+            }
+          }}
+          onRemoveNonWorkingDate={date => {
+            const next = ganttNonWorkingDates.filter(candidate => candidate !== date)
+            setGanttNonWorkingDates(next)
+            updatePreferences({ ganttNonWorkingDates: next })
+          }}
+          onToggleWorkingCritical={() => {
+            setGanttOverviewWorkingCriticalOnly(current => !current)
             setGanttOverviewCriticalOnly(false)
-          }}>
-          Working-day critical tasks only in Gantt overview
-        </button>
-      ) : null}
-      {taskViewMode === 'gantt' && activeProjects.length > 0 && ganttShowWorkingDays ? (
-        <button type="button" onClick={selectVisibleWorkingCriticalGanttTasks}>
-          Select visible working-day critical Gantt tasks
-        </button>
-      ) : null}
-      {taskViewMode === 'gantt' && activeProjects.length > 0 ? (
-        <button type="button" onClick={selectVisibleCriticalGanttTasks}>
-          Select visible critical Gantt tasks
-        </button>
+          }}
+          onSelectVisibleWorkingCritical={selectVisibleWorkingCriticalGanttTasks}
+          onSelectVisibleCritical={selectVisibleCriticalGanttTasks}
+        />
       ) : null}
 
       {activeProjects.length === 0 ? (
