@@ -9,7 +9,7 @@ function fixture() {
   const requests = []
   const fetchImpl = async (url, options = {}) => {
     requests.push({ url, options })
-    const key = new URL(url).pathname.split('/').at(-1)
+    const key = decodeURIComponent(new URL(url).pathname.split('/').at(-1))
     if (options.method === 'PUT') {
       if (documents.has(key)) return new Response('{"error":"conflict"}', { status: 409 })
       documents.set(key, JSON.parse(options.body))
