@@ -1,0 +1,20 @@
+name: TDD 622-626 Gantt resource date validation
+on:
+  push:
+    branches: [tdd/622-626-gantt-resource-date-validation]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - run: npm ci --include=dev --no-fund
+      - run: npm exec -- vitest run src/domain/task-gantt-resource-date-validation.test.ts src/domain/task-gantt-resource-dates.test.ts src/domain/task-gantt-resource-plan.test.ts --maxWorkers=1 --testTimeout=30000
+      - run: npm run lint
+      - run: npm run build
