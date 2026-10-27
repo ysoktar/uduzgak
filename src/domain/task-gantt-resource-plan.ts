@@ -81,7 +81,7 @@ export function createTaskGanttResourceDateProjection(
   anchor: string,
   nonWorkingDates: readonly string[] = [],
   workingWeekdays: readonly number[] = [1, 2, 3, 4, 5],
-): { rows: TaskGanttResourceDateRow[]; completionDate: string | null } {
+): { rows: TaskGanttResourceDateRow[]; completionDate: string | null; calendarWindow: { startDate: string; finishDate: string; calendarDays: number } | null } {
   const firstWorkingDate = shiftTaskGanttWorkingDate(anchor, 0, nonWorkingDates, workingWeekdays)
   // Preserve Task working-day effort; excluded calendar dates shift the forecast rather than erase effort.
   const plan = createTaskGanttResourcePlan(tasks, relationships, [], workingWeekdays)
@@ -98,11 +98,21 @@ export function createTaskGanttResourceDateProjection(
       isMilestone: byId.get(row.taskId)!.isMilestone === true,
     }
   })
+  const completionDate = rows.length === 0 ? null : rows.reduce(
+    (latest, row) => row.finishDate > latest ? row.finishDate : latest,
+    rows[0].finishDate,
+  )
+  const startDate = rows.length === 0 ? null : rows.reduce(
+    (earliest, row) => row.startDate < earliest ? row.startDate : earliest,
+    rows[0].startDate,
+  )
   return {
     rows,
-    completionDate: rows.length === 0 ? null : rows.reduce(
-      (latest, row) => row.finishDate > latest ? row.finishDate : latest,
-      rows[0].finishDate,
-    ),
+    completionDate,
+    calendarWindow: startDate === null || completionDate === null ? null : {
+      startDate,
+      finishDate: completionDate,
+      calendarDays: (Date.parse(`${completionDate}T00:00:00.000Z`) - Date.parse(`${startDate}T00:00:00.000Z`)) / 86_400_000 + 1,
+    },
   }
 }
