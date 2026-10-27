@@ -680,3 +680,7 @@ Ten test-first cases cover immutable ciphertext writes, replay idempotence, conf
 ## TDD 762-771: per-workspace room authorization
 
 Ten test-first cases cover scoped reader and writer credentials, cross-room isolation, malformed credentials, reused secrets, authenticated reads and writes, and rejection of the global session token on protected change routes. The self-hosted launcher now requires explicit room grants. This remains a pre-production authorization layer without rotation, revocation or complete CRDT synchronization.
+
+## TDD 777-781: room provisioning
+
+Five tests verify secure random room identifiers, independent reader/writer secrets, room grant compatibility, cross-room credential isolation, and JSON serialization. Provides an opt-in local CLI to generate capability settings without a mandatory central account.
