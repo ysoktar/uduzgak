@@ -3,13 +3,13 @@ import { createCouchDbChangeAdapter } from './couchdb-changes.mjs'
 
 const room = 'a'.repeat(64)
 const id = 'b'.repeat(32)
-const ciphertext = Buffer.from([1,...new Array(12).fill(0),...new Array(16).fill(3)])
+const ciphertext = Buffer.from([1,...Array(12).fill(0),...Array(16).fill(3)])
 function fixture() {
   const documents = new Map()
   const requests = []
   const fetchImpl = async (url, options = {}) => {
     requests.push({ url, options })
-    const key = String(url).split('/').at(-1)
+    const key = new URL(url).pathname.split('/').at(-1)
     if (options.method === 'PUT') {
       if (documents.has(key)) return new Response('{"error":"conflict"}', { status: 409 })
       documents.set(key, JSON.parse(options.body))
