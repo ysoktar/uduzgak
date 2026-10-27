@@ -658,3 +658,7 @@ Extract Dashboard, Knowledge, Goals, and Automations panel wiring into one compo
 ## TDD 717-721: non-destructive local-first replica seed
 
 A new asynchronous seam exports a validated, versioned snapshot of existing Workspace and view preferences to a caller-supplied destination. Five tests cover entity preservation, view preferences, no legacy writes, destination failure and single versioned handoff. No IndexedDB or P2P connectivity is claimed yet; the legacy storage remains authoritative until migration is independently verified.
+
+## TDD 722-726: optional IndexedDB replica storage
+
+A browser-native asynchronous IndexedDB adapter stores raw versioned replica documents in a separate local database. Five tests cover missing records, write/read, replacement, unavailable storage, and invalid document IDs. It is not yet connected to WorkspaceRoot and does not replace legacy storage or provide cross-device synchronization.
