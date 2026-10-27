@@ -30,3 +30,24 @@ Never put database credentials in the browser. Clients communicate with the auth
 Add authenticated per-workspace access, encryption and secret rotation, an append-only durable change log or CRDT document storage, conflict handling and two-device convergence tests. Implement the server API and database adapter, and only then provide a persisted connection profile and opt-in sync toggle.
 
 The temporary encrypted relay remains separate and non-durable. See `EPHEMERAL_RELAY.md` and `LOCAL_FIRST_P2P.md`.
+
+## Durable encrypted change prototype (TDD 752-761)
+
+With the server running, authenticated clients can submit opaque, client-encrypted
+change envelopes to `PUT /v1/rooms/:roomId/changes/:changeId` and retrieve
+them using `GET /v1/rooms/:roomId/changes`. Both requests use the same
+server-issued Bearer credential as `/v1/session`. The server stores only
+opaque ciphertext in a CouchDB database named by
+`COUCHDB_CHANGES_DATABASE` (default `uduzgak-changes`). Create that database
+and restrict its service-account permissions before starting the API.
+
+Changes are immutable and are keyed by room and change identifier.
+Uploads have a 64 KiB maximum; identical IDs and ciphertext are idempotent,
+while an ID reused with different contents is rejected. The CouchDB adapter
+must be configured on the server and database credentials are never returned.
+
+This is **not yet a complete sync engine**. A single server bearer token
+currently grants access to all rooms on that server. Per-workspace roles,
+revocation, conflict merging, rate limits, database retention policies,
+and snapshot compaction must be implemented before public deployment.
+The browser remains local-first; this does not activate automatic uploads.
