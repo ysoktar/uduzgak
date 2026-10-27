@@ -2802,7 +2802,6 @@ export function App({
             : null
           const ganttResourcePlan = ganttResourceOverview?.plan ?? null
           const ganttResourceRows = new Map((ganttResourcePlan?.rows ?? []).map(row => [row.taskId, row] as const))
-          const ganttResourceDatesByTask = new Map((ganttResourceForecast?.rows ?? []).map(row => [row.taskId, row] as const))
           const ganttWorkingRows = new Map(
             (ganttWorkingPath?.rows ?? []).map((row) => [row.taskId, row] as const),
           )
@@ -2811,6 +2810,7 @@ export function App({
             .map((task) => task.startDate!)
             .sort()[0]
           const ganttResourceForecast = ganttResourceOverview?.forecast ?? null
+          const ganttResourceDatesByTask = new Map((ganttResourceForecast?.rows ?? []).map(row => [row.taskId, row] as const))
           const ganttProjectedWorkingDates = ganttShowWorkingDays && ganttShowProjectedWorkingDates && ganttAnchorDate
             ? createTaskGanttWorkingDateProjection(
                 tasks, relationships, ganttAnchorDate, ganttNonWorkingDates, ganttWorkingWeekdays,
