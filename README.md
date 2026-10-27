@@ -12,40 +12,23 @@ are being added before a final visual design system or backend is introduced.
 
 ## Current local-first status (October 2026)
 
-Local-first Workspace records and view preferences remain in browser storage.
-The working clone's `main` includes verified test-first accessibility,
-navigation, Task discovery, scoped manual reordering, native Project/List drag
-controls, and Workspace panel disclosures through TDD 486. TDD 487–491 adds
-native Board Task status drops (To do, Doing, Done), rejects cross-Project
-Board drops, and provides visible drop targets. On the feature branch,
-[GitHub Actions run 40243584572](https://github.com/ysoktar/uduzgak/actions/runs/40243584572)
-passed 64 focused/regression tests across three files, zero-warning lint,
-and the production build. These are focused checks, not a full-suite,
-real-device, or accessibility sign-off. Backend identity, synchronization,
-and collaboration remain separate future phases.
+uduzgak stores Workspace data and view preferences locally in the browser.
+Its model supports Areas, Projects, Lists, Tasks, Subtasks, Custom Fields,
+relationships, Goals, Knowledge documents, and local Automations.
 
-The older verification checkpoints below are historical milestones rather than the latest repository commit.
+The application includes List, Board, Calendar, Table, Timeline, and Gantt
+views. Board supports status changes and Undo, while Gantt provides derived
+dependency, working-day, resource-capacity, and calendar forecast summaries.
+Derived forecasts do not rewrite saved Task schedules.
 
-## Historical verified behavior checkpoint (legacy Yönlek checkout)
+The current phase has no authenticated multi-user backend, remote
+synchronization, or realtime collaboration. UI accessibility, visual
+composition, responsive behavior, and browser-based regression checks remain
+active work.
 
-The confirmed starting checkpoint for TDD 261–265 was TDD 260. The old
-`yonlek` working path and remote recorded below are historical; they are not
-the current development target.
-
-- branch: `main`
-- behavior commit: `f24f767` (`TDD 256-260: add Task time tracking`)
-- local repository: `C:\Users\yavuz\git\yonlek`
-- remote: `https://github.com/ROGOYATO/yonlek.git`
-- tests: 482 passed across 140 files
-- lint: 0 warnings, 0 errors with `oxlint . --deny-warnings`
-- production build: passed
-- working tree after the feature commit: clean
-- push: `origin/main` updated successfully
-
-This checkpoint includes the core Project/Task model, archive/restore, templates,
-all current Task layouts, per-view filters/sorts, saved filter sets/views, bulk
-actions, current Custom Fields, recurring Tasks, time estimates, and Task time
-tracking.
+For test cycle history, CI evidence, and engineering checkpoints, read
+[TDD_PROGRESS.md](TDD_PROGRESS.md). For product capabilities and planned
+features, read [FEATURES.md](FEATURES.md).
 
 ## Current product model
 
