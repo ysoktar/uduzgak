@@ -4,8 +4,6 @@ import { GanttResourceDates } from './GanttResourceDates'
 import { GanttCriticalSummary } from './GanttCriticalSummary'
 import { GanttWorkingSummary } from './GanttWorkingSummary'
 
-import { createTaskBoardColumns } from './domain/task-board'
-import { createTaskCalendarSections } from './domain/task-calendar'
 import {
   createTaskGanttDependencyEdges,
   createTaskGanttItems,
@@ -18,13 +16,12 @@ import {
 } from './domain/task-gantt'
 import { createTaskGanttResourceOverview } from './domain/task-gantt-resource-overview'
 import { createTaskGanttOverviewSelection } from './domain/task-gantt-overview-selection'
-import { createTaskTableRows } from './domain/task-table'
-import { createTaskTimelineItems } from './domain/task-timeline'
-import { groupTasks, type TaskGroup } from './domain/task-group'
+import type { TaskGroup } from './domain/task-group'
+import { createTaskViewProjections } from './domain/task-view-projections'
+import { selectVisibleTasks } from './domain/visible-task-selection'
 
 import {
   createCustomFieldTaskFilter,
-  filterTasks,
   type CustomFieldTaskFilter,
   type TaskDueDateFilter,
 } from './domain/task-filter'
@@ -2765,27 +2762,26 @@ export function App({
           const projectTasks = activeTasks.filter(
             (task) => task.projectId === project.id,
           )
-          const tasks = sortTasks(
-            filterTasks(
-              projectTasks,
-              {
-                query: searchQuery,
-                status: statusFilter,
-                priority: priorityFilter,
-                dueDate: dueDateFilter,
-                customField: effectiveCustomFieldFilter,
-              },
-              customFields,
-            ),
+          const tasks = selectVisibleTasks(
+            projectTasks,
+            {
+              query: searchQuery,
+              status: statusFilter,
+              priority: priorityFilter,
+              dueDate: dueDateFilter,
+              customField: effectiveCustomFieldFilter,
+            },
             taskSort,
             customFields,
             effectiveCustomFieldSort,
           )
-          const taskGroups = groupTasks(tasks, taskGroup, projectLists)
-          const boardColumns = createTaskBoardColumns(tasks)
-          const calendarSections = createTaskCalendarSections(tasks)
-          const tableRows = createTaskTableRows(tasks, projectLists)
-          const timelineItems = createTaskTimelineItems(tasks)
+          const {
+            groups: taskGroups,
+            board: boardColumns,
+            calendar: calendarSections,
+            table: tableRows,
+            timeline: timelineItems,
+          } = createTaskViewProjections(tasks, projectLists, taskGroup)
           const ganttItems = createTaskGanttItems(tasks)
           const ganttDependencyEdges = createTaskGanttDependencyEdges(
             tasks,
