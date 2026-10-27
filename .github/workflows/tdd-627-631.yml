@@ -2,8 +2,6 @@ name: TDD 627-631 Gantt resource completion
 on:
   push:
     branches: [tdd/627-631-gantt-resource-date-boundaries]
-  pull_request:
-    branches: [main]
 permissions:
   contents: read
 jobs:
