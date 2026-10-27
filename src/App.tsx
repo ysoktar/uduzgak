@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { GanttResourceSummary } from './GanttResourceSummary'
+import { GanttCriticalSummary } from './GanttCriticalSummary'
 
 import { createTaskBoardColumns } from './domain/task-board'
 import { createTaskCalendarSections } from './domain/task-calendar'
@@ -3325,11 +3326,11 @@ export function App({
               ) : (
                 <>
                   {taskViewMode === 'gantt' && ganttCriticalPath ? (
-                    <p aria-label={`Gantt critical path for ${project.name}`}>
-                      {ganttCriticalPath.rows.length === 0
-                        ? 'No scheduled tasks for critical-path analysis'
-                        : `Logical critical path: ${ganttCriticalPath.durationDays} days (visible scheduled tasks; blocks dependencies only)`}
-                    </p>
+                    <GanttCriticalSummary
+                      projectName={project.name}
+                      durationDays={ganttCriticalPath.durationDays}
+                      scheduledCount={ganttCriticalPath.rows.length}
+                    />
                   ) : null}
                   {taskViewMode === 'gantt' && ganttResourcePlan ? (
                     <GanttResourceSummary
