@@ -12,7 +12,7 @@ import {
   createTaskGanttWorkingCriticalPath,
   createTaskGanttWorkingDateProjection,
 } from './domain/task-gantt'
-import { createTaskGanttResourceDateProjection, createTaskGanttResourcePlan } from './domain/task-gantt-resource-plan'
+import { createTaskGanttResourceOverview } from './domain/task-gantt-resource-overview'
 import { createTaskTableRows } from './domain/task-table'
 import { createTaskTimelineItems } from './domain/task-timeline'
 import { groupTasks, type TaskGroup } from './domain/task-group'
@@ -2795,9 +2795,10 @@ export function App({
           const ganttWorkingPath = taskViewMode === 'gantt' && ganttShowWorkingDays
             ? createTaskGanttWorkingCriticalPath(tasks, relationships, ganttNonWorkingDates, ganttWorkingWeekdays)
             : null
-          const ganttResourcePlan = taskViewMode === 'gantt'
-            ? createTaskGanttResourcePlan(tasks, relationships, ganttNonWorkingDates, ganttWorkingWeekdays)
+          const ganttResourceOverview = taskViewMode === 'gantt'
+            ? createTaskGanttResourceOverview(tasks, relationships, ganttNonWorkingDates, ganttWorkingWeekdays)
             : null
+          const ganttResourcePlan = ganttResourceOverview?.plan ?? null
           const ganttResourceRows = new Map((ganttResourcePlan?.rows ?? []).map(row => [row.taskId, row] as const))
           const ganttWorkingRows = new Map(
             (ganttWorkingPath?.rows ?? []).map((row) => [row.taskId, row] as const),
@@ -2806,9 +2807,7 @@ export function App({
             .filter((task) => task.startDate !== undefined && task.dueDate !== undefined)
             .map((task) => task.startDate!)
             .sort()[0]
-          const ganttResourceForecast = taskViewMode === 'gantt' && ganttAnchorDate
-            ? createTaskGanttResourceDateProjection(tasks, relationships, ganttAnchorDate, ganttNonWorkingDates, ganttWorkingWeekdays)
-            : null
+          const ganttResourceForecast = ganttResourceOverview?.forecast ?? null
           const ganttProjectedWorkingDates = ganttShowWorkingDays && ganttShowProjectedWorkingDates && ganttAnchorDate
             ? createTaskGanttWorkingDateProjection(
                 tasks, relationships, ganttAnchorDate, ganttNonWorkingDates, ganttWorkingWeekdays,
