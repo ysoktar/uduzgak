@@ -3,7 +3,8 @@ import { timingSafeEqual } from 'node:crypto'
 
 export function createCouchDbHealthAdapter({ url, username, password, fetchImpl = fetch }) {
   const endpoint = new URL(url)
-  if (!['http:', 'https:'].includes(endpoint.protocol) || endpoint.username || endpoint.password || endpoint.search || endpoint.hash || endpoint.pathname !== '/') {
+  if (!['http:', 'https:'].includes(endpoint.protocol) || endpoint.username || endpoint.password || endpoint.search || endpoint.hash || endpoint.pathname !== '/' ||
+    (endpoint.protocol === 'http:' && !['localhost', '127.0.0.1', '[::1]'].includes(endpoint.hostname))) {
     throw new Error('Invalid CouchDB endpoint')
   }
   return {
