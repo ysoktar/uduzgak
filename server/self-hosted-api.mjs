@@ -52,7 +52,7 @@ export function createSelfHostedServer({ token, adapter, allowedOrigins = [] }) 
       response.writeHead(204).end()
       return
     }
-    const changes = /^\\/v1\\/rooms\\/([a-f0-9]{64})\\/changes(?:\\/([a-f0-9]{32}))?$/.exec(request.url ?? '')
+    const changes = new RegExp('^/v1/rooms/([a-f0-9]{64})/changes(?:/([a-f0-9]{32}))?$').exec(request.url ?? '')
     if (request.url !== '/v1/session' && !changes) {
       response.writeHead(404).end()
       return
