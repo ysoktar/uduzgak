@@ -1,0 +1,20 @@
+name: Encrypted ephemeral relay checks
+on:
+  push:
+    branches: [p2p/722-726-ephemeral-encrypted-relay]
+permissions:
+  contents: read
+jobs:
+  relay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --include=dev --no-fund
+      - run: npm exec -- vitest run src/p2p/relay-crypto.test.ts server/ephemeral-relay.test.mjs server/ephemeral-relay-http.test.mjs --maxWorkers=1 --testTimeout=30000
+      - run: npm run lint
+      - run: npm run build
