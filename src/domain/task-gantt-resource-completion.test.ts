@@ -19,3 +19,7 @@ it('TDD 627: an empty resource forecast has no completion date', () => {
 it('TDD 628: independent assignments finish on the shared last working day', () => {
   expect(createTaskGanttResourceDateProjection([task('a','p1'), task('b','p2')], [], '2026-10-19').completionDate).toBe('2026-10-20')
 })
+
+it('TDD 629: serial assignments finish on the later resource date', () => {
+  expect(createTaskGanttResourceDateProjection([task('a','p1'), task('b','p1')], [], '2026-10-19').completionDate).toBe('2026-10-22')
+})
