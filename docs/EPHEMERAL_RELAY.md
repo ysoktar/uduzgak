@@ -32,3 +32,7 @@ This does not make the service ready for untrusted public traffic. Add
 per-identity rate limits, replay defenses, audit logging, reverse proxy TLS,
 and abuse response before production deployment. The relay's state remains
 memory-only and expires after the configured retention period.
+
+## Request throttling
+
+Each relay process now enforces a bounded fixed-window request limiter, with a default 120 requests per room per 60 seconds and at most 10,000 tracked room counters. Exceeding a limit returns HTTP 429. These quotas supplement the per-message, per-room and total memory limits; operators still need an external reverse proxy for per-IP controls, distributed abuse protection, and TLS. A restart resets the counters.
