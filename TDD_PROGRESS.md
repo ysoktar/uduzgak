@@ -650,3 +650,7 @@ The five accessible navigation tests and WorkspaceSectionNavigation component ar
 ## TDD 697-701: Gantt control panel extraction
 
 Extract the controls for critical Task filters, workweek analysis, date projections, and non-working date editing into GanttViewControls. Five focused tests specify visible primary controls, hidden advanced controls, pressed-state forwarding, duplicate-date safeguards, and removal callbacks. State and persistence transitions remain in App.
+
+## TDD 702-706: Workspace supplemental panel composition
+
+Extract Dashboard, Knowledge, Goals, and Automations panel wiring into one component receiving guarded commands. Five tests preserve accessible section landmarks and confirm the primary Task view is not duplicated. The domain model and commands remain unchanged.
