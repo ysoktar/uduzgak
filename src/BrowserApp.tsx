@@ -31,6 +31,7 @@ import {
 } from './browser/backup-file'
 import { emptyWorkspace } from './domain/workspace'
 import { WorkspaceRoot } from './WorkspaceRoot'
+import { WorkspaceDataToolbar } from './WorkspaceDataToolbar'
 
 export interface BrowserAppProps {
   storage?: KeyValueStore
@@ -138,55 +139,35 @@ export function BrowserApp({
 
   return (
     <>
-      <div>
-        <button
-          type="button"
-          onClick={() => {
-            const exportedAt = runtime.now()
-            const backup = createWorkspaceBackupDocument(
-              application.store.getState(),
-              viewPreferencesRef.current,
-              exportedAt,
-            )
-
-            backupDownload({
-              filename: createWorkspaceBackupFilename(exportedAt),
-              contents: serializeWorkspaceBackup(backup),
-            })
-          }}
-        >
-          Export backup
-        </button>
-        <label htmlFor="backup-import-file">Import backup</label>
-        <input
-          id="backup-import-file"
-          type="file"
-          accept=".json,application/json"
-          onChange={async (event) => {
-            const file = event.currentTarget.files?.[0]
-            event.currentTarget.value = ''
-
-            if (!file) {
-              return
-            }
-
-            try {
-              const contents = await backupRead(file)
-              const imported = importWorkspaceBackup(storage, contents)
-              const nextApplication = createBrowserApplication(storage, runtime)
-
-              viewPreferencesRef.current =
-                nextApplication.viewPreferences ?? imported.viewPreferences
-              setBackupImportError(null)
-              setApplication(nextApplication)
-              setApplicationRevision((current) => current + 1)
-            } catch {
-              setBackupImportError('Backup could not be imported.')
-            }
-          }}
-        />
-        {backupImportError ? <p role="alert">{backupImportError}</p> : null}
-      </div>
+      <WorkspaceDataToolbar
+        error={backupImportError}
+        onExport={() => {
+          const exportedAt = runtime.now()
+          const backup = createWorkspaceBackupDocument(
+            application.store.getState(),
+            viewPreferencesRef.current,
+            exportedAt,
+          )
+          backupDownload({
+            filename: createWorkspaceBackupFilename(exportedAt),
+            contents: serializeWorkspaceBackup(backup),
+          })
+        }}
+        onImport={async file => {
+          try {
+            const contents = await backupRead(file)
+            const imported = importWorkspaceBackup(storage, contents)
+            const nextApplication = createBrowserApplication(storage, runtime)
+            viewPreferencesRef.current =
+              nextApplication.viewPreferences ?? imported.viewPreferences
+            setBackupImportError(null)
+            setApplication(nextApplication)
+            setApplicationRevision(current => current + 1)
+          } catch {
+            setBackupImportError('Backup could not be imported.')
+          }
+        }}
+      />
 
       <WorkspaceRoot
         key={applicationRevision}

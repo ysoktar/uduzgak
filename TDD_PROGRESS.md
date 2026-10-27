@@ -654,3 +654,7 @@ Extract the controls for critical Task filters, workweek analysis, date projecti
 ## TDD 702-706: Workspace supplemental panel composition
 
 Extract Dashboard, Knowledge, Goals, and Automations panel wiring into one component receiving guarded commands. Five tests preserve accessible section landmarks and confirm the primary Task view is not duplicated. The domain model and commands remain unchanged.
+
+## TDD 707-716: integrated Workspace-wide UI improvements
+
+The five backup toolbar tests and five responsive CSS tests were replayed unmodified on current main. BrowserApp delegates accessible import and export controls to WorkspaceDataToolbar while retaining existing persistence actions. Shared visual tokens, navigation touch targets, mobile table scrolling and overflow guards are added across the Workspace.
