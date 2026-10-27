@@ -25,3 +25,11 @@ it('TDD 624: excluded anchor holiday advances the entire date range', () => {
   const rows = createTaskGanttResourceDateProjection([task('a')], [], '2026-10-19', ['2026-10-19']).rows
   expect(rows[0]).toMatchObject({ startDate: '2026-10-20', finishDate: '2026-10-21' })
 })
+
+it('TDD 625: serialized work after a weekend anchor retains two full working-day ranges', () => {
+  const rows = createTaskGanttResourceDateProjection([task('a'), task('b')], [], '2026-10-17').rows
+  expect(rows.map(({startDate,finishDate}) => [startDate,finishDate])).toEqual([
+    ['2026-10-19','2026-10-20'],
+    ['2026-10-21','2026-10-22'],
+  ])
+})
