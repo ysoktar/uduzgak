@@ -1,0 +1,18 @@
+name: Architecture TDD 657-686 reconciled
+on:
+  push:
+    branches: [architecture/integrated-657-686-r1]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - run: npm ci --include=dev --no-fund
+      - run: npm exec -- vitest run src/GanttResourceDates.test.tsx src/GanttWorkingSummary.test.tsx src/domain/task-gantt-overview-selection.test.ts src/domain/task-view-projections.test.ts src/domain/visible-task-selection.test.ts --maxWorkers=1 --testTimeout=30000
+      - run: npm run lint
+      - run: npm run build
