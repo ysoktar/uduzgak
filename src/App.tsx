@@ -14,6 +14,7 @@ import {
   createTaskGanttWorkingDateProjection,
 } from './domain/task-gantt'
 import { createTaskGanttResourceOverview } from './domain/task-gantt-resource-overview'
+import { createTaskGanttOverviewSelection } from './domain/task-gantt-overview-selection'
 import { createTaskTableRows } from './domain/task-table'
 import { createTaskTimelineItems } from './domain/task-timeline'
 import { groupTasks, type TaskGroup } from './domain/task-group'
@@ -2817,17 +2818,14 @@ export function App({
           const ganttProjectedWorkingRows = new Map(
             (ganttProjectedWorkingDates?.rows ?? []).map((row) => [row.taskId, row] as const),
           )
-          const ganttOverviewItems = ganttOverviewWorkingCriticalOnly
-            ? ganttItems.filter((item) => ganttWorkingRows.get(item.task.id)?.isCritical)
-            : ganttOverviewCriticalOnly
-              ? ganttItems.filter((item) => ganttCriticalRows.get(item.task.id)?.isCritical)
-              : ganttItems
-          const ganttOverviewIds = new Set(ganttOverviewItems.map((item) => item.task.id))
-          const ganttOverviewEdges = ganttOverviewCriticalOnly || ganttOverviewWorkingCriticalOnly
-            ? ganttDependencyEdges.filter(
-                (edge) => ganttOverviewIds.has(edge.sourceTaskId) && ganttOverviewIds.has(edge.targetTaskId),
-              )
-            : ganttDependencyEdges
+          const { items: ganttOverviewItems, edges: ganttOverviewEdges } = createTaskGanttOverviewSelection(
+            ganttItems,
+            ganttDependencyEdges,
+            new Set([...ganttCriticalRows.values()].filter(row => row.isCritical).map(row => row.taskId)),
+            new Set([...ganttWorkingRows.values()].filter(row => row.isCritical).map(row => row.taskId)),
+            ganttOverviewCriticalOnly,
+            ganttOverviewWorkingCriticalOnly,
+          )
           const ganttScheduleConflicts = taskViewMode === 'gantt'
             ? createTaskGanttScheduleConflicts(tasks, relationships)
             : []
