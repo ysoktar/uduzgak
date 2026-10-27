@@ -12,7 +12,7 @@ import {
   createTaskGanttWorkingCriticalPath,
   createTaskGanttWorkingDateProjection,
 } from './domain/task-gantt'
-import { createTaskGanttResourcePlan } from './domain/task-gantt-resource-plan'
+import { createTaskGanttResourceDateProjection, createTaskGanttResourcePlan } from './domain/task-gantt-resource-plan'
 import { createTaskTableRows } from './domain/task-table'
 import { createTaskTimelineItems } from './domain/task-timeline'
 import { groupTasks, type TaskGroup } from './domain/task-group'
@@ -2806,6 +2806,9 @@ export function App({
             .filter((task) => task.startDate !== undefined && task.dueDate !== undefined)
             .map((task) => task.startDate!)
             .sort()[0]
+          const ganttResourceForecast = taskViewMode === 'gantt' && ganttAnchorDate
+            ? createTaskGanttResourceDateProjection(tasks, relationships, ganttAnchorDate, ganttNonWorkingDates, ganttWorkingWeekdays)
+            : null
           const ganttProjectedWorkingDates = ganttShowWorkingDays && ganttShowProjectedWorkingDates && ganttAnchorDate
             ? createTaskGanttWorkingDateProjection(
                 tasks, relationships, ganttAnchorDate, ganttNonWorkingDates, ganttWorkingWeekdays,
@@ -3331,6 +3334,11 @@ export function App({
                   {taskViewMode === 'gantt' && ganttResourcePlan ? (
                     <p aria-label={`Gantt resource plan for ${project.name}`}>
                       Resource-constrained logical plan: ${ganttResourcePlan.durationDays} working days
+                    </p>
+                  ) : null}
+                  {taskViewMode === 'gantt' && ganttResourceForecast?.calendarWindow ? (
+                    <p aria-label={`Gantt resource forecast for ${project.name}`}>
+                      Resource forecast: ${ganttResourceForecast.calendarWindow.startDate} to ${ganttResourceForecast.calendarWindow.finishDate} (${ganttResourceForecast.calendarWindow.calendarDays} calendar days; non-persistent estimate)
                     </p>
                   ) : null}
                   {taskViewMode === 'gantt' && ganttResourcePlan ? (
