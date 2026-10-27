@@ -81,23 +81,28 @@ export function createTaskGanttResourceDateProjection(
   anchor: string,
   nonWorkingDates: readonly string[] = [],
   workingWeekdays: readonly number[] = [1, 2, 3, 4, 5],
-): { rows: TaskGanttResourceDateRow[] } {
+): { rows: TaskGanttResourceDateRow[]; completionDate: string | null } {
   const firstWorkingDate = shiftTaskGanttWorkingDate(anchor, 0, nonWorkingDates, workingWeekdays)
   // Preserve Task working-day effort; excluded calendar dates shift the forecast rather than erase effort.
   const plan = createTaskGanttResourcePlan(tasks, relationships, [], workingWeekdays)
   const byId = new Map(tasks.map(task => [task.id, task] as const))
+  const rows = plan.rows.map(row => {
+    const startDate = shiftTaskGanttWorkingDate(firstWorkingDate, row.earliestStart, nonWorkingDates, workingWeekdays)
+    const finishDate = row.durationDays === 0
+      ? startDate
+      : shiftTaskGanttWorkingDate(firstWorkingDate, row.earliestFinish - 1, nonWorkingDates, workingWeekdays)
+    return {
+      taskId: row.taskId,
+      startDate,
+      finishDate,
+      isMilestone: byId.get(row.taskId)!.isMilestone === true,
+    }
+  })
   return {
-    rows: plan.rows.map(row => {
-      const startDate = shiftTaskGanttWorkingDate(firstWorkingDate, row.earliestStart, nonWorkingDates, workingWeekdays)
-      const finishDate = row.durationDays === 0
-        ? startDate
-        : shiftTaskGanttWorkingDate(firstWorkingDate, row.earliestFinish - 1, nonWorkingDates, workingWeekdays)
-      return {
-        taskId: row.taskId,
-        startDate,
-        finishDate,
-        isMilestone: byId.get(row.taskId)!.isMilestone === true,
-      }
-    }),
+    rows,
+    completionDate: rows.length === 0 ? null : rows.reduce(
+      (latest, row) => row.finishDate > latest ? row.finishDate : latest,
+      rows[0].finishDate,
+    ),
   }
 }
