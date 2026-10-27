@@ -646,3 +646,7 @@ Verified test-first modules for Gantt resource date labels, working-day summary,
 ## TDD 692-696: rebased navigation integrated
 
 The five accessible navigation tests and WorkspaceSectionNavigation component are included in the same architecture integration branch. WorkspaceRoot retains the previously merged guarded command boundary and delegates local section links to the navigation component.
+
+## TDD 697-701: Gantt control panel extraction
+
+Extract the controls for critical Task filters, workweek analysis, date projections, and non-working date editing into GanttViewControls. Five focused tests specify visible primary controls, hidden advanced controls, pressed-state forwarding, duplicate-date safeguards, and removal callbacks. State and persistence transitions remain in App.
