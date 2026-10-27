@@ -590,3 +590,7 @@ Introduce a pure cohesive domain composition entry point for the resource plan a
 ## TDD 652–656 — resource summary presentation module
 
 The resource-plan duration, forecast calendar window, and waiting count are rendered via a single read-only GanttResourceSummary module. Five isolated UI tests verify duration, forecast caveat, singular/plural count and null forecast. Existing WorkspaceRoot regression tests remain the integration gate.
+
+## TDD 677-681: cohesive Task view projections
+
+Group, Board, Calendar, Table, and Timeline projections share one domain orchestration function. Five tests verify grouping, status columns, calendar ordering, list fallbacks, and timeline ordering. The app delegates through this interface without changing view state.
