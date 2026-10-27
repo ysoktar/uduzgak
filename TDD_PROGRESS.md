@@ -658,3 +658,7 @@ Extract Dashboard, Knowledge, Goals, and Automations panel wiring into one compo
 ## TDD 707-716: integrated Workspace-wide UI improvements
 
 The five backup toolbar tests and five responsive CSS tests were replayed unmodified on current main. BrowserApp delegates accessible import and export controls to WorkspaceDataToolbar while retaining existing persistence actions. Shared visual tokens, navigation touch targets, mobile table scrolling and overflow guards are added across the Workspace.
+
+## TDD 722-736: encrypted ephemeral mailbox prototype
+
+Client-side AES-256-GCM encrypted change envelope with random room and secret. An optional Node HTTP relay holds only ciphertext with a fixed one-hour TTL, per-message, per-room and global memory limits, idempotent message IDs and server restart data loss. Fifteen test-first regression cases cover cryptographic round trips, tampering, expiry, capacity, isolation, immutability and HTTP retrieval. This is an opt-in prototype, not a deployed public service or a complete multi-device CRDT implementation. See docs/EPHEMERAL_RELAY.md.
