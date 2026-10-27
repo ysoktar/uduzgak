@@ -23,3 +23,7 @@ it('TDD 628: independent assignments finish on the shared last working day', () 
 it('TDD 629: serial assignments finish on the later resource date', () => {
   expect(createTaskGanttResourceDateProjection([task('a','p1'), task('b','p1')], [], '2026-10-19').completionDate).toBe('2026-10-22')
 })
+
+it('TDD 630: excluded holidays move the projected completion date', () => {
+  expect(createTaskGanttResourceDateProjection([task('a','p1')], [], '2026-10-19', ['2026-10-20']).completionDate).toBe('2026-10-21')
+})
