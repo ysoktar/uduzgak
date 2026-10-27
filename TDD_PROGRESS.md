@@ -658,3 +658,7 @@ Extract Dashboard, Knowledge, Goals, and Automations panel wiring into one compo
 ## TDD 707-716: integrated Workspace-wide UI improvements
 
 The five backup toolbar tests and five responsive CSS tests were replayed unmodified on current main. BrowserApp delegates accessible import and export controls to WorkspaceDataToolbar while retaining existing persistence actions. Shared visual tokens, navigation touch targets, mobile table scrolling and overflow guards are added across the Workspace.
+
+## TDD 717-726: local-first replica seed and IndexedDB storage
+
+Five seed tests verify that existing Workspace entities and view preferences are copied into a versioned document without modifying original storage, including failed writes. Five additional tests verify an optional browser IndexedDB replica adapter for read, write, replacement, missing data and unavailable storage. No P2P networking is enabled yet.
