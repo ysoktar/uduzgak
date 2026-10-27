@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { GanttResourceSummary } from './GanttResourceSummary'
+import { GanttResourceDates } from './GanttResourceDates'
 import { GanttCriticalSummary } from './GanttCriticalSummary'
 import { GanttWorkingSummary } from './GanttWorkingSummary'
 
@@ -2812,6 +2813,7 @@ export function App({
             .map((task) => task.startDate!)
             .sort()[0]
           const ganttResourceForecast = ganttResourceOverview?.forecast ?? null
+          const ganttResourceDatesByTask = new Map((ganttResourceForecast?.rows ?? []).map(row => [row.taskId, row] as const))
           const ganttProjectedWorkingDates = ganttShowWorkingDays && ganttShowProjectedWorkingDates && ganttAnchorDate
             ? createTaskGanttWorkingDateProjection(
                 tasks, relationships, ganttAnchorDate, ganttNonWorkingDates, ganttWorkingWeekdays,
@@ -3374,6 +3376,7 @@ export function App({
                             }
                           >
                             <span>{item.task.title}</span>
+                            <GanttResourceDates taskTitle={item.task.title} dates={ganttResourceDatesByTask.get(item.task.id)} />
                             {(ganttResourceRows.get(item.task.id)?.resourceWaitDays ?? 0) > 0 ? (
                               <span aria-label={`Gantt resource wait for ${item.task.title}`}>
                                 {ganttResourceRows.get(item.task.id)!.resourceWaitDays} working days waiting for an assigned person
