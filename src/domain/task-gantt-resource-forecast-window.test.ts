@@ -15,3 +15,7 @@ it('TDD 632: empty forecast has no calendar window', () => {
 it('TDD 633: one ordinary two-day task produces two calendar days', () => {
   expect(createTaskGanttResourceDateProjection([task('a','p1')], [], '2026-10-19').calendarWindow).toEqual({ startDate: '2026-10-19', finishDate: '2026-10-20', calendarDays: 2 })
 })
+
+it('TDD 634: holiday gap is counted in calendar span', () => {
+  expect(createTaskGanttResourceDateProjection([task('a','p1')], [], '2026-10-19', ['2026-10-20']).calendarWindow).toEqual({ startDate: '2026-10-19', finishDate: '2026-10-21', calendarDays: 3 })
+})
