@@ -15,3 +15,7 @@ function task(id: string, person: string, milestone = false): Task {
 it('TDD 627: an empty resource forecast has no completion date', () => {
   expect(createTaskGanttResourceDateProjection([], [], '2026-10-19').completionDate).toBeNull()
 })
+
+it('TDD 628: independent assignments finish on the shared last working day', () => {
+  expect(createTaskGanttResourceDateProjection([task('a','p1'), task('b','p2')], [], '2026-10-19').completionDate).toBe('2026-10-20')
+})
