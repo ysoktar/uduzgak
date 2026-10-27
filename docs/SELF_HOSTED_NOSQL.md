@@ -68,3 +68,17 @@ Example structure, with placeholder values only:
 ```
 
 Use cryptographically random secrets and transfer them through a secure invitation channel. Do not commit secrets to Git. Public deployment additionally requires rate limiting, token rotation and revocation, auditing, HTTPS, and capacity controls. The adapter does not yet synchronize or merge CRDT changes, and local-only storage remains unchanged.
+
+## Creating a room
+
+Run `npm run server:generate-room` on a trusted device. The command generates
+a random room ID and independent 256-bit reader and writer tokens. Copy the
+`serverConfig` object into the JSON configured through
+`UDUZGAK_ROOM_CAPABILITIES_JSON`. Merge it with any existing room entries.
+Give the reader token only to people who should download updates, and the writer
+token to people allowed to upload changes.
+
+The command prints secrets to your local terminal. Avoid sharing screenshots,
+shell logs, command output files, or the server configuration in Git. Room
+credentials are bearer secrets. This generator does not yet provide a secure
+invite exchange, token rotation, revocation, or encryption key management.
