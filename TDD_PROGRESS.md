@@ -654,3 +654,7 @@ Extract the controls for critical Task filters, workweek analysis, date projecti
 ## TDD 702-706: Workspace supplemental panel composition
 
 Extract Dashboard, Knowledge, Goals, and Automations panel wiring into one component receiving guarded commands. Five tests preserve accessible section landmarks and confirm the primary Task view is not duplicated. The domain model and commands remain unchanged.
+
+## TDD 717-721: non-destructive local-first replica seed
+
+A new asynchronous seam exports a validated, versioned snapshot of existing Workspace and view preferences to a caller-supplied destination. Five tests cover entity preservation, view preferences, no legacy writes, destination failure and single versioned handoff. No IndexedDB or P2P connectivity is claimed yet; the legacy storage remains authoritative until migration is independently verified.
