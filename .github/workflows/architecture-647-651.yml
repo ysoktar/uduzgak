@@ -2,8 +2,6 @@ name: Architecture TDD 647-651 Gantt resource overview
 on:
   push:
     branches: [architecture/647-651-gantt-resource-overview]
-  pull_request:
-    branches: [main]
 permissions:
   contents: read
 jobs:
