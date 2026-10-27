@@ -3380,6 +3380,11 @@ export function App({
                             }
                           >
                             <span>{item.task.title}</span>
+                            {ganttResourceForecast?.rows.find(row => row.taskId === item.task.id) ? (
+                              <span aria-label={`Gantt resource dates for ${item.task.title}`}>
+                                {ganttResourceForecast.rows.find(row => row.taskId === item.task.id)!.startDate} to {ganttResourceForecast.rows.find(row => row.taskId === item.task.id)!.finishDate} (estimated)
+                              </span>
+                            ) : null}
                             {(ganttResourceRows.get(item.task.id)?.resourceWaitDays ?? 0) > 0 ? (
                               <span aria-label={`Gantt resource wait for ${item.task.title}`}>
                                 {ganttResourceRows.get(item.task.id)!.resourceWaitDays} working days waiting for an assigned person
