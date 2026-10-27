@@ -684,3 +684,7 @@ Ten test-first cases cover scoped reader and writer credentials, cross-room isol
 ## TDD 722-736 and 782-786: authenticated ephemeral ciphertext relay
 
 Replayed the original 15 test-first cryptographic and bounded-memory relay checks from the earlier unmerged branch without changing their assertions. Five new tests cover anonymous write denial, read-only access, writer capability, cross-room isolation, and CORS origin restrictions. The runnable relay requires explicit room grants and remains opt-in, non-durable, and not ready for untrusted public deployment without rate limiting and related controls.
+
+## TDD 787-791: bounded relay request rates
+
+Five tests cover request exhaustion, exact expiry, independent room quotas, maximum tracked room counters and invalid configuration. The authenticated relay adds an HTTP 429 response without altering existing expiry or ciphertext tests.
