@@ -44,7 +44,7 @@ export function createSelfHostedServer({ token, adapter, allowedOrigins = [] }) 
     }
     if (origin) {
       response.setHeader('Access-Control-Allow-Origin', origin)
-      response.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
+      response.setHeader('Access-Control-Allow-Methods', 'GET, PUT, OPTIONS')
       response.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type')
       response.setHeader('Vary', 'Origin')
     }
@@ -52,7 +52,8 @@ export function createSelfHostedServer({ token, adapter, allowedOrigins = [] }) 
       response.writeHead(204).end()
       return
     }
-    if (request.url !== '/v1/session' || request.method !== 'GET') {
+    const changes = new RegExp('^/v1/rooms/([a-f0-9]{64})/changes(?:/([a-f0-9]{32}))?$').exec(request.url ?? '')
+    if (request.url !== '/v1/session' && !changes) {
       response.writeHead(404).end()
       return
     }
@@ -60,6 +61,45 @@ export function createSelfHostedServer({ token, adapter, allowedOrigins = [] }) 
       response.writeHead(401).end()
       return
     }
+    if (changes) {
+      const [, room, id] = changes
+      try {
+        if (request.method === 'GET' && !id && typeof adapter.list === 'function') {
+          const rows = await adapter.list(room)
+          response.setHeader('Content-Type', 'application/json')
+          response.writeHead(200).end(JSON.stringify({ changes: rows }))
+          return
+        }
+        if (request.method === 'PUT' && id && typeof adapter.put === 'function') {
+          if (request.headers['content-type'] !== 'application/octet-stream') {
+            response.writeHead(415).end()
+            return
+          }
+          const parts = []
+          let bytes = 0
+          for await (const part of request) {
+            bytes += part.length
+            if (bytes > 65536) {
+              response.writeHead(413).end()
+              return
+            }
+            parts.push(part)
+          }
+          const result = await adapter.put(room, id, Buffer.concat(parts))
+          response.setHeader('Content-Type', 'application/json')
+          response.writeHead(result.created ? 201 : 200).end(JSON.stringify(result))
+          return
+        }
+        response.writeHead(405).end()
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Storage failed'
+        const status = message === 'Change ID conflict' ? 409 :
+          message === 'Invalid encrypted change' ? 400 : 503
+        response.writeHead(status).end()
+      }
+      return
+    }
+    if (request.method !== 'GET') { response.writeHead(405).end(); return }
     if (!(await adapter.health())) {
       response.writeHead(503).end()
       return

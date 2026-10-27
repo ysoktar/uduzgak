@@ -672,3 +672,7 @@ An isolated message interface can use browser BroadcastChannel to deliver versio
 User-selectable local-only and self-hosted modes. A strict HTTPS or loopback URL validator and authenticated handshake are covered by five domain and five UI tests. Access tokens are never persisted, and test connection does not imply that sync is working. See docs/SELF_HOSTED_NOSQL.md.
 
 Five additional tests cover a real authenticated server handshake, rejected access tokens, database outage, CORS allowlisting, and a server-only CouchDB credential adapter. The server is read-only and does not yet implement remote storage or synchronization.
+
+## TDD 752-761: durable encrypted CouchDB change API
+
+Ten test-first cases cover immutable ciphertext writes, replay idempotence, conflicting IDs, malformed envelopes, room-scoped reads, authenticated upload/download, unauthorized writes, size limits, and malformed room paths. The Node self-hosted server integrates a CouchDB adapter. This is a storage transport layer, not CRDT conflict resolution or a public-safe multi-tenant service. Production integration remains subject to full CI and per-workspace authorization.
