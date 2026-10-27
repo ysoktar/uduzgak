@@ -2,6 +2,8 @@ name: Encrypted ephemeral relay checks
 on:
   push:
     branches: [p2p/722-726-ephemeral-encrypted-relay]
+  pull_request:
+    branches: [main]
 permissions:
   contents: read
 jobs:
