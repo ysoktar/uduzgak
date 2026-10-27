@@ -680,3 +680,7 @@ Ten test-first cases cover immutable ciphertext writes, replay idempotence, conf
 ## TDD 762-771: per-workspace room authorization
 
 Ten test-first cases cover scoped reader and writer credentials, cross-room isolation, malformed credentials, reused secrets, authenticated reads and writes, and rejection of the global session token on protected change routes. The self-hosted launcher now requires explicit room grants. This remains a pre-production authorization layer without rotation, revocation or complete CRDT synchronization.
+
+## TDD 722-736 and 782-786: authenticated ephemeral ciphertext relay
+
+Replayed the original 15 test-first cryptographic and bounded-memory relay checks from the earlier unmerged branch without changing their assertions. Five new tests cover anonymous write denial, read-only access, writer capability, cross-room isolation, and CORS origin restrictions. The runnable relay requires explicit room grants and remains opt-in, non-durable, and not ready for untrusted public deployment without rate limiting and related controls.
