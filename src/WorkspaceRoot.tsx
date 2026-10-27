@@ -6,14 +6,11 @@ import { DashboardPanel } from './DashboardPanel'
 import { GoalPanel } from './GoalPanel'
 import { KnowledgePanel } from './KnowledgePanel'
 import type { WorkspaceCommands } from './application/workspace-commands'
+import { guardWorkspaceCommands } from './application/guarded-workspace-commands'
 import type { WorkspaceStore } from './application/workspace-store'
 import { deriveDashboardViewModel } from './domain/dashboard'
 import { deriveWorkspaceReportingSnapshot } from './domain/reporting'
 import type { ViewPreferences } from './domain/view-preferences'
-
-function commandErrorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : 'Workspace command failed'
-}
 
 function localReportDate(date = new Date()): string {
   const year = date.getFullYear()
@@ -50,26 +47,7 @@ export function WorkspaceRoot({
     ),
   )
 
-  function runCommand<T>(command: () => T): T | undefined {
-    try {
-      const result = command()
-      setCommandError(null)
-      return result
-    } catch (error) {
-      setCommandError(commandErrorMessage(error))
-      return undefined
-    }
-  }
-
-  const guardedCommands = new Proxy(commands, {
-    get(target, property, receiver) {
-      const value = Reflect.get(target, property, receiver)
-      if (typeof value !== 'function') return value
-
-      return (...args: unknown[]) =>
-        runCommand(() => (value as (...callArgs: unknown[]) => unknown)(...args))
-    },
-  }) as WorkspaceCommands
+  const guardedCommands = guardWorkspaceCommands(commands, setCommandError)
 
   return (
     <>
