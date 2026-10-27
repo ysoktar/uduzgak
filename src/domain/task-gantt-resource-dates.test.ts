@@ -1,6 +1,5 @@
 import { expect, it } from 'vitest'
 import { createTask, type Task } from './task'
-import type { TaskRelationship } from './task-relationship'
 import { createTaskGanttResourceDateProjection } from './task-gantt-resource-plan'
 
 function task(id: string, people: string[], start = '2026-10-19', end = '2026-10-20', milestone = false): Task {
@@ -9,9 +8,6 @@ function task(id: string, people: string[], start = '2026-10-19', end = '2026-10
     startDate: start, dueDate: end, assigneeIds: people,
     ...(milestone ? { isMilestone: true } : {}),
   }
-}
-function blocks(id: string, sourceTaskId: string, targetTaskId: string): TaskRelationship {
-  return { id, type: 'blocks', sourceTaskId, targetTaskId, createdAt: '2026-10-19T08:00:00.000Z' }
 }
 
 it('TDD 617: same-person tasks map to successive working-date ranges', () => {
