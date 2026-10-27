@@ -638,3 +638,7 @@ all current Task layouts, per-view filters/sorts, saved filter sets/views, bulk
 actions, current Custom Fields, recurring Tasks, time estimates, and Task time
 tracking.
 
+
+## TDD 692-696: Workspace section navigation rebased
+
+The original five accessible navigation tests and component were replayed on current main after command boundary changes, without altering their assertions. WorkspaceRoot retains the same semantic targets and section ordering.
