@@ -13,6 +13,6 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: '22', cache: npm }
       - run: npm ci --include=dev --no-fund
-      - run: npm exec -- vitest run src/GanttResourceDates.test.tsx src/GanttWorkingSummary.test.tsx src/domain/task-gantt-overview-selection.test.ts src/WorkspaceRoot.gantt-view.test.tsx --maxWorkers=1 --testTimeout=30000
+      - run: npm exec -- vitest run src/domain/visible-task-selection.test.ts src/domain/task-view-projections.test.ts src/GanttResourceDates.test.tsx src/GanttWorkingSummary.test.tsx src/domain/task-gantt-overview-selection.test.ts src/WorkspaceRoot.gantt-view.test.tsx --maxWorkers=1 --testTimeout=30000
       - run: npm run lint
       - run: npm run build
