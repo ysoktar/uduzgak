@@ -2,8 +2,6 @@ name: TDD 637-641 resource forecast UI
 on:
   push:
     branches: [tdd/637-641-gantt-resource-forecast-ui]
-  pull_request:
-    branches: [main]
 permissions:
   contents: read
 jobs:
