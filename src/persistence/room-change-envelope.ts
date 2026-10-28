@@ -21,7 +21,9 @@ export async function prepareRoomChange(
   const nonce = crypto.getRandomValues(new Uint8Array(16))
   const id = asHex(nonce)
   const document = { room, id, payload: [...payload] }
-  return { id, ciphertext: await sealRelayChange(secret, encoder.encode(JSON.stringify(document))) }
+  const ciphertext = await sealRelayChange(secret, encoder.encode(JSON.stringify(document)))
+  if (ciphertext.byteLength > 65536) throw new Error('Invalid change payload')
+  return { id, ciphertext }
 }
 export async function openRoomChange(
   room: string, id: string, secret: string, ciphertext: Uint8Array,
