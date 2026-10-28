@@ -692,3 +692,7 @@ The encrypted ephemeral relay, existing 15 cryptography and expiry tests, and te
 ## TDD 792-796: durable encrypted change outbox
 
 Five test-first cases specify reload-safe pending ciphertext, acknowledgement isolation, duplicate-id conflict checks, malformed envelope rejection, and immutable returned data. An opt-in IndexedDB backend persists pending ciphertext independently from the existing version-1 Workspace localStorage. Automatic synchronization is not enabled.
+
+## TDD 797-801: encrypted outbox delivery and retries
+
+Five test-first cases verify remote acknowledgements, failed upload retention, idempotent retries, fail-fast batching, and empty-queue behavior. No background syncing or automatic Workspace mutation is enabled.
