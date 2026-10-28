@@ -1,7 +1,7 @@
 name: Temporary encrypted relay checks
 on:
   push:
-    branches: [p2p/ephemeral-relay-integrated-r1]
+    branches: [p2p/ephemeral-relay-integrated-r2]
 permissions:
   contents: read
 jobs:
