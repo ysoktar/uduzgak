@@ -688,3 +688,7 @@ Integrated the original five encrypted client tests and the original five room p
 ## TDD 722-736 and 782-791: bounded authenticated temporary relay
 
 The encrypted ephemeral relay, existing 15 cryptography and expiry tests, and ten room-authorization and rate-limit tests are integrated on current main. Runtime configuration requires explicit room grants. The relay remains optional, memory-only, and unsuitable for open public deployment without further operational controls.
+
+## TDD 792-796: durable encrypted change outbox
+
+Five test-first cases specify reload-safe pending ciphertext, acknowledgement isolation, duplicate-id conflict checks, malformed envelope rejection, and immutable returned data. An opt-in IndexedDB backend persists pending ciphertext independently from the existing version-1 Workspace localStorage. Automatic synchronization is not enabled.
