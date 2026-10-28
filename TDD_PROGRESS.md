@@ -692,3 +692,7 @@ The encrypted ephemeral relay, existing 15 cryptography and expiry tests, and te
 ## TDD 792-796: durable encrypted change outbox
 
 Five test-first cases specify reload-safe pending ciphertext, acknowledgement isolation, duplicate-id conflict checks, malformed envelope rejection, and immutable returned data. An opt-in IndexedDB backend persists pending ciphertext independently from the existing version-1 Workspace localStorage. Automatic synchronization is not enabled.
+
+## TDD 822-826: experimental scalar-register convergence
+
+Five test-first cases establish deterministic merges for independent fields, concurrent scalar edits, repeated/reordered operations, conflicting IDs, and deletion tombstones. This is an isolated CRDT kernel for scalar values only; it does not yet handle nested Workspace entities, full Automerge documents, permissions or automatic state application.
