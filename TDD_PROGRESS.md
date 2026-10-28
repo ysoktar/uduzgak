@@ -684,3 +684,7 @@ Ten test-first cases cover scoped reader and writer credentials, cross-room isol
 ## TDD 772-781: browser transport and room provisioning
 
 Integrated the original five encrypted client tests and the original five room provisioning tests from separate verified branches. Adds authenticated binary upload and room-scoped ciphertext download, plus a local cryptographic random generator for distinct read and write capabilities. Neither automatic CRDT merging nor credential persistence is enabled. This combined branch resolves documentation merge conflicts without changing test assertions.
+
+## TDD 722-736 and 782-791: bounded authenticated temporary relay
+
+The encrypted ephemeral relay, existing 15 cryptography and expiry tests, and ten room-authorization and rate-limit tests are integrated on current main. Runtime configuration requires explicit room grants. The relay remains optional, memory-only, and unsuitable for open public deployment without further operational controls.
