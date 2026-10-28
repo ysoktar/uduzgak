@@ -708,3 +708,7 @@ Five test-first cases cover one-shot upload/download, fail-fast offline behavior
 ### Integrated verification boundary
 
 TDD 797-816 are now tested together in one PR against main so the repository-wide CI can evaluate their combined behavior before merge. This does not enable automatic background sync or apply ciphertext as domain state.
+
+### Consolidated sender dependency
+
+The tested outgoing flush module and its original five tests are included in this integration branch alongside the encrypted inbox, remote pull and one-shot exchange. No original test assertions were changed.
