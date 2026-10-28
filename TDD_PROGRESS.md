@@ -692,3 +692,7 @@ The encrypted ephemeral relay, existing 15 cryptography and expiry tests, and te
 ## TDD 792-796: durable encrypted change outbox
 
 Five test-first cases specify reload-safe pending ciphertext, acknowledgement isolation, duplicate-id conflict checks, malformed envelope rejection, and immutable returned data. An opt-in IndexedDB backend persists pending ciphertext independently from the existing version-1 Workspace localStorage. Automatic synchronization is not enabled.
+
+## TDD 817-821: room-bound encrypted change envelopes
+
+Five test-first cases verify opaque binary round trips, ciphertext confidentiality, room-binding, identifier-binding, wrong-key and tamper rejection. Room and change ID are authenticated inside the sealed packet. Encrypted payloads must fit existing remote size limits. This is still not CRDT application.
