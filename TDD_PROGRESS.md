@@ -704,3 +704,7 @@ Five test-first cases cover received ciphertext persistence, duplicate download 
 ## TDD 812-816: explicit encrypted room sync pass
 
 Five test-first cases cover one-shot upload/download, fail-fast offline behavior, duplicate receive idempotence, invalid packet rejection and empty-room no-op. The code never interprets ciphertext as a CRDT or modifies the local Workspace. No background or automatic sync is enabled.
+
+### Integrated verification boundary
+
+TDD 797-816 are now tested together in one PR against main so the repository-wide CI can evaluate their combined behavior before merge. This does not enable automatic background sync or apply ciphertext as domain state.
