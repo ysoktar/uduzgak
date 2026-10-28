@@ -700,3 +700,7 @@ Five test-first cases protect durable ciphertext inbox writes, idempotent downlo
 ## TDD 807-811: encrypted inbox remote retrieval
 
 Five test-first cases cover received ciphertext persistence, duplicate download suppression, offline error recovery, invalid remote envelope rejection, and empty-room behavior. The pull operation never acknowledges CRDT processing or modifies the persisted Workspace model.
+
+## TDD 812-816: explicit encrypted room sync pass
+
+Five test-first cases cover one-shot upload/download, fail-fast offline behavior, duplicate receive idempotence, invalid packet rejection and empty-room no-op. The code never interprets ciphertext as a CRDT or modifies the local Workspace. No background or automatic sync is enabled.
