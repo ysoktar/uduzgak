@@ -696,3 +696,7 @@ Five test-first cases specify reload-safe pending ciphertext, acknowledgement is
 ## TDD 802-806: received encrypted inbox
 
 Five test-first cases protect durable ciphertext inbox writes, idempotent downloads, conflict detection, room isolation and malformed input rejection. The inbox is opt-in and is not acknowledged until a future verified consumer applies its changes. Existing Workspace storage is untouched.
+
+## TDD 807-811: encrypted inbox remote retrieval
+
+Five test-first cases cover received ciphertext persistence, duplicate download suppression, offline error recovery, invalid remote envelope rejection, and empty-room behavior. The pull operation never acknowledges CRDT processing or modifies the persisted Workspace model.
