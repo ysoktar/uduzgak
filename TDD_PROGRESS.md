@@ -748,3 +748,7 @@ The combined 30-test scalar replication sequence is checked against current main
 ## TDD 847-851: read-only remote Task change preview
 
 Five test-first checks cover safe title, status and priority previews, unknown Task rejection, unsupported or invalid values, unchanged-field omission and source immutability. The preview is separate from Workspace commands and cannot automatically mutate saved Tasks.
+
+### Integrated TDD 817-851 verification
+
+All original test-first cases from the encrypted scalar replication and Task preview branches are evaluated together against the current main baseline. This package is not enabled in production UI and cannot overwrite existing Workspace storage.
