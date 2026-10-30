@@ -720,3 +720,7 @@ Original tests and production implementations from the successful standalone PR 
 ## TDD 827-831: verified scalar-register inbox consumer
 
 Five test-first cases cover authenticated encrypted decoding, malformed payload retention, tamper detection, idempotent replay, and failed durable-write retry. The consumer acknowledges only after its register operation has been persisted. This remains an opt-in scalar-only pipeline, not general Workspace CRDT synchronization.
+
+## TDD 832-836: read-only durable scalar register snapshots
+
+Five test-first checks cover cross-device scalar materialization, room isolation, corrupted record rejection, key identity verification, and deletion tombstones. The projection does not modify the Workspace state, and nested CRDT document semantics remain out of scope.
