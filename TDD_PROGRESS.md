@@ -752,3 +752,7 @@ Five test-first checks cover safe title, status and priority previews, unknown T
 ### Integrated TDD 817-851 verification
 
 All original test-first cases from the encrypted scalar replication and Task preview branches are evaluated together against the current main baseline. This package is not enabled in production UI and cannot overwrite existing Workspace storage.
+
+## TDD 852-861: manual encrypted room preview
+
+Ten test-first cases cover explicit no-background preview, masked room secrets, client-side credential handling, disabled incomplete configuration, read-only authenticated download, duplicate replay, wrong-key retention and unknown Task rejection. BrowserApp exposes the opt-in panel, and previewing does not upload or apply changes to live Workspace state. This is scalar-only and depends on a configured user-managed server.
