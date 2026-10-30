@@ -736,3 +736,7 @@ Five test-first cases verify ordinal non-ASCII actor ordering, clock precedence,
 ### Integrated TDD 817-841 verification boundary
 
 The authenticated envelope, scalar merge, verified inbox consumer, durable snapshot and deterministic ordering fixes are evaluated together on the current main baseline. Existing assertions are preserved, and no automatic Workspace mutation is enabled.
+
+## TDD 842-846: explicit two-peer scalar replication
+
+Five test-first cases cover encrypted local enqueuing, invalid register rejection, two independent offline edits converging after reconnect, wrong-key failure retaining inbox ciphertext, and repeated concurrent-edit convergence. This simulation is opt-in and scalar-only. It does not automatically synchronize the live Workspace or use a real network service in its tests.
