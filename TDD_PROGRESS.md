@@ -716,3 +716,7 @@ The tested outgoing flush module and its original five tests are included in thi
 ## TDD 817-826: envelope and scalar convergence integrated
 
 Original tests and production implementations from the successful standalone PR checks are replayed unchanged onto current main after a documentation merge conflict. Room- and change-ID authentication and scalar register convergence remain opt-in. No automatic Workspace replay.
+
+## TDD 827-831: verified scalar-register inbox consumer
+
+Five test-first cases cover authenticated encrypted decoding, malformed payload retention, tamper detection, idempotent replay, and failed durable-write retry. The consumer acknowledges only after its register operation has been persisted. This remains an opt-in scalar-only pipeline, not general Workspace CRDT synchronization.
