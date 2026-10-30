@@ -728,3 +728,7 @@ Five test-first checks cover cross-device scalar materialization, room isolation
 ### Integrated TDD 817-836 verification
 
 The original 20 tests and the corresponding encrypted envelope, convergence, verified consumer, and durable register projection modules are verified together against main. No test assertions have been modified.
+
+## TDD 837-841: locale-independent register convergence
+
+Five test-first cases verify ordinal non-ASCII actor ordering, clock precedence, ID tie-breaking, structurally equivalent replay, and duplicate-ID conflict detection. Eliminates locale-dependent ordering and JSON property insertion-order sensitivity without touching live Workspace data.
