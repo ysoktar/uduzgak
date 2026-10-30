@@ -732,3 +732,7 @@ The original 20 tests and the corresponding encrypted envelope, convergence, ver
 ## TDD 837-841: locale-independent register convergence
 
 Five test-first cases verify ordinal non-ASCII actor ordering, clock precedence, ID tie-breaking, structurally equivalent replay, and duplicate-ID conflict detection. Eliminates locale-dependent ordering and JSON property insertion-order sensitivity without touching live Workspace data.
+
+### Integrated TDD 817-841 verification boundary
+
+The authenticated envelope, scalar merge, verified inbox consumer, durable snapshot and deterministic ordering fixes are evaluated together on the current main baseline. Existing assertions are preserved, and no automatic Workspace mutation is enabled.
