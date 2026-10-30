@@ -724,3 +724,7 @@ Five test-first cases cover authenticated encrypted decoding, malformed payload 
 ## TDD 832-836: read-only durable scalar register snapshots
 
 Five test-first checks cover cross-device scalar materialization, room isolation, corrupted record rejection, key identity verification, and deletion tombstones. The projection does not modify the Workspace state, and nested CRDT document semantics remain out of scope.
+
+### Integrated TDD 817-836 verification
+
+The original 20 tests and the corresponding encrypted envelope, convergence, verified consumer, and durable register projection modules are verified together against main. No test assertions have been modified.
