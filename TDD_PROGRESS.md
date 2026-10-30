@@ -744,3 +744,7 @@ Five test-first cases cover encrypted local enqueuing, invalid register rejectio
 ### Integrated TDD 817-846 verification
 
 The combined 30-test scalar replication sequence is checked against current main. This simulation never automatically writes to the persisted Workspace. All previously written assertions remain unchanged.
+
+## TDD 847-851: read-only remote Task change preview
+
+Five test-first checks cover safe title, status and priority previews, unknown Task rejection, unsupported or invalid values, unchanged-field omission and source immutability. The preview is separate from Workspace commands and cannot automatically mutate saved Tasks.
