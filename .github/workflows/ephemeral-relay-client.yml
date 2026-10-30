@@ -15,6 +15,6 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci --include=dev --no-fund
-      - run: npm exec -- vitest run src/persistence/ephemeral-relay-client.test.ts src/persistence/encrypted-change-client.test.ts --maxWorkers=1 --testTimeout=30000
+      - run: npm exec -- vitest run src/persistence/ephemeral-relay-client.test.ts src/persistence/optional-room-transport.test.ts src/persistence/encrypted-change-client.test.ts --maxWorkers=1 --testTimeout=30000
       - run: npm run lint
       - run: npm run build
