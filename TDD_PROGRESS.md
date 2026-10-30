@@ -760,3 +760,7 @@ Ten test-first cases cover explicit no-background preview, masked room secrets, 
 ### Integrated TDD 817-861 CI boundary
 
 This PR checks the 45 original test-first cases, scalar-only encrypted transport, verified local persistence and manual read-only preview together against main. No automatic write to Workspace state is enabled.
+
+## TDD 862-866: optional temporary encrypted relay client
+
+Five test-first cases cover authenticated opaque uploads, bounded base64url downloads, relay 429 exhaustion, pre-network validation and denied room access. The temporary relay client implements the same upload/download shape as the durable NoSQL client; no automatic synchronization, data migration or live Workspace mutation is enabled. Relay messages expire and are not durable backups.
