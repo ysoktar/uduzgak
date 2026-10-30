@@ -756,3 +756,7 @@ All original test-first cases from the encrypted scalar replication and Task pre
 ## TDD 852-861: manual encrypted room preview
 
 Ten test-first cases cover explicit no-background preview, masked room secrets, client-side credential handling, disabled incomplete configuration, read-only authenticated download, duplicate replay, wrong-key retention and unknown Task rejection. BrowserApp exposes the opt-in panel, and previewing does not upload or apply changes to live Workspace state. This is scalar-only and depends on a configured user-managed server.
+
+### Integrated TDD 817-861 CI boundary
+
+This PR checks the 45 original test-first cases, scalar-only encrypted transport, verified local persistence and manual read-only preview together against main. No automatic write to Workspace state is enabled.
