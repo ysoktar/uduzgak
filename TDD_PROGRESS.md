@@ -712,3 +712,7 @@ TDD 797-816 are now tested together in one PR against main so the repository-wid
 ### Consolidated sender dependency
 
 The tested outgoing flush module and its original five tests are included in this integration branch alongside the encrypted inbox, remote pull and one-shot exchange. No original test assertions were changed.
+
+## TDD 817-826: envelope and scalar convergence integrated
+
+Original tests and production implementations from the successful standalone PR checks are replayed unchanged onto current main after a documentation merge conflict. Room- and change-ID authentication and scalar register convergence remain opt-in. No automatic Workspace replay.
