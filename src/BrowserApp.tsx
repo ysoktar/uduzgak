@@ -34,6 +34,11 @@ import { WorkspaceRoot } from './WorkspaceRoot'
 import { WorkspaceDataToolbar } from './WorkspaceDataToolbar'
 import { StorageConnectionPanel } from './StorageConnectionPanel'
 import { checkSelfHostedServer } from './persistence/self-hosted-connection'
+import { ManualRoomSyncPanel } from './ManualRoomSyncPanel'
+import { createIndexedDbOutboxBackend } from './persistence/indexeddb-outbox'
+import { createEncryptedInbox } from './persistence/encrypted-inbox'
+import { createEncryptedChangeClient } from './persistence/encrypted-change-client'
+import { previewRemoteRoom } from './sync/manual-room-preview'
 
 export interface BrowserAppProps {
   storage?: KeyValueStore
@@ -172,6 +177,12 @@ export function BrowserApp({
       />
 
       <StorageConnectionPanel onCheck={checkSelfHostedServer} />
+      <ManualRoomSyncPanel onPreview={async ({ serverUrl, room, secret, token }) => {
+        const backend = createIndexedDbOutboxBackend()
+        const inbox = createEncryptedInbox(backend)
+        const client = createEncryptedChangeClient(serverUrl, token)
+        return previewRemoteRoom(inbox, backend, client, room, secret, application.store.getState().tasks)
+      }} />
 
       <WorkspaceRoot
         key={applicationRevision}
