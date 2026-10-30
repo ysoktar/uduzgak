@@ -1,0 +1,20 @@
+name: Durable register snapshot checks
+on:
+  push:
+    branches: [sync/832-836-durable-register-snapshot]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --include=dev --no-fund
+      - run: npm exec -- vitest run src/sync/durable-register-snapshot.test.ts src/sync/consume-register-inbox.test.ts --maxWorkers=1 --testTimeout=30000
+      - run: npm run lint
+      - run: npm run build
