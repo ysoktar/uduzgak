@@ -740,3 +740,7 @@ The authenticated envelope, scalar merge, verified inbox consumer, durable snaps
 ## TDD 842-846: explicit two-peer scalar replication
 
 Five test-first cases cover encrypted local enqueuing, invalid register rejection, two independent offline edits converging after reconnect, wrong-key failure retaining inbox ciphertext, and repeated concurrent-edit convergence. This simulation is opt-in and scalar-only. It does not automatically synchronize the live Workspace or use a real network service in its tests.
+
+### Integrated TDD 817-846 verification
+
+The combined 30-test scalar replication sequence is checked against current main. This simulation never automatically writes to the persisted Workspace. All previously written assertions remain unchanged.
