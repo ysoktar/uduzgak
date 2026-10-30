@@ -628,3 +628,33 @@ textarea {
   .storage-connection-panel { margin: 12px 10px; padding: 14px; }
   .storage-connection-details { min-width: 0; }
 }
+
+.manual-room-sync-panel {
+  max-width: 1120px;
+  margin: 16px auto;
+  padding: 16px 20px;
+  border: 1px solid var(--workspace-border, #dbe0e7);
+  border-radius: 12px;
+  background: var(--workspace-surface, #fff);
+}
+.manual-room-sync-panel form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 540px;
+  gap: 9px;
+}
+.manual-room-sync-panel input {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+.manual-room-sync-panel button {
+  min-height: 44px;
+  justify-self: start;
+}
+.manual-room-sync-panel [aria-label='Proposed remote Task changes'] {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 720px) {
+  .manual-room-sync-panel { margin: 12px 10px; padding: 14px; }
+}
