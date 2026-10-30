@@ -692,3 +692,23 @@ The encrypted ephemeral relay, existing 15 cryptography and expiry tests, and te
 ## TDD 792-796: durable encrypted change outbox
 
 Five test-first cases specify reload-safe pending ciphertext, acknowledgement isolation, duplicate-id conflict checks, malformed envelope rejection, and immutable returned data. An opt-in IndexedDB backend persists pending ciphertext independently from the existing version-1 Workspace localStorage. Automatic synchronization is not enabled.
+
+## TDD 802-806: received encrypted inbox
+
+Five test-first cases protect durable ciphertext inbox writes, idempotent downloads, conflict detection, room isolation and malformed input rejection. The inbox is opt-in and is not acknowledged until a future verified consumer applies its changes. Existing Workspace storage is untouched.
+
+## TDD 807-811: encrypted inbox remote retrieval
+
+Five test-first cases cover received ciphertext persistence, duplicate download suppression, offline error recovery, invalid remote envelope rejection, and empty-room behavior. The pull operation never acknowledges CRDT processing or modifies the persisted Workspace model.
+
+## TDD 812-816: explicit encrypted room sync pass
+
+Five test-first cases cover one-shot upload/download, fail-fast offline behavior, duplicate receive idempotence, invalid packet rejection and empty-room no-op. The code never interprets ciphertext as a CRDT or modifies the local Workspace. No background or automatic sync is enabled.
+
+### Integrated verification boundary
+
+TDD 797-816 are now tested together in one PR against main so the repository-wide CI can evaluate their combined behavior before merge. This does not enable automatic background sync or apply ciphertext as domain state.
+
+### Consolidated sender dependency
+
+The tested outgoing flush module and its original five tests are included in this integration branch alongside the encrypted inbox, remote pull and one-shot exchange. No original test assertions were changed.
