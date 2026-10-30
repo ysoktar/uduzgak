@@ -37,7 +37,7 @@ import { checkSelfHostedServer } from './persistence/self-hosted-connection'
 import { ManualRoomSyncPanel } from './ManualRoomSyncPanel'
 import { createIndexedDbOutboxBackend } from './persistence/indexeddb-outbox'
 import { createEncryptedInbox } from './persistence/encrypted-inbox'
-import { createEncryptedChangeClient } from './persistence/encrypted-change-client'
+import { createOptionalRoomTransport, type OptionalRoomTransport } from './persistence/optional-room-transport'
 import { previewRemoteRoom } from './sync/manual-room-preview'
 
 export interface BrowserAppProps {
@@ -117,6 +117,7 @@ export function BrowserApp({
   )
   const [applicationRevision, setApplicationRevision] = useState(0)
   const [backupImportError, setBackupImportError] = useState<string | null>(null)
+  const [remoteTransport, setRemoteTransport] = useState<OptionalRoomTransport>('durable')
 
   if (
     application.error ||
@@ -177,10 +178,23 @@ export function BrowserApp({
       />
 
       <StorageConnectionPanel onCheck={checkSelfHostedServer} />
-      <ManualRoomSyncPanel onPreview={async ({ serverUrl, room, secret, token }) => {
+      <fieldset aria-label="Encrypted remote storage">
+        <legend>Encrypted remote storage</legend>
+        <label>
+          <input type="radio" name="encrypted-transport" checked={remoteTransport === 'durable'}
+            onChange={() => setRemoteTransport('durable')} />
+          My durable server
+        </label>
+        <label>
+          <input type="radio" name="encrypted-transport" checked={remoteTransport === 'temporary'}
+            onChange={() => setRemoteTransport('temporary')} />
+          Temporary encrypted relay
+        </label>
+      </fieldset>
+      <ManualRoomSyncPanel key={remoteTransport} onPreview={async ({ serverUrl, room, secret, token }) => {
         const backend = createIndexedDbOutboxBackend()
         const inbox = createEncryptedInbox(backend)
-        const client = createEncryptedChangeClient(serverUrl, token)
+        const client = createOptionalRoomTransport(remoteTransport, serverUrl, token)
         return previewRemoteRoom(inbox, backend, client, room, secret, application.store.getState().tasks)
       }} />
 
