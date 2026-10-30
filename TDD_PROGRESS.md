@@ -712,3 +712,35 @@ TDD 797-816 are now tested together in one PR against main so the repository-wid
 ### Consolidated sender dependency
 
 The tested outgoing flush module and its original five tests are included in this integration branch alongside the encrypted inbox, remote pull and one-shot exchange. No original test assertions were changed.
+
+## TDD 817-826: envelope and scalar convergence integrated
+
+Original tests and production implementations from the successful standalone PR checks are replayed unchanged onto current main after a documentation merge conflict. Room- and change-ID authentication and scalar register convergence remain opt-in. No automatic Workspace replay.
+
+## TDD 827-831: verified scalar-register inbox consumer
+
+Five test-first cases cover authenticated encrypted decoding, malformed payload retention, tamper detection, idempotent replay, and failed durable-write retry. The consumer acknowledges only after its register operation has been persisted. This remains an opt-in scalar-only pipeline, not general Workspace CRDT synchronization.
+
+## TDD 832-836: read-only durable scalar register snapshots
+
+Five test-first checks cover cross-device scalar materialization, room isolation, corrupted record rejection, key identity verification, and deletion tombstones. The projection does not modify the Workspace state, and nested CRDT document semantics remain out of scope.
+
+### Integrated TDD 817-836 verification
+
+The original 20 tests and the corresponding encrypted envelope, convergence, verified consumer, and durable register projection modules are verified together against main. No test assertions have been modified.
+
+## TDD 837-841: locale-independent register convergence
+
+Five test-first cases verify ordinal non-ASCII actor ordering, clock precedence, ID tie-breaking, structurally equivalent replay, and duplicate-ID conflict detection. Eliminates locale-dependent ordering and JSON property insertion-order sensitivity without touching live Workspace data.
+
+### Integrated TDD 817-841 verification boundary
+
+The authenticated envelope, scalar merge, verified inbox consumer, durable snapshot and deterministic ordering fixes are evaluated together on the current main baseline. Existing assertions are preserved, and no automatic Workspace mutation is enabled.
+
+## TDD 842-846: explicit two-peer scalar replication
+
+Five test-first cases cover encrypted local enqueuing, invalid register rejection, two independent offline edits converging after reconnect, wrong-key failure retaining inbox ciphertext, and repeated concurrent-edit convergence. This simulation is opt-in and scalar-only. It does not automatically synchronize the live Workspace or use a real network service in its tests.
+
+### Integrated TDD 817-846 verification
+
+The combined 30-test scalar replication sequence is checked against current main. This simulation never automatically writes to the persisted Workspace. All previously written assertions remain unchanged.
