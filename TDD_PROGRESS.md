@@ -768,3 +768,7 @@ Five test-first cases cover authenticated opaque uploads, bounded base64url down
 ## TDD 867-871: selectable remote transport
 
 Five test-first cases verify explicit durable or ephemeral endpoint choice, no implicit network access, unknown-mode rejection and redirect-safe requests. BrowserApp now exposes separate durable-server and temporary-relay choices for manual preview, with input state reset when switching. The temporary relay is not a durable backup.
+
+### Integrated TDD 817-871 full verification
+
+The test-first encrypted scalar pipeline, manually invoked read-only Task preview and interchangeable user-managed storage or temporary relay are verified as one pull request against main. Existing Workspace storage remains unchanged and no automatic remote writes are enabled.
