@@ -16,8 +16,15 @@ function valid(change: RegisterChange): void {
       (typeof change.value === 'number' && !Number.isFinite(change.value)))
     throw new Error('Invalid register change')
 }
+function ordinal(a: string, b: string): number {
+  return a === b ? 0 : a < b ? -1 : 1
+}
+function equivalent(a: RegisterChange, b: RegisterChange): boolean {
+  return a.id === b.id && a.actor === b.actor && a.clock === b.clock &&
+    a.entity === b.entity && a.field === b.field && a.value === b.value
+}
 function compare(a: RegisterChange, b: RegisterChange): number {
-  return a.clock - b.clock || a.actor.localeCompare(b.actor) || a.id.localeCompare(b.id)
+  return a.clock - b.clock || ordinal(a.actor, b.actor) || ordinal(a.id, b.id)
 }
 /** Immutable set-union of uniquely identified register operations. */
 export function mergeRegisterChanges(
@@ -27,11 +34,11 @@ export function mergeRegisterChanges(
   for (const change of [...left, ...right]) {
     valid(change)
     const previous = seen.get(change.id)
-    if (previous && JSON.stringify(previous) !== JSON.stringify(change))
+    if (previous && !equivalent(previous, change))
       throw new Error('Conflicting change identity')
     seen.set(change.id, { ...change })
   }
-  return [...seen.values()].sort((a,b) => a.id.localeCompare(b.id))
+  return [...seen.values()].sort((a,b) => ordinal(a.id, b.id))
 }
 /** Experimental scalar-register CRDT: nested values and Workspace replay are not yet supported. */
 export function materializeRegisters(
