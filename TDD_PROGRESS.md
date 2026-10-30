@@ -712,3 +712,7 @@ TDD 797-816 are now tested together in one PR against main so the repository-wid
 ### Consolidated sender dependency
 
 The tested outgoing flush module and its original five tests are included in this integration branch alongside the encrypted inbox, remote pull and one-shot exchange. No original test assertions were changed.
+
+## TDD 872-876: independent room encryption key
+
+Five test-first cases verify cryptographic 256-bit encryption key generation, separation from room IDs and access tokens, absence from server configurations, uniqueness across rooms and client AES-GCM interoperability. The CLI prints the key only locally; it must never be sent to the storage server.
