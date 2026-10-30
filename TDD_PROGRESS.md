@@ -764,3 +764,7 @@ This PR checks the 45 original test-first cases, scalar-only encrypted transport
 ## TDD 862-866: optional temporary encrypted relay client
 
 Five test-first cases cover authenticated opaque uploads, bounded base64url downloads, relay 429 exhaustion, pre-network validation and denied room access. The temporary relay client implements the same upload/download shape as the durable NoSQL client; no automatic synchronization, data migration or live Workspace mutation is enabled. Relay messages expire and are not durable backups.
+
+## TDD 867-871: selectable remote transport
+
+Five test-first cases verify explicit durable or ephemeral endpoint choice, no implicit network access, unknown-mode rejection and redirect-safe requests. BrowserApp now exposes separate durable-server and temporary-relay choices for manual preview, with input state reset when switching. The temporary relay is not a durable backup.
