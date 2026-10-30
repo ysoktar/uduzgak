@@ -13,7 +13,7 @@ export async function pullEncryptedChanges(
   const changes = await client.download(room)
   await inbox.receive(room, changes)
   return {
-    received: changes.filter(change => !known.has(change.id)).length,
+    received: new Set(changes.filter(change => !known.has(change.id)).map(change => change.id)).size,
     pending: (await inbox.pending(room)).length,
   }
 }

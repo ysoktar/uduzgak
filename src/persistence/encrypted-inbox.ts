@@ -26,22 +26,33 @@ export function createEncryptedInbox(backend: ChangeOutboxBackend) {
   return {
     async receive(room: string, records: readonly EncryptedRecord[]): Promise<void> {
       validate(room)
-      const checked = records.map(record => {
+      // Validate the whole batch and identify conflicting duplicate IDs before any writes.
+      const checked = new Map<string, number[]>()
+      for (const record of records) {
         validate(room, record.id)
-        return { id: record.id, encoded: copyCiphertext(record.ciphertext) }
-      })
-      for (const record of checked) {
-        const key = entryKey(room, record.id)
+        const encoded = copyCiphertext(record.ciphertext)
+        const duplicate = checked.get(record.id)
+        if (duplicate && (duplicate.length !== encoded.length ||
+          duplicate.some((byte, index) => byte !== encoded[index])))
+          throw new Error('Change ID conflict')
+        checked.set(record.id, encoded)
+      }
+      // Check persisted identities before writing new records. This prevents
+      // a later conflict from leaving earlier new packets in the inbox.
+      const toWrite: Array<{ key: string; encoded: number[] }> = []
+      for (const [id, encoded] of checked) {
+        const key = entryKey(room, id)
         const previous = await backend.get(key)
         if (previous !== undefined) {
           const saved = storedCiphertext(previous)
-          if (saved.length !== record.encoded.length ||
-            saved.some((byte, index) => byte !== record.encoded[index]))
+          if (saved.length !== encoded.length ||
+            saved.some((byte, index) => byte !== encoded[index]))
             throw new Error('Change ID conflict')
         } else {
-          await backend.set(key, record.encoded)
+          toWrite.push({ key, encoded })
         }
       }
+      for (const { key, encoded } of toWrite) await backend.set(key, encoded)
     },
     async pending(room: string): Promise<EncryptedRecord[]> {
       validate(room)

@@ -772,3 +772,11 @@ Five test-first cases verify explicit durable or ephemeral endpoint choice, no i
 ### Integrated TDD 817-871 full verification
 
 The test-first encrypted scalar pipeline, manually invoked read-only Task preview and interchangeable user-managed storage or temporary relay are verified as one pull request against main. Existing Workspace storage remains unchanged and no automatic remote writes are enabled.
+
+## TDD 872-876: independent room encryption key
+
+Five test-first cases verify cryptographic 256-bit encryption key generation, separation from room IDs and access tokens, absence from server configurations, uniqueness across rooms and client AES-GCM interoperability. The CLI prints the key only locally; it must never be sent to the storage server.
+
+## TDD 877-881: conflict-safe inbox batch preflight and unique receive counts
+
+Five test-first cases cover persisted conflicts, duplicate-ID conflicts within one download, idempotent identical duplicates, unique new-packet accounting and replay-aware counts. The inbox validates and preflights each batch before writing. Backend write failures and concurrent writers are not covered by an atomic transaction; this is not a transactional database guarantee.
