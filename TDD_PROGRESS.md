@@ -780,3 +780,7 @@ Five test-first cases verify cryptographic 256-bit encryption key generation, se
 ## TDD 877-881: conflict-safe inbox batch preflight and unique receive counts
 
 Five test-first cases cover persisted conflicts, duplicate-ID conflicts within one download, idempotent identical duplicates, unique new-packet accounting and replay-aware counts. The inbox validates and preflights each batch before writing. Backend write failures and concurrent writers are not covered by an atomic transaction; this is not a transactional database guarantee.
+
+## TDD 882-886: explicit local encrypted Task field staging (pending verification)
+
+Five new tests define opt-in staging of selected Task title, status and priority fields as encrypted outbox packets, without server requests or live Workspace mutation. Validation rejects malformed actors, clocks, archived Tasks, unsupported fields and duplicates before staging. The initial RED test commit precedes the implementation commit. Full local lint, build and regression verification has **not** been performed. One new test has an ordering assumption requiring correction with the owner's approval: the durable outbox returns packets sorted by random packet ID, not by staging order. Do not merge before reviewing the corrected test and receiving a clean local full verification.
