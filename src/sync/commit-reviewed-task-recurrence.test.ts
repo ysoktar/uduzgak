@@ -75,11 +75,23 @@ it('TDD 970: duplicate generated occurrence ID is rejected without committing', 
 })
 
 it('TDD 971: invalid recurring rule rejects the whole reviewed batch', () => {
-  const f = fixture([{ ...recurring, recurrence: { unit: 'day' as const, interval: 0 } }, plain])
-  const original = JSON.stringify(f.store.getState())
-  expect(() => commitReviewedTaskChanges(f.store, [
+  const f = fixture()
+  const persisted = JSON.stringify(loadWorkspace(f.storage))
+  const invalidState = {
+    ...f.store.getState(),
+    tasks: f.store.getState().tasks.map(task =>
+      task.id === 'recurring'
+        ? { ...task, recurrence: { unit: 'day' as const, interval: 0 } }
+        : task,
+    ),
+  }
+  const reviewStore = { ...f.store, getState: () => invalidState }
+  const original = JSON.stringify(reviewStore.getState())
+  expect(() => commitReviewedTaskChanges(reviewStore, [
     status('plain', 'todo', 'doing'),
     status('recurring', 'todo', 'done'),
   ], at, { nextId: () => 'new' })).toThrow('Task recurrence interval must be a positive integer')
-  expect(JSON.stringify(f.store.getState())).toBe(original)
+  expect(JSON.stringify(reviewStore.getState())).toBe(original)
+  expect(JSON.stringify(f.store.getState())).toBe(persisted)
+  expect(JSON.stringify(loadWorkspace(f.storage))).toBe(persisted)
 })
