@@ -842,3 +842,7 @@ Five RED-first UI tests require rejection of malformed or credential-embedded UR
 ## TDD 947-951: transport receipt validation (prepared)
 
 Five new test-first scenarios: reject non-boolean receipts, retain ciphertext on transport failure, accept idempotent false receipts, surface local acknowledgement failures, and skip uploads for empty queues. The flush implementation checks the receipt type before deleting a locally queued item. Prepared only, pending local focused tests, lint, build, and full regression. Actions remain archived.
+
+## TDD 952-956: reviewed Task command boundary (prepared)
+
+Five RED-first cases exercise dispatching explicitly reviewed title/status/priority updates, rejecting stale before-values, unknown/archived Tasks, duplicated fields and invalid values. `applyReviewedTaskChanges` validates all proposed edits before invoking existing Workspace commands. It is intentionally not wired into the remote preview UI yet; no remote change is applied without an explicit invocation. Important limitation: prevalidation is not a full transaction across command callbacks, so a callback that throws after a prior command succeeds can leave partial state. Implement or verify an atomic Workspace commit boundary before mounting a multi-change Apply action in BrowserApp. This group and TDD 947-951 still require local focused tests, lint, build and full regression; no test success is claimed. GitHub Actions remain archived.
