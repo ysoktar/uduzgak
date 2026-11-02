@@ -808,3 +808,7 @@ Five RED-first tests cover per-room persistent actor identity, monotonic ranges,
 ## TDD 907-911: BrowserApp manual Task staging integration (prepared)
 
 Five RED-first integration tests cover no implicit staging, explicit delegation, unchanged persisted Workspace, validation-gated staging, and safe error presentation. BrowserApp now mounts `ManualRoomTaskStaging` and, on explicit staging, connects `createIndexedDbOutboxBackend` to `createIndexedDbRoomClockReservation` and `stageSelectedTaskFields`; an optional injected staging callback allows UI tests without touching IndexedDB. No HTTP upload occurs. Atomic clock reservation does not make a multi-packet enqueue a transaction: failed writes may leave some encrypted packets, while reserved clocks are not reclaimed. All new changes remain draft-only pending full local verification. No GitHub Actions workflows were restored.
+
+## TDD 912-916: read-only per-room encrypted outbox status (prepared)
+
+Five RED-first unit tests cover empty status, counting encrypted queued packets, strict room isolation, no acknowledgement or writes during inspection, and propagation of invalid-room/read errors. `inspectEncryptedRoomOutbox` delegates to the existing validated outbox pending read and returns only a packet count. This is an unmounted building block for a subsequent UI. No upload or background network activity was added. Focused tests, lint, build and full regression remain to be run on the owner's machine; GitHub Actions remain archived.
