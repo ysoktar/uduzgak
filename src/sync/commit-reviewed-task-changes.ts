@@ -13,6 +13,10 @@ export function commitReviewedTaskChanges(
   options: { maxAutomationActionApplications?: number; nextId?: () => string } = {},
 ): number {
   if (changes.length === 0) return 0
+  const instant = new Date(occurredAt)
+  if (Number.isNaN(instant.getTime()) || instant.toISOString() !== occurredAt) {
+    throw new Error('Task activity timestamp must be a canonical ISO instant')
+  }
   const actions: ActivityTrackableWorkspaceAction[] = []
   applyReviewedTaskChanges(store.getState().tasks, changes, {
     renameTask: (taskId, title) => actions.push({ type: 'task/titleChanged', taskId, title }),
