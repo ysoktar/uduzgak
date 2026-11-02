@@ -808,3 +808,25 @@ Five RED-first tests cover per-room persistent actor identity, monotonic ranges,
 ## TDD 907-911: BrowserApp manual Task staging integration (prepared)
 
 Five RED-first integration tests cover no implicit staging, explicit delegation, unchanged persisted Workspace, validation-gated staging, and safe error presentation. BrowserApp now mounts `ManualRoomTaskStaging` and, on explicit staging, connects `createIndexedDbOutboxBackend` to `createIndexedDbRoomClockReservation` and `stageSelectedTaskFields`; an optional injected staging callback allows UI tests without touching IndexedDB. No HTTP upload occurs. Atomic clock reservation does not make a multi-packet enqueue a transaction: failed writes may leave some encrypted packets, while reserved clocks are not reclaimed. All new changes remain draft-only pending full local verification. No GitHub Actions workflows were restored.
+
+## TDD 912-916: read-only per-room encrypted outbox status (prepared)
+
+Five RED-first unit tests cover empty status, counting encrypted queued packets, strict room isolation, no acknowledgement or writes during inspection, and propagation of invalid-room/read errors. `inspectEncryptedRoomOutbox` delegates to the existing validated outbox pending read and returns only a packet count. This is an unmounted building block for a subsequent UI. No upload or background network activity was added. Focused tests, lint, build and full regression remain to be run on the owner's machine; GitHub Actions remain archived.
+
+## TDD 917-921: opt-in encrypted outbox count panel (prepared)
+
+Five RED-first tests cover no automatic inspection, manual count display, sanitized storage errors, stale responses when switching rooms and repeat-click blocking. The new `EncryptedOutboxStatusPanel` only displays counts and ignores completed responses for earlier room inputs. No network calls or packet acknowledgements are initiated.
+
+## TDD 922-926: BrowserApp read-only queue status integration (prepared)
+
+Five RED-first tests cover initial no-op state, selected room delegation, malformed room blocking, unchanged persisted Workspace and generic error display. `BrowserApp` accepts an optional test-injected `inspectEncryptedQueue` callback and otherwise uses `createDurableChangeOutbox(createIndexedDbOutboxBackend())` with `inspectEncryptedRoomOutbox` for local-only inspection. The inspector is rendered from `ManualRoomTaskStaging` and does not require the encryption key to check ciphertext counts. These are prepared changes, not owner-confirmed live state. Focused tests, zero-warning lint, build and full regression remain required. GitHub Actions remain archived.
+
+### PR #100 owner-run focused validation (2026-11-02, pending test-change approval)
+
+The owner ran the precise draft head `da99a1ba0e4623ce1f21c7a0c73d2e1be737bd7b` on Windows. Result: 14/15 focused tests passed across 3 files. TDD 923 failed because `screen.getByRole('status')` finds four valid status elements in the full `BrowserApp` (encrypted queue, task reorder, Board drag, visible Task count). The queue text `2 encrypted changes pending locally.` was visibly rendered correctly. This is an overbroad selector in the test rather than a demonstrated production defect. The proposed surgical test-only correction is to import `within` from Testing Library and query the status inside the named `Local encrypted queue status` region. **Do not modify this or any test without the owner's explicit approval**. The fail-fast runner stopped before lint, build, and full regression. PR #100 must remain draft and unmerged pending corrected full local checks.
+
+The owner replied `devam` after the proposed TDD 923 selector correction, authorizing the narrow test-only update. Commit `3f0fdc2fc09162904561b86a36b9a9b8f02b6d9e` adds `within` and scopes the existing text assertion to the `Local encrypted queue status` region. No production files or other tests changed in that commit. Corrected branch still requires a new focused test run, zero-warning lint, build, and full regression before PR #100 can be merged.
+
+## TDD 927-931: room-switch and optional inspection regression coverage (prepared)
+
+Five new test-first regression cases check zero-count reporting, immediate clearing of stale room counts, invalid-room isolation, key-field privacy without background inspection, and continued staging availability when inspection is omitted. These verify the existing `ManualRoomTaskStaging` and `EncryptedOutboxStatusPanel` behavior rather than requiring extra implementation. No production files changed for this group. All five tests and the corrected TDD 923 must be executed locally with lint, build, and full regression before merge.

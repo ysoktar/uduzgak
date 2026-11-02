@@ -2,9 +2,11 @@ import { useState } from 'react'
 import type { Task } from './domain/task'
 import type { ShareableTaskField } from './sync/stage-task-fields'
 import { ManualTaskSharePanel } from './ManualTaskSharePanel'
+import { EncryptedOutboxStatusPanel } from './EncryptedOutboxStatusPanel'
 
 export interface ManualRoomTaskStagingProps {
   tasks: readonly Task[]
+  onInspect?: (room: string) => Promise<{ pending: number }>
   onStage: (
     settings: { room: string; secret: string },
     task: Task,
@@ -13,7 +15,7 @@ export interface ManualRoomTaskStagingProps {
 }
 
 /** Session-only room credentials. No token, network request, or persistent secret. */
-export function ManualRoomTaskStaging({ tasks, onStage }: ManualRoomTaskStagingProps) {
+export function ManualRoomTaskStaging({ tasks, onStage, onInspect }: ManualRoomTaskStagingProps) {
   const [room, setRoom] = useState('')
   const [secret, setSecret] = useState('')
   const valid = /^[a-f0-9]{64}$/.test(room) && /^[a-f0-9]{64}$/.test(secret)
@@ -26,6 +28,7 @@ export function ManualRoomTaskStaging({ tasks, onStage }: ManualRoomTaskStagingP
       <label htmlFor="local-stage-secret">Local staging encryption key</label>
       <input id="local-stage-secret" type="password" value={secret} autoComplete="off"
         onChange={event => setSecret(event.target.value)} />
+      {onInspect ? <EncryptedOutboxStatusPanel room={room} onInspect={onInspect} /> : null}
       <ManualTaskSharePanel key={room + ':' + secret} tasks={valid ? tasks : []}
         onStage={(task, fields) => {
           if (!valid) return Promise.reject(new Error('Invalid encrypted room settings'))
