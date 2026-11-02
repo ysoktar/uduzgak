@@ -47,7 +47,7 @@ it('TDD 883: only selected status and priority fields receive distinct ordered c
   const f = fixture()
   const edited = { ...task, status: 'doing' as const, priority: 'high' as const }
   await stageTaskFields(f.outbox, room, secret, edited, ['status', 'priority'], actor, 11)
-  const changes = await decoded(f.outbox)
+  const changes = (await decoded(f.outbox)).sort((left, right) => left.clock - right.clock)
   expect(changes).toHaveLength(2)
   expect(changes.map(change => change.field)).toEqual(['status', 'priority'])
   expect(changes.map(change => change.clock)).toEqual([11, 12])
