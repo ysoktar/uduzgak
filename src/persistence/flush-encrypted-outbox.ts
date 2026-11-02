@@ -9,7 +9,10 @@ export async function flushEncryptedOutbox(
   const pending = await outbox.pending(room)
   let uploaded = 0
   for (const item of pending) {
-    await client.upload(room, item.id, item.ciphertext)
+    const receipt = await client.upload(room, item.id, item.ciphertext)
+    if (typeof receipt !== 'boolean') {
+      throw new Error('Invalid upload acknowledgement')
+    }
     await outbox.acknowledge(room, item.id)
     uploaded++
   }
