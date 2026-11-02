@@ -37,6 +37,11 @@ import { checkSelfHostedServer } from './persistence/self-hosted-connection'
 import { ManualRoomSyncPanel } from './ManualRoomSyncPanel'
 import { createIndexedDbOutboxBackend } from './persistence/indexeddb-outbox'
 import { createEncryptedInbox } from './persistence/encrypted-inbox'
+import { ManualRoomTaskStaging } from './ManualRoomTaskStaging'
+import { createIndexedDbRoomClockReservation } from './persistence/indexeddb-room-clock'
+import { stageSelectedTaskFields } from './sync/stage-selected-task-fields'
+import type { Task } from './domain/task'
+import type { ShareableTaskField } from './sync/stage-task-fields'
 import { createOptionalRoomTransport, type OptionalRoomTransport } from './persistence/optional-room-transport'
 import { previewRemoteRoom } from './sync/manual-room-preview'
 
@@ -45,6 +50,11 @@ export interface BrowserAppProps {
   runtime?: WorkspaceRuntime
   backupDownload?: BackupDownloadHandler
   backupRead?: BackupFileReader
+  stageEncryptedTask?: (
+    settings: { room: string; secret: string },
+    task: Task,
+    fields: readonly ShareableTaskField[],
+  ) => Promise<readonly string[]>
 }
 
 const defaultRuntime: WorkspaceRuntime = {
@@ -108,6 +118,7 @@ export function BrowserApp({
   runtime = defaultRuntime,
   backupDownload = defaultBackupDownload,
   backupRead = defaultBackupRead,
+  stageEncryptedTask,
 }: BrowserAppProps) {
   const [application, setApplication] = useState(() =>
     createBrowserApplication(storage, runtime),
@@ -178,6 +189,14 @@ export function BrowserApp({
       />
 
       <StorageConnectionPanel onCheck={checkSelfHostedServer} />
+      <ManualRoomTaskStaging
+        tasks={application.store.getState().tasks}
+        onStage={stageEncryptedTask ?? (async (settings, task, fields) => {
+          const backend = createIndexedDbOutboxBackend()
+          const reserve = createIndexedDbRoomClockReservation()
+          return stageSelectedTaskFields(backend, reserve, settings, task, fields)
+        })}
+      />
       <fieldset aria-label="Encrypted remote storage">
         <legend>Encrypted remote storage</legend>
         <label>
