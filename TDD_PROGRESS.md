@@ -850,3 +850,7 @@ Five RED-first cases exercise dispatching explicitly reviewed title/status/prior
 ## TDD 957-961: single persisted commit of reviewed edits (prepared)
 
 Five RED-first tests require one store write and subscriber notification for multiple reviewed Task changes; reject stale reviews before writing; preserve memory and storage when persistence fails; retain tracked title/status activity history; and abort the entire transaction when simulation raises an invalid timestamp. `commitReviewedTaskChanges` prevalidates through `applyReviewedTaskChanges`, simulates the tracked reducer actions in memory, then dispatches one Workspace committed action. **Scope limitation:** This atomic write does not evaluate configured Workspace automations or recurring-completion side effects from the normal command implementation. It is not mounted to the remote preview UI until those semantics are handled. No remote data is automatically applied. PR #102 still requires owner-run focused tests, zero-warning lint, build and full regression. No tests were modified to force a pass.
+
+## TDD 962-966: atomic reviewed edits with automations (prepared)
+
+Five tests were authored before the implementation. Reviewed edits now simulate automation triggers before one persisted Workspace commit. The test cases cover side effects, one notification, rollback on automation failure, sequential edits, and stale input. Recurring completion is not yet handled. Local focused tests, lint, build, and full regression remain pending. GitHub Actions remain archived.
