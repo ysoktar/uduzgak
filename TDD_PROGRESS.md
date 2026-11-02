@@ -800,3 +800,11 @@ Five RED-first UI cases cover no staging on mount, explicit room/key validation 
 ## TDD 897-901: reserve clocks before explicit staging (prepared)
 
 Five new RED-first unit cases cover ciphertext staging without network dependency, monotonic clock ranges across calls, reservation failure without writes, rejection of malformed reserved actors, and empty selections that do not consume clocks. A separate `stageSelectedTaskFields` orchestration function delegates to the existing encrypted outbox. Clock reservation is an injected interface, not yet an IndexedDB implementation. No BrowserApp wiring and no automatic sync. All changes await local focused tests, lint, build and full regression. Do not merge PR #99 until verified.
+
+## TDD 902-906: IndexedDB room clock reservations (prepared)
+
+Five RED-first tests cover per-room persistent actor identity, monotonic ranges, simultaneous requests with disjoint ranges, independent rooms, and rejection of invalid or corrupt clocks. Implementation uses the same `uduzgak-encrypted-outbox` IndexedDB database and `changes` object store as the ciphertext queue and reserves each range inside a single `readwrite` transaction. It never writes plaintext Task contents or room secrets; it stores only actor IDs and counters. Local execution has not yet verified the focused tests, lint, build, or full regression.
+
+## TDD 907-911: BrowserApp manual Task staging integration (prepared)
+
+Five RED-first integration tests cover no implicit staging, explicit delegation, unchanged persisted Workspace, validation-gated staging, and safe error presentation. BrowserApp now mounts `ManualRoomTaskStaging` and, on explicit staging, connects `createIndexedDbOutboxBackend` to `createIndexedDbRoomClockReservation` and `stageSelectedTaskFields`; an optional injected staging callback allows UI tests without touching IndexedDB. No HTTP upload occurs. Atomic clock reservation does not make a multi-packet enqueue a transaction: failed writes may leave some encrypted packets, while reserved clocks are not reclaimed. All new changes remain draft-only pending full local verification. No GitHub Actions workflows were restored.
