@@ -812,3 +812,11 @@ Five RED-first integration tests cover no implicit staging, explicit delegation,
 ## TDD 912-916: read-only per-room encrypted outbox status (prepared)
 
 Five RED-first unit tests cover empty status, counting encrypted queued packets, strict room isolation, no acknowledgement or writes during inspection, and propagation of invalid-room/read errors. `inspectEncryptedRoomOutbox` delegates to the existing validated outbox pending read and returns only a packet count. This is an unmounted building block for a subsequent UI. No upload or background network activity was added. Focused tests, lint, build and full regression remain to be run on the owner's machine; GitHub Actions remain archived.
+
+## TDD 917-921: opt-in encrypted outbox count panel (prepared)
+
+Five RED-first tests cover no automatic inspection, manual count display, sanitized storage errors, stale responses when switching rooms and repeat-click blocking. The new `EncryptedOutboxStatusPanel` only displays counts and ignores completed responses for earlier room inputs. No network calls or packet acknowledgements are initiated.
+
+## TDD 922-926: BrowserApp read-only queue status integration (prepared)
+
+Five RED-first tests cover initial no-op state, selected room delegation, malformed room blocking, unchanged persisted Workspace and generic error display. `BrowserApp` accepts an optional test-injected `inspectEncryptedQueue` callback and otherwise uses `createDurableChangeOutbox(createIndexedDbOutboxBackend())` with `inspectEncryptedRoomOutbox` for local-only inspection. The inspector is rendered from `ManualRoomTaskStaging` and does not require the encryption key to check ciphertext counts. These are prepared changes, not owner-confirmed live state. Focused tests, zero-warning lint, build and full regression remain required. GitHub Actions remain archived.
