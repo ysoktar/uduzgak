@@ -11,6 +11,11 @@ const statuses = new Set(['todo', 'doing', 'done'])
 const priorities = new Set(['low', 'normal', 'high'])
 const allowedFields = new Set<ShareableTaskField>(['title', 'status', 'priority'])
 
+/** Check runtime input shape without widening readonly field element types. */
+function assertArray(value: unknown): void {
+  if (!Array.isArray(value)) throw new Error('Invalid Task fields')
+}
+
 /**
  * Explicitly stages selected Task scalars as locally stored ciphertext.
  * No server request or Workspace mutation occurs.
@@ -24,7 +29,7 @@ export async function stageTaskFields(
   actor: string,
   startingClock: number,
 ): Promise<string[]> {
-  if (!Array.isArray(fields)) throw new Error('Invalid Task fields')
+  assertArray(fields)
   if (fields.length === 0) return []
 
   if (typeof actor !== 'string' || !actor.trim() || actor !== actor.trim())
