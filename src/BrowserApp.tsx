@@ -36,6 +36,8 @@ import { StorageConnectionPanel } from './StorageConnectionPanel'
 import { checkSelfHostedServer } from './persistence/self-hosted-connection'
 import { ManualRoomSyncPanel } from './ManualRoomSyncPanel'
 import { createIndexedDbOutboxBackend } from './persistence/indexeddb-outbox'
+import { createDurableChangeOutbox } from './persistence/durable-change-outbox'
+import { inspectEncryptedRoomOutbox } from './sync/inspect-encrypted-room-outbox'
 import { createEncryptedInbox } from './persistence/encrypted-inbox'
 import { ManualRoomTaskStaging } from './ManualRoomTaskStaging'
 import { createIndexedDbRoomClockReservation } from './persistence/indexeddb-room-clock'
@@ -50,6 +52,7 @@ export interface BrowserAppProps {
   runtime?: WorkspaceRuntime
   backupDownload?: BackupDownloadHandler
   backupRead?: BackupFileReader
+  inspectEncryptedQueue?: (room: string) => Promise<{ pending: number }>
   stageEncryptedTask?: (
     settings: { room: string; secret: string },
     task: Task,
@@ -119,6 +122,7 @@ export function BrowserApp({
   backupDownload = defaultBackupDownload,
   backupRead = defaultBackupRead,
   stageEncryptedTask,
+  inspectEncryptedQueue,
 }: BrowserAppProps) {
   const [application, setApplication] = useState(() =>
     createBrowserApplication(storage, runtime),
@@ -190,6 +194,9 @@ export function BrowserApp({
 
       <StorageConnectionPanel onCheck={checkSelfHostedServer} />
       <ManualRoomTaskStaging
+        onInspect={inspectEncryptedQueue ?? (async room => inspectEncryptedRoomOutbox(
+          createDurableChangeOutbox(createIndexedDbOutboxBackend()), room,
+        ))}
         tasks={application.store.getState().tasks}
         onStage={stageEncryptedTask ?? (async (settings, task, fields) => {
           const backend = createIndexedDbOutboxBackend()
