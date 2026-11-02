@@ -854,3 +854,7 @@ Five RED-first tests require one store write and subscriber notification for mul
 ## TDD 962-966: atomic reviewed edits with automations (prepared)
 
 Five tests were authored before the implementation. Reviewed edits now simulate automation triggers before one persisted Workspace commit. The test cases cover side effects, one notification, rollback on automation failure, sequential edits, and stale input. Recurring completion is not yet handled. Local focused tests, lint, build, and full regression remain pending. GitHub Actions remain archived.
+
+## TDD 967-971: reviewed recurring Task completion (prepared)
+
+Five new RED-first cases cover generating exactly one next occurrence when a reviewed recurring Task becomes done, avoiding ID allocation for ordinary status changes, rejecting missing ID allocators, rejecting collisions with existing Task IDs, and rolling back a batch when the recurrence is invalid. The atomic reviewed commit translates recurring completion into the existing `task/recurringCompleted` reducer action before one persisted Workspace commit. The remote Apply UI is still unmounted. This group has not been executed locally and tests may expose validation or fixture issues; per the test-preservation rule, no tests may be changed without explicit approval. A passing focused test run, zero-warning lint, build and full regression are required before merging this PR.
