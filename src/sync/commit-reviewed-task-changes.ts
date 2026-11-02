@@ -1,5 +1,6 @@
 import type { WorkspaceStore } from '../application/workspace-store'
-import { workspaceReducer, type WorkspaceAction } from '../domain/workspace'
+import { type ActivityTrackableWorkspaceAction } from '../domain/workspace'
+import { executeAutomationTransaction } from '../application/automation-execution'
 import type { TaskPriority, TaskStatus } from '../domain/task'
 import { applyReviewedTaskChanges } from './apply-reviewed-task-changes'
 import type { PreviewedTaskChange } from './task-change-preview'
@@ -9,9 +10,10 @@ export function commitReviewedTaskChanges(
   store: WorkspaceStore,
   changes: readonly PreviewedTaskChange[],
   occurredAt: string,
+  options: { maxAutomationActionApplications?: number } = {},
 ): number {
   if (changes.length === 0) return 0
-  const actions: WorkspaceAction[] = []
+  const actions: ActivityTrackableWorkspaceAction[] = []
   applyReviewedTaskChanges(store.getState().tasks, changes, {
     renameTask: (taskId, title) => actions.push({ type: 'task/titleChanged', taskId, title }),
     changeTaskStatus: (taskId, status: TaskStatus) =>
@@ -21,13 +23,11 @@ export function commitReviewedTaskChanges(
   })
   let candidate = store.getState()
   for (const action of actions) {
-    if (action.type !== 'task/titleChanged' && action.type !== 'task/statusChanged' &&
-      action.type !== 'task/priorityChanged') throw new Error('Invalid reviewed Task action')
-    candidate = workspaceReducer(candidate, {
-      type: 'workspace/taskActivityTracked',
-      occurredAt,
+    candidate = executeAutomationTransaction(candidate, {
       action,
-    })
+      occurredAt,
+      maxActionApplications: options.maxAutomationActionApplications ?? 100,
+    }).workspace
   }
   store.dispatch({ type: 'workspace/automationTransactionCommitted', workspace: candidate })
   return actions.length
