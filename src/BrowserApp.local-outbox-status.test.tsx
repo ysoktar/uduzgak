@@ -1,5 +1,5 @@
 /** @vitest-environment jsdom */
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { expect, it, vi } from 'vitest'
 import { createTask } from './domain/task'
 import { createProject } from './domain/project'
@@ -36,7 +36,8 @@ it('TDD 923: only a manual check queries the chosen staging room', async () => {
   enterRoom(room)
   fireEvent.click(checkButton())
   await waitFor(() => expect(onInspect).toHaveBeenCalledWith(room))
-  await waitFor(() => expect(screen.getByRole('status').textContent).toContain('2 encrypted changes pending locally'))
+  const queue = screen.getByRole('region', { name: 'Local encrypted queue status' })
+  await waitFor(() => expect(within(queue).getByRole('status').textContent).toContain('2 encrypted changes pending locally'))
 })
 
 it('TDD 924: invalid staging room cannot inspect an outbox', () => {
