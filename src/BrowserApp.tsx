@@ -40,6 +40,8 @@ import { createDurableChangeOutbox } from './persistence/durable-change-outbox'
 import { inspectEncryptedRoomOutbox } from './sync/inspect-encrypted-room-outbox'
 import { createEncryptedInbox } from './persistence/encrypted-inbox'
 import { ManualRoomTaskStaging } from './ManualRoomTaskStaging'
+import { ManualEncryptedUploadPanel, type ManualEncryptedUploadSettings } from './ManualEncryptedUploadPanel'
+import { flushEncryptedOutbox } from './persistence/flush-encrypted-outbox'
 import { createIndexedDbRoomClockReservation } from './persistence/indexeddb-room-clock'
 import { stageSelectedTaskFields } from './sync/stage-selected-task-fields'
 import type { Task } from './domain/task'
@@ -53,6 +55,7 @@ export interface BrowserAppProps {
   backupDownload?: BackupDownloadHandler
   backupRead?: BackupFileReader
   inspectEncryptedQueue?: (room: string) => Promise<{ pending: number }>
+  uploadEncryptedQueue?: (settings: ManualEncryptedUploadSettings) => Promise<{ uploaded: number; remaining: number }>
   stageEncryptedTask?: (
     settings: { room: string; secret: string },
     task: Task,
@@ -123,6 +126,7 @@ export function BrowserApp({
   backupRead = defaultBackupRead,
   stageEncryptedTask,
   inspectEncryptedQueue,
+  uploadEncryptedQueue,
 }: BrowserAppProps) {
   const [application, setApplication] = useState(() =>
     createBrowserApplication(storage, runtime),
@@ -204,6 +208,12 @@ export function BrowserApp({
           return stageSelectedTaskFields(backend, reserve, settings, task, fields)
         })}
       />
+      <ManualEncryptedUploadPanel onUpload={uploadEncryptedQueue ?? (async settings => {
+        const backend = createIndexedDbOutboxBackend()
+        const outbox = createDurableChangeOutbox(backend)
+        const client = createOptionalRoomTransport(remoteTransport, settings.serverUrl, settings.token)
+        return flushEncryptedOutbox(outbox, client, settings.room)
+      })} />
       <fieldset aria-label="Encrypted remote storage">
         <legend>Encrypted remote storage</legend>
         <label>
