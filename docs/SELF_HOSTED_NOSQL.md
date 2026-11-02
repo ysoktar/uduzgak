@@ -72,3 +72,7 @@ Use cryptographically random secrets and transfer them through a secure invitati
 ## Generating room credentials
 
 Run `npm run server:generate-room` on a trusted device to create a cryptographically random 256-bit room ID, read token and write token. Insert the generated `serverConfig` entry into `UDUZGAK_ROOM_CAPABILITIES_JSON`. Share tokens through a trusted channel. Do not commit or publicly log them. Reader tokens cannot upload; writer tokens can upload and read. Revocation and secure invitations are not yet implemented.
+
+## Local encryption key provisioning
+
+The `npm run server:generate-room` command now also produces `encryptionSecret`, an independent random 256-bit AES key for the client-side encrypted change envelope. Keep this secret exclusively with invited clients. It must never be copied into `UDUZGAK_ROOM_CAPABILITIES_JSON` or sent to the relay/CouchDB server. The server configuration contains only the room locator and reader/writer access tokens. Share the encryption secret through a secure channel; losing it prevents decrypting stored encrypted changes.
