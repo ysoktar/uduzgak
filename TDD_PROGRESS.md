@@ -838,3 +838,7 @@ Ten RED-first tests cover a standalone `ManualEncryptedUploadPanel` with session
 ## TDD 942-946: manual encrypted upload safety guardrails (prepared)
 
 Five RED-first UI tests require rejection of malformed or credential-embedded URLs, allow HTTP only for loopback development, prevent stale success or failure feedback after room/token changes during an in-flight upload, and reject invalid result counts. The upload panel now validates URLs with the existing `normalizeSelfHostedUrl` utility and uses a per-request revision counter. A changed destination does not cancel an already submitted upload; it only prevents outdated feedback. No automatic network requests were added. All 15 new tests (TDD 932-946) require focused, zero-warning lint, build and full-suite local verification before merging PR #101. GitHub Actions remain archived.
+
+## TDD 947-951: transport receipt validation (prepared)
+
+Five new test-first scenarios: reject non-boolean receipts, retain ciphertext on transport failure, accept idempotent false receipts, surface local acknowledgement failures, and skip uploads for empty queues. The flush implementation checks the receipt type before deleting a locally queued item. Prepared only, pending local focused tests, lint, build, and full regression. Actions remain archived.
